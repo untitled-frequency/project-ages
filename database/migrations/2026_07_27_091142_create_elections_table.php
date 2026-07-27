@@ -11,10 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('mandats', function (Blueprint $table) {
+        Schema::create('elections', function (Blueprint $table) {
             $table->id();
-            $table->date("dateDebut");
-            $table->date("dateFin");
+            $table->date("dateDebutDepot");
+            $table->date("dateFinDepot");
+            $table->date("dateDebutCampagne");
+            $table->date("dateFinCampagne");
+            $table->date("dateDebutVote");
+            $table->date("dateFinVote");
             $table->foreignId("annee_id")->constrained();
         });
     }
@@ -24,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('mandats');
+        Schema::dropIfExists('elections');
     }
 };

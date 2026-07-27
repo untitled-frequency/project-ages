@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('annees_academique', function (Blueprint $table) {
+        Schema::create('annees', function (Blueprint $table) {
             $table->id();
             $table->date("dateDebut");
             $table->date("dateFin");

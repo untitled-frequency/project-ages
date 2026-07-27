@@ -17,7 +17,7 @@ return new class extends Migration
             $table->text("programme");
             $table->string("slogan");
             $table->text("membres");
-            $table->foreignId("election_id")->constrained("elections");
+            $table->foreignId("election_id")->constrained();
         });
     }
 

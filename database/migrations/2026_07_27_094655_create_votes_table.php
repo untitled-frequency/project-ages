@@ -11,10 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('cotisations', function (Blueprint $table) {
-            $table->id();
-            $table->string("montant");
-            $table->date("date");
+        Schema::create('votes', function (Blueprint $table) {
+            $table->foreignId("user_id")->constrained();
+            $table->foreignId("liste_candidat_id")->constrained();
         });
     }
 
@@ -23,6 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('cotisations');
+        Schema::dropIfExists('votes');
     }
 };

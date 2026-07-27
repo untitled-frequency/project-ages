@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string("motif");
             $table->string("montant");
             $table->date("date");
-            $table->foreignId("user_id")->constrained("users");
+            $table->foreignId("user_id")->constrained();
         });
     }
 
