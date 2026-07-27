@@ -8,7 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Annonce extends Model
 {
     use HasFactory;
-    //
+
+    protected $fillable = ['titre', 'datePublication', 'contenu'];
 
     public $timestamps = false;
 }
