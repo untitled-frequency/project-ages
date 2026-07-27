@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tableau de bord — AGES (Espace Président)</title>
+    <style>
+        :root {
+            --bg: #f4f5f3;
+            --card: #ffffff;
+            --border: #e3e2da;
+            --text: #1f1f1d;
+            --muted: #8a897f;
+            --muted2: #5c5b54;
+            --accent: #d97757;
+            --green: #3d7a5c;
+            --blue: #2b6cb0;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, "Segoe UI", Inter, system-ui, sans-serif;
+            background: var(--bg);
+            margin: 0;
+            padding: 24px;
+            color: var(--text);
+        }
+
+        .wrap {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        /* TOPBAR */
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .title {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            font-size: 13px;
+            color: var(--muted);
+            margin-top: 2px;
+        }
+
+        .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        /* Notification Bell Icon */
+        .notif-btn {
+            position: relative;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: var(--muted2);
+        }
+
+        .notif-btn svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+
+        .notif-badge {
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            background: var(--accent);
+            color: #fff;
+            font-size: 10px;
+            font-weight: 700;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid var(--card);
+        }
+
+        .avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--blue);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        /* CARDS INDICATIFS COMPACTS */
+        .kpi-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .kpi-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 12px 14px;
+        }
+
+        .kpi-label {
+            font-size: 11px;
+            color: var(--muted);
+            margin-bottom: 4px;
+            letter-spacing: .02em;
+            font-weight: 600;
+        }
+
+        .kpi-value {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .kpi-value.green {
+            color: var(--green);
+        }
+
+        .kpi-value.accent {
+            color: var(--accent);
+        }
+
+        .kpi-sub {
+            font-size: 11px;
+            color: var(--muted2);
+            margin-top: 2px;
+        }
+
+        /* GRILLES DE CONTENU */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 18px;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 14px;
+        }
+
+        .card-title {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .entry {
+            margin-bottom: 12px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #f0efe9;
+        }
+
+        .entry:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .entry .main {
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .entry .meta {
+            font-size: 11px;
+            color: var(--muted);
+            margin-top: 2px;
+        }
+
+        /* BUTTONS & ACTIONS */
+        .btn-sm {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .btn-sm:hover {
+            background: #e8e7e0;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .badge {
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .badge-success {
+            background: #e6f4ea;
+            color: var(--green);
+        }
+
+        .badge-pending {
+            background: #fef3c7;
+            color: #b45309;
+        }
+
+        /* SECTION ÉLECTION DU BUREAU (EN FIN) */
+        .election-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 16px;
+        }
+
+        .election-sub {
+            font-size: 12px;
+            color: var(--muted);
+            margin-top: -10px;
+            margin-bottom: 14px;
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: var(--muted2);
+            margin-bottom: 4px;
+        }
+
+        .progress-bar {
+            background: #eeede6;
+            border-radius: 6px;
+            height: 8px;
+            overflow: hidden;
+            margin-bottom: 16px;
+        }
+
+        .progress-fill {
+            background: var(--accent);
+            height: 100%;
+        }
+
+        .list-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--bg);
+            border-radius: 8px;
+            padding: 10px 14px;
+            margin-bottom: 8px;
+            font-size: 13px;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 760px) {
+            body {
+                padding: 14px;
+            }
+
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .kpi-row {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .kpi-card {
+                padding: 10px;
+            }
+
+            .kpi-value {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+
+        <!-- TOPBAR PRÉSIDENT -->
+        <div class="topbar">
+            <div>
+                <div class="title">Tableau de bord — AGES</div>
+                <div class="subtitle">Présidence du Bureau · Mandat 2025-2026</div>
+            </div>
+            <div class="topbar-right">
+                <!-- Notification Icon -->
+                <div class="notif-btn" title="Alertes & Activités">
+                    <svg viewBox="0 0 24 24">
+                        <path
+                            d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z" />
+                    </svg>
+                    <div class="notif-badge">5</div>
+                </div>
+                <div class="avatar" title="Président">PR</div>
+            </div>
+        </div>
+
+        <!-- CARDS INDICATIFS COMPACTS & RESPONSIVES -->
+        <div class="kpi-row">
+            <div class="kpi-card">
+                <div class="kpi-label">TOTAL MEMBRES</div>
+                <div class="kpi-value">248</div>
+                <div class="kpi-sub">80% à jour de cotisation</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-label">RÉUNIONS PROGRAMMÉES</div>
+                <div class="kpi-value green">2</div>
+                <div class="kpi-sub">Ordre du jour prêt</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-label">ACTIVITÉS EN COURS</div>
+                <div class="kpi-value">3</div>
+                <div class="kpi-sub">2 en attente de validation</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-label">FIN DU MANDAT</div>
+                <div class="kpi-value accent">15 Jours</div>
+                <div class="kpi-sub">Élection en cours</div>
+            </div>
+        </div>
+
+        <!-- SECTION GESTION & SUPERVISION -->
+        <div class="main-grid">
+
+            <!-- Supervision des Réunions & Procès-verbaux -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">Gestion des Réunions</div>
+                    <button class="btn-sm">+ Planifier</button>
+                </div>
+                <div class="entry">
+                    <div class="main">Réunion de cloture de mandat <span class="badge badge-pending">À venir</span>
+                    </div>
+                    <div class="meta">28 juillet · 15h00 · Ordre du jour: Bilan général</div>
+                </div>
+                <div class="entry">
+                    <div class="main">Conseil d'administration <span class="badge badge-success">Procès-verbal
+                            publié</span></div>
+                    <div class="meta">12 juillet · Compte rendu disponible</div>
+                </div>
+            </div>
+
+            <!-- Communication & Annonces Officielle -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">Annonces Générales</div>
+                    <button class="btn-sm">+ Publier</button>
+                </div>
+                <div class="entry">
+                    <div class="main">Convocation à l'Assemblée Générale</div>
+                    <div class="meta">Publié il y a 1 jour · 240 vues</div>
+                </div>
+                <div class="entry">
+                    <div class="main">Lancement officiel de la campagne électorale</div>
+                    <div class="meta">Publié il y a 3 jours · 189 vues</div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- SECTION ÉLECTION DU BUREAU EN FIN DE PAGE (SUPERVISION DU MANDAT SUIVANT) -->
+        <div class="election-card">
+            <div class="card-title">Suivi du Scrutin Électoral (Mandat 2026-2027)</div>
+            <div class="election-sub">Supervision du processus de renouvellement du bureau</div>
+
+            <div class="progress-label">
+                <span>Taux de participation global</span>
+                <span style="font-weight:600;">64 %</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" style="width:64%"></div>
+            </div>
+
+            <div style="font-size:12px; color:var(--muted); margin-bottom:10px;">Candidatures validées par la commission
+                :</div>
+
+            <div class="list-item">
+                <div>
+                    <strong>Liste Renouveau</strong>
+                    <div style="font-size: 11px; color: var(--muted);">Président candidat : Jean Dupont</div>
+                </div>
+                <span class="badge badge-success">Validée</span>
+            </div>
+
+            <div class="list-item">
+                <div>
+                    <strong>Liste Unité</strong>
+                    <div style="font-size: 11px; color: var(--muted);">Présidente candidate : Marie Curie</div>
+                </div>
+                <span class="badge badge-success">Validée</span>
+            </div>
+        </div>
+
+    </div>
+</body>
+
+</html>
