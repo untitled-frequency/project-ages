@@ -11,13 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('liste_candidats', function (Blueprint $table) {
+        Schema::create('annees_academique', function (Blueprint $table) {
             $table->id();
-            $table->string("nom");
-            $table->text("programme");
-            $table->string("slogan");
-            $table->text("membres");
-            $table->foreignId("election_id")->constrained("elections");
+            $table->date("dateDebut");
+            $table->date("dateFin");
         });
     }
 
@@ -26,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('liste_candidats');
+        Schema::dropIfExists('annees_academique');
     }
 };
