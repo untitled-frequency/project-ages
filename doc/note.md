@@ -4,4 +4,7 @@ git checkout main
 git pull downloads the updates on the main if any
 git checkout branch-name to go back to my branch
 git merge main 
+git push origin feature/teufack
 
+
+add meetings
