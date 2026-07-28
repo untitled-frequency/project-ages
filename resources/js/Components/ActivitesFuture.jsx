@@ -23,7 +23,7 @@ export default function ActivitesFutureCard({ activites = [] }) {
                             </p>
                         </div>
                     ))
-                ) : (
+                ) : (   
                     <p className="py-2 text-sm text-gray-500">
                         Aucune activité planifiée.
                     </p>

@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Annonce;
 use App\Models\Reunion;
 use App\Models\Activite;
+use App\Models\Annee;
 use App\Models\Contribution;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -22,7 +23,7 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        
+        /*
         User::factory()->create([
             'nom' => 'teufack',
             'email' => 'teufack@gmail.com',
@@ -37,7 +38,14 @@ class DatabaseSeeder extends Seeder
         Reunion::factory(10)->create(); 
         
         Activite::factory(10)->create();
-        
+        */
+
+        /*Annee::factory()->create([
+            "dateDebut" => "2026-01-01",
+            "dateFin" => "2026-12-31",
+        ]);
+        */
+
         Contribution::factory(10)->create();
     }
 }

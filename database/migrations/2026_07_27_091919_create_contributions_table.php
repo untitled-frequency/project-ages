@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('contributions', function (Blueprint $table) {
             $table->id();
             $table->double("montant");
+            $table->foreignId("annee_id")->constrained();
         });
     }
 
