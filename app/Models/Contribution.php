@@ -15,4 +15,9 @@ class Contribution extends Model
     protected $fillable = [
         "montant",
     ];
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'paies', 'contribution_id', 'user_id');
+    }
 }
