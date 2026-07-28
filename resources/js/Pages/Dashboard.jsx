@@ -1,27 +1,17 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import DernieresAnnoncesCard from '@/Components/DernieresAnnoncesCard';
+import ReunionsFutureCard from '@/Components/ReunionsFutureCard';
 import { Head } from '@inertiajs/react';
 
-export default function Dashboard() {
+export default function Dashboard({ auth, annonces, reunions }) {
     return (
-        <AuthenticatedLayout
-            header={
-                <h2 className="text-xl font-semibold leading-tight text-gray-800">
-                    Dashboard
-                </h2>
-            }
-        >
+        <AuthenticatedLayout user={auth.user}>
             <Head title="Dashboard" />
 
-            <div className="py-12">
-                <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
-                    <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg">
-                        <div className="p-6 text-gray-900">
-
-                        </div>
-                    </div>
-                </div>
+            <div className="py-6 max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
+                <DernieresAnnoncesCard annonces={annonces} />
+                <ReunionsFutureCard reunions={reunions} />
             </div>
         </AuthenticatedLayout>
-
     );
 }

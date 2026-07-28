@@ -5,15 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Annonce extends Model
+class Reunion extends Model
 {
+    /** @use HasFactory<\Database\Factories\ReunionFactory> */
     use HasFactory;
 
     public $timestamps = false;
 
     protected $fillable = [
-        'titre',
-        'contenu',
-        'datePublication',
+        'ordreJour',
+        'dateHeure',
+        'lieu',
+        'compteRendu',
     ];
 }

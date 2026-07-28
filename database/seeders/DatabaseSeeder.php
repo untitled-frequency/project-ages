@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use App\Models\Annonce;
+use App\Models\Reunion;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -19,7 +20,7 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        /*User::factory()->create([
+        User::factory()->create([
             'nom' => 'Test User',
             'email' => 'test@example.com',
             'password' => 'password',
@@ -27,8 +28,9 @@ class DatabaseSeeder extends Seeder
         ]);
 
         User::factory(10)->create();
-        */
 
         Annonce::factory(10)->create();
+
+        Reunion::factory(10)->create();
     }
 }
