@@ -8,7 +8,7 @@ export default function ReunionsFutureCard({ reunions = [] }) {
             </h2>
 
             <div className="divide-y divide-gray-100">
-                {reunions.length > 0 ? (
+                {Array.isArray(reunions) && reunions.length > 0 ? (
                     reunions.map((reunion) => (
                         <div key={reunion.id} className="py-3 first:pt-0 last:pb-0">
                             <h3 className="font-semibold text-gray-800 text-sm">

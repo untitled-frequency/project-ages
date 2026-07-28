@@ -4,6 +4,10 @@ import ReunionsFutureCard from '@/Components/ReunionsFuture';
 import { Head } from '@inertiajs/react';
 
 export default function Dashboard({ auth, annonces, reunions }) {
+    console.log('--- DASHBOARD DEBUG ---');
+    console.log('annonces:', annonces);
+    console.log('reunions:', reunions);
+
     return (
         <AuthenticatedLayout user={auth.user}>
             <Head title="Dashboard" />

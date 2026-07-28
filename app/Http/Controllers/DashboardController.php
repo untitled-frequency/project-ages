@@ -9,6 +9,7 @@ use Inertia\Response;
 
 class DashboardController extends Controller
 {
+    // app/Http/Controllers/DashboardController.php
     public function index(): Response
     {
         $annonces = Annonce::orderBy('datePublication', 'desc')
@@ -16,10 +17,10 @@ class DashboardController extends Controller
             ->get()
             ->values();
 
-        $reunions = Reunion::orderBy('dateHeure', 'desc')
+        $reunions = Reunion::where('dateHeure', '>=', now())
+            ->orderBy('dateHeure', 'asc')
             ->take(3)
             ->get()
-            ->reverse()
             ->values();
 
         return Inertia::render('Dashboard', [
