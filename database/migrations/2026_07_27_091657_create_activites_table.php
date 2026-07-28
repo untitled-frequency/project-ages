@@ -14,10 +14,9 @@ return new class extends Migration
         Schema::create('activites', function (Blueprint $table) {
             $table->id();
             $table->string("titre");
-            $table->date("datePublication");
+            $table->dateTime("datePublication");
             $table->text("description");
             $table->string("lieu");
-            $table->datetime("dateHeure");
         });
     }
 
