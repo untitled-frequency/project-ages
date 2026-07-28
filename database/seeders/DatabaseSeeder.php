@@ -28,9 +28,18 @@ class DatabaseSeeder extends Seeder
         ]);
 
         User::factory(10)->create();
+<<<<<<< HEAD
         
 
         Annonce::factory(10)->create();
         Reunion::factory(10)->create();
+=======
+
+        Annonce::factory(10)->create();
+
+        Reunion::factory(10)->create(); */
+        
+        Activite::factory(10)->create();
+>>>>>>> main
     }
 }

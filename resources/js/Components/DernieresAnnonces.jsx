@@ -8,7 +8,11 @@ export default function DernieresAnnoncesCard({ annonces = [] }) {
             </h2>
 
             <div className="divide-y divide-gray-100">
+<<<<<<< HEAD
                 {annonces.length > 0 ? (
+=======
+                {Array.isArray(annonces) && annonces.length > 0 ? (
+>>>>>>> main
                     annonces.map((annonce) => (
                         <div key={annonce.id} className="py-3 first:pt-0 last:pb-0">
                             <h3 className="font-semibold text-gray-800 text-sm">
