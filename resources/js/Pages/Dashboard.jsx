@@ -1,6 +1,6 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import DernieresAnnoncesCard from '@/Components/DernieresAnnoncesCard';
-import ReunionsFutureCard from '@/Components/ReunionsFutureCard';
+import DernieresAnnoncesCard from '@/Components/DernieresAnnonces';
+import ReunionsFutureCard from '@/Components/ReunionsFuture';
 import { Head } from '@inertiajs/react';
 
 export default function Dashboard({ auth, annonces, reunions }) {
