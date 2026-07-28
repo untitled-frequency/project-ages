@@ -6,7 +6,9 @@ use App\Models\Annonce;
 use App\Models\Reunion;
 use App\Models\Activite;
 use App\Models\Paie;
+use App\Models\Annee;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Carbon;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -32,9 +34,22 @@ class DashboardController extends Controller
             ->get()
             ->values();
 
+        $idAnneeEnCour = Annee::max('id');
+
+        $anneeEnCour = Annee::find($idAnneeEnCour);
+        if ($anneeEnCour) {
+            $startYear = Carbon::parse($anneeEnCour->dateDebut)->format('Y');
+            $endYear   = Carbon::parse($anneeEnCour->dateFin)->format('Y');
+
+            $anneeEnCour = "{$startYear}-{$endYear}"; 
+        }
+            
         $contributions = Paie::where('user_id', Auth::id())
+            ->whereHas('contribution', function ($query) use ($idAnneeEnCour) {
+                $query->where('annee_id', $idAnneeEnCour);
+            })
+            ->with('contribution')
             ->orderBy('datePaiement', 'desc')
-            ->take(3)
             ->get()
             ->values();
 
@@ -42,6 +57,7 @@ class DashboardController extends Controller
             'annonces' => $annonces,
             'reunions' => $reunions,
             'activites' => $activites,
+            'anneeEnCour' => $anneeEnCour,
             'contributions' => $contributions,
         ]);
     }

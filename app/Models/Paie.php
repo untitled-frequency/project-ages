@@ -2,25 +2,28 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Paie extends Model
 {
-    protected $fillable = [
-        'montant',
-        'date',
-        'user_id',
-    ];
+    use HasFactory;
 
     public $timestamps = false;
-    
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
+
+    protected $fillable = [
+        'user_id',
+        'contribution_id',
+        'datePaiement',
+    ];
 
     public function contribution()
     {
         return $this->belongsTo(Contribution::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

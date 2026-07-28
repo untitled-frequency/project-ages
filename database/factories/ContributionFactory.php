@@ -19,7 +19,7 @@ class ContributionFactory extends Factory
     {
         return [
             "montant" => $this->faker->numberBetween(10000, 30000),
-            "annee_id" => 1,
+            "annee_id" => $this->faker->randomElement([1, 2]),
         ];
     }
 }

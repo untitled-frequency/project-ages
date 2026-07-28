@@ -15,7 +15,6 @@ return new class extends Migration
             $table->foreignId("user_id")->constrained();
             $table->foreignId("contribution_id")->constrained();
             $table->date("datePaiement");
-            $table->decimal("montant", 10, 2);
         });
     }
 

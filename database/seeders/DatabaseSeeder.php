@@ -7,6 +7,7 @@ use App\Models\Annonce;
 use App\Models\Reunion;
 use App\Models\Activite;
 use App\Models\Annee;
+use App\Models\Paie;
 use App\Models\Contribution;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -38,14 +39,35 @@ class DatabaseSeeder extends Seeder
         Reunion::factory(10)->create(); 
         
         Activite::factory(10)->create();
-        */
-
-        /*Annee::factory()->create([
-            "dateDebut" => "2026-01-01",
-            "dateFin" => "2026-12-31",
+        
+        
+        
+        Annee::factory()->create([
+            "dateDebut" => "2025-10-01",
+            "dateFin" => "2026-05-31",
+        ]);
+        
+        
+        Annee::factory()->create([
+            "dateDebut" => "2026-10-01",
+            "dateFin" => "2027-05-31",
         ]);
         */
 
-        Contribution::factory(10)->create();
+        
+        Paie::factory()->create([
+            "user_id" => 1,
+            "contribution_id" => 2,
+            "datePaiement" => "2026-01-01",
+        ]);
+
+        Paie::factory()->create([
+            "user_id" => 1,
+            "contribution_id" => 5,
+            "datePaiement" => "2027-01-01",
+        ]);
+        
+
+        //Contribution::factory(10)->create();
     }
 }

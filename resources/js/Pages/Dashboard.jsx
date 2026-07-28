@@ -5,7 +5,7 @@ import ActivitesFutureCard from '@/Components/ActivitesFuture';
 import MyContributionsCard from '@/Components/MyContributions';
 import { Head } from '@inertiajs/react';
 
-export default function Dashboard({ auth, annonces, reunions, activites, contributions }) {
+export default function Dashboard({ auth, annonces, reunions, activites, contributions, anneeEnCour }) {
     console.log('--- DASHBOARD DEBUG ---');
     console.log('annonces:', annonces);
     console.log('reunions:', reunions);
@@ -26,7 +26,7 @@ export default function Dashboard({ auth, annonces, reunions, activites, contrib
                 {/* Row 2: Activités & Contributions */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <ActivitesFutureCard activites={activites} />
-                    <MyContributionsCard contributions={contributions} />
+                    <MyContributionsCard contributions={contributions} anneeEnCour={anneeEnCour} />
                 </div>
             </div>
         </AuthenticatedLayout>
