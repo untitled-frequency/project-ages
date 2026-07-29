@@ -9,6 +9,8 @@ use App\Models\Activite;
 use App\Models\Annee;
 use App\Models\Paie;
 use App\Models\Contribution;
+use App\Models\Election;
+use App\Models\listeCandidat;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -24,10 +26,17 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        /*
+        
         User::factory()->create([
             'nom' => 'teufack',
             'email' => 'teufack@gmail.com',
+            'password' => 'password',
+            'tel' => '123456789',
+        ]);
+
+        User::factory()->create([
+            'nom' => 'test',
+            'email' => 'test@example.com',
             'password' => 'password',
             'tel' => '123456789',
         ]);
@@ -40,41 +49,56 @@ class DatabaseSeeder extends Seeder
         
         Activite::factory(10)->create();
         
+        Annee::factory()->create([
+            "dateDebut" => "2024-10-01",
+            "dateFin" => "2025-05-31",
+        ]);
         
         
         Annee::factory()->create([
             "dateDebut" => "2025-10-01",
             "dateFin" => "2026-05-31",
         ]);
-        
-        
+
         Annee::factory()->create([
             "dateDebut" => "2026-10-01",
             "dateFin" => "2027-05-31",
         ]);
 
+        Contribution::factory(10)->create();
         
-        Paie::factory()->create([
-            "user_id" => 1,
-            "contribution_id" => 2,
-            "datePaiement" => "2026-01-01",
+        Election::factory()->create([
+            "debutDepot" => "2024-10-01",
+            "finDepot" => "2024-10-01",
+            "debutCampagne" => "2024-10-20",
+            "finCampagne" => "2024-10-25",
+            "debutVote" => "2024-10-26",
+            "finVote" => "2024-10-26",
+            "annee_id" => 1,
         ]);
-
-        Paie::factory()->create([
-            "user_id" => 1,
-            "contribution_id" => 5,
-            "datePaiement" => "2027-01-01",
+        
+        
+        Election::factory()->create([
+            "debutDepot" => "2025-10-01",
+            "finDepot" => "2025-10-01",
+            "debutCampagne" => "2025-10-20",
+            "finCampagne" => "2025-10-25",
+            "debutVote" => "2025-10-26",
+            "finVote" => "2025-10-26",
+            "annee_id" => 2,
+        ]);
+        
+        Election::factory()->create([
+            "debutDepot" => "2026-10-01",
+            "finDepot" => "2026-10-01",
+            "debutCampagne" => "2026-10-20",
+            "finCampagne" => "2026-10-25",
+            "debutVote" => "2026-10-26",
+            "finVote" => "2026-10-26",
+            "annee_id" => 3,
         ]);
         
 
-        User::factory()->create([
-            'nom' => 'test',
-            'email' => 'test@example.com',
-            'password' => 'password',
-            'tel' => '123456789',
-        ]);
-        */
-
-        //Contribution::factory(10)->create();
+        ListeCandidat::factory(25)->create();
     }
 }

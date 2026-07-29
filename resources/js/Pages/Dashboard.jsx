@@ -3,9 +3,10 @@ import DernieresAnnoncesCard from '@/Components/DernieresAnnonces';
 import ReunionsFutureCard from '@/Components/ReunionsFuture';
 import ActivitesFutureCard from '@/Components/ActivitesFuture';
 import MyContributionsCard from '@/Components/MyContributions';
+import ElectionEnCour from '@/Components/ElectionEnCour';  
 import { Head } from '@inertiajs/react';
 
-export default function Dashboard({ auth, annonces, reunions, activites, contributions, anneeEnCour }) {
+export default function Dashboard({ auth, annonces, reunions, activites, contributions, anneeEnCour, election }) {
     console.log('--- DASHBOARD DEBUG ---');
     console.log('annonces:', annonces);
     console.log('reunions:', reunions);
@@ -27,6 +28,9 @@ export default function Dashboard({ auth, annonces, reunions, activites, contrib
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <ActivitesFutureCard activites={activites} />
                     <MyContributionsCard contributions={contributions} anneeEnCour={anneeEnCour} />
+                </div>
+                <div>
+                    <ElectionEnCour election={election} />
                 </div>
             </div>
         </AuthenticatedLayout>
