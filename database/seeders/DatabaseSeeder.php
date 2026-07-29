@@ -52,7 +52,6 @@ class DatabaseSeeder extends Seeder
             "dateDebut" => "2026-10-01",
             "dateFin" => "2027-05-31",
         ]);
-        */
 
         
         Paie::factory()->create([
@@ -67,6 +66,14 @@ class DatabaseSeeder extends Seeder
             "datePaiement" => "2027-01-01",
         ]);
         
+
+        User::factory()->create([
+            'nom' => 'test',
+            'email' => 'test@example.com',
+            'password' => 'password',
+            'tel' => '123456789',
+        ]);
+        */
 
         //Contribution::factory(10)->create();
     }
