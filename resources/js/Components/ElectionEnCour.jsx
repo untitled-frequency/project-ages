@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function ElectionSection({ election }) {
+export default function ElectionEnCour({ election }) {
     if (!election) {
         return (
             <div className="bg-white p-6 rounded-lg shadow border text-gray-500">
@@ -39,6 +39,9 @@ export default function ElectionSection({ election }) {
         }
     };
 
+    // Reference listesCandidats directly
+    const candidateLists = election?.listes_candidats || [];
+
     return (
         <div className="bg-white p-6 rounded-xl shadow-md border border-gray-100">
             {/* Header */}
@@ -50,30 +53,30 @@ export default function ElectionSection({ election }) {
             {/* Candidates List */}
             <div className="space-y-4">
                 <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider">
-                    Candidate Lists ({election.candidats?.length || 0})
+                    Candidate Lists ({candidateLists.length})
                 </h3>
 
-                {election.candidats && election.candidats.length > 0 ? (
+                {candidateLists.length > 0 ? (
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        {election.candidats.map((candidat) => (
+                        {candidateLists.map((listeCandidat) => (
                             <div
-                                key={candidat.id}
+                                key={listeCandidat.id}
                                 className="p-4 rounded-lg border border-gray-200 hover:border-blue-300 transition-all bg-gray-50 hover:bg-white"
                             >
                                 <div className="flex justify-between items-start mb-2">
-                                    <h4 className="text-lg font-bold text-gray-900">{candidat.nom}</h4>
+                                    <h4 className="text-lg font-bold text-gray-900">{listeCandidat.nom}</h4>
                                     {election.status === 'En cours' && (
                                         <button className="bg-blue-600 hover:bg-blue-700 text-white text-xs px-3 py-1.5 rounded-md font-medium transition">
                                             Vote
                                         </button>
                                     )}
                                 </div>
-                                {candidat.slogan && (
-                                    <p className="text-xs italic text-blue-600 mb-2">"{candidat.slogan}"</p>
+                                {listeCandidat.slogan && (
+                                    <p className="text-xs italic text-blue-600 mb-2">"{listeCandidat.slogan}"</p>
                                 )}
-                                {candidat.programme && (
+                                {listeCandidat.programme && (
                                     <p className="text-sm text-gray-600 line-clamp-3 mb-2">
-                                        {candidat.programme}
+                                        {listeCandidat.programme}
                                     </p>
                                 )}
                             </div>

@@ -41,7 +41,6 @@ class User extends Authenticatable
     protected function casts(): array
     {
         return [
-            'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
     }
@@ -50,4 +49,5 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Contribution::class, 'paies', 'user_id', 'contribution_id');
     }
+
 }

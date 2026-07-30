@@ -76,7 +76,6 @@ class DashboardController extends Controller
             }
         }
         
-
         return Inertia::render('Dashboard', [
             'annonces' => $annonces,
             'reunions' => $reunions,

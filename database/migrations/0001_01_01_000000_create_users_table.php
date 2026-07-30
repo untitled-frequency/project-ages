@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('nom');
             $table->string('email')->unique();
             $table->string("tel");
-            $table->string('password');
+            $table->string('password')->default('password');
             $table->rememberToken();
         });
 

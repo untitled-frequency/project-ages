@@ -22,7 +22,7 @@ class ListeCandidat extends Model
 
     public function election()
     {
-        return $this->belongsTo(Election::class);
+        return $this->belongsTo(Election::class, 'election_id');
     }
 
     public function votes()

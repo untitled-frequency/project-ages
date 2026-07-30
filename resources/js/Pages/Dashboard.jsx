@@ -3,7 +3,7 @@ import DernieresAnnoncesCard from '@/Components/DernieresAnnonces';
 import ReunionsFutureCard from '@/Components/ReunionsFuture';
 import ActivitesFutureCard from '@/Components/ActivitesFuture';
 import MyContributionsCard from '@/Components/MyContributions';
-import ElectionEnCour from '@/Components/ElectionEnCour';  
+import ElectionEnCour from '@/Components/ElectionEnCour';
 import { Head } from '@inertiajs/react';
 
 export default function Dashboard({ auth, annonces, reunions, activites, contributions, anneeEnCour, election }) {
@@ -12,6 +12,7 @@ export default function Dashboard({ auth, annonces, reunions, activites, contrib
     console.log('reunions:', reunions);
     console.log('activites:', activites);
     console.log('contributions:', contributions);
+    console.log('election:', election);
 
     return (
         <AuthenticatedLayout user={auth.user}>

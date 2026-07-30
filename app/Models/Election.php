@@ -24,11 +24,11 @@ class Election extends Model
 
     public function annee()
     {
-        return $this->belongsTo(Annee::class);
+        return $this->belongsTo(Annee::class, 'annee_id');
     }
 
     public function listesCandidats()
     {
-        return $this->hasMany(listeCandidat::class);
+        return $this->hasMany(listeCandidat::class, 'election_id');
     }
 }

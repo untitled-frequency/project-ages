@@ -26,7 +26,7 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        
+        /*
         User::factory()->create([
             'nom' => 'teufack',
             'email' => 'teufack@gmail.com',
@@ -40,9 +40,11 @@ class DatabaseSeeder extends Seeder
             'password' => 'password',
             'tel' => '123456789',
         ]);
+        */
 
-        User::factory(10)->create();
+        User::factory(50)->create();
 
+        /*
         Annonce::factory(10)->create();
 
         Reunion::factory(10)->create(); 
@@ -100,5 +102,6 @@ class DatabaseSeeder extends Seeder
         
 
         ListeCandidat::factory(25)->create();
+        */
     }
 }
