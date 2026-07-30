@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->date("dateDebut");
             $table->date("dateFin");
+            $table->string("status");
             $table->foreignId("annee_id")->constrained();
         });
     }

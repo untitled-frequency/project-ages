@@ -11,6 +11,7 @@ use App\Models\Paie;
 use App\Models\Contribution;
 use App\Models\Election;
 use App\Models\listeCandidat;
+use App\Models\Mandat;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -26,7 +27,7 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        /*
+        
         User::factory()->create([
             'nom' => 'teufack',
             'email' => 'teufack@gmail.com',
@@ -40,11 +41,10 @@ class DatabaseSeeder extends Seeder
             'password' => 'password',
             'tel' => '123456789',
         ]);
-        */
 
-        User::factory(50)->create();
+        User::factory(51)->create();
 
-        /*
+        
         Annonce::factory(10)->create();
 
         Reunion::factory(10)->create(); 
@@ -102,6 +102,28 @@ class DatabaseSeeder extends Seeder
         
 
         ListeCandidat::factory(25)->create();
-        */
+        
+
+        Mandat::factory()->create([
+            "dateDebut" => "2024-10-01",
+            "dateFin" => "2025-05-31",
+            "status" => "inactif",
+            "annee_id" => 1,
+        ]);
+
+        Mandat::factory()->create([
+            "dateDebut" => "2025-10-01",
+            "dateFin" => "2026-05-31",
+            "status" => "inactif",
+            "annee_id" => 2,
+        ]);
+
+        Mandat::factory()->create([
+            "dateDebut" => "2026-10-01",
+            "dateFin" => "2027-05-31",
+            "status" => "actif",
+            "annee_id" => 3,
+        ]);
+    
     }
 }

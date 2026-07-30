@@ -45,9 +45,16 @@ class User extends Authenticatable
         ];
     }
 
-    public function contributions()
+    public function roles()
     {
-        return $this->belongsToMany(Contribution::class, 'paies', 'user_id', 'contribution_id');
+        return $this->hasMany(Role::class);
     }
 
+    public function hasRole(string $roleName): bool
+    {
+        return $this->roles()
+            ->whereHas('mandat', fn($q) => $q->where('status', 'actif'))
+            ->where('role', $roleName)
+            ->exists();
+    }
 }

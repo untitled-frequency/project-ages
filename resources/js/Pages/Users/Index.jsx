@@ -68,15 +68,16 @@ export default function Index({ users, filters }) {
 
     return (
         <AuthenticatedLayout>
+            <Head title="Utilisateurs" />
             <div className="p-6 max-w-7xl mx-auto space-y-6">
                 {/* Header */}
                 <div className="flex flex-col md:flex-row justify-between items-center gap-4">
                     <h1 className="text-2xl font-bold text-gray-800">Gestion des Utilisateurs</h1>
                     <button
                         onClick={() => openModal()}
-                        className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg font-medium shadow transition"
+                        className="bg-violet-500 hover:bg-violet-600 text-white px-4 py-2 rounded-lg font-medium shadow transition"
                     >
-                        + Ajouter un utilisateur
+                        + Ajouter
                     </button>
                 </div>
 
@@ -127,13 +128,13 @@ export default function Index({ users, filters }) {
                                         <td className="p-4 text-right space-x-2">
                                             <button
                                                 onClick={() => openModal(user)}
-                                                className="font-medium bg-gray-200 px-1 py-1 rounded-lg"
+                                                className="font-medium bg-gray-200 px-1 py-1 rounded-lg hover:bg-gray-400"
                                             >
                                                 Éditer
                                             </button>
                                             <button
                                                 onClick={() => handleDelete(user.id)}
-                                                className="text-white bg-red-500 font-medium px-1 py-1 rounded-lg"
+                                                className="text-white bg-red-500 font-medium px-1 py-1 rounded-lg hover:bg-red-600"
                                             >
                                                 Supprimer
                                             </button>
@@ -170,7 +171,7 @@ export default function Index({ users, filters }) {
                                 }
                                 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-1`}
                         />
-                        ))}
+                    ))}
                 </div>
 
                 {/* Modal Form */}
