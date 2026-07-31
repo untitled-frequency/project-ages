@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AGES — Espace étudiant</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1B2A4A;
+    --ink-soft:#3E4E6E;
+    --paper:#E9EEE6;
+    --paper-deep:#DEE5D9;
+    --card:#FBFAF5;
+    --gold:#C79A2B;
+    --gold-deep:#9C7A1E;
+    --green:#3F6B4A;
+    --green-bg:#E4EDE3;
+    --red:#A63D40;
+    --red-bg:#F3E3E1;
+    --line:rgba(27,42,74,0.14);
+    --line-strong:rgba(27,42,74,0.28);
+    --shadow:0 1px 2px rgba(27,42,74,0.06), 0 6px 18px rgba(27,42,74,0.07);
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:
+      radial-gradient(1200px 600px at 85% -10%, rgba(199,154,43,0.08), transparent 60%),
+      var(--paper);
+    color:var(--ink);
+    font-family:'IBM Plex Sans', sans-serif;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .display{font-family:'Fraunces', serif;}
+  .mono{font-family:'IBM Plex Mono', monospace;}
+
+  a{color:inherit;}
+
+  ::selection{background:var(--gold); color:var(--card);}
+
+  :focus-visible{
+    outline:2.5px solid var(--gold-deep);
+    outline-offset:3px;
+    border-radius:4px;
+  }
+
+  /* ---------- Topbar ---------- */
+  .topbar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:18px 32px;
+    border-bottom:1px solid var(--line);
+    background:rgba(251,250,245,0.7);
+    backdrop-filter:blur(6px);
+    position:sticky;
+    top:0;
+    z-index:50;
+  }
+  .brand{
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+  }
+  .brand-mark{
+    width:34px;height:34px;
+    border-radius:50%;
+    border:1.5px solid var(--ink);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:14px;
+    flex-shrink:0;
+  }
+  .brand-name{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:19px;
+    letter-spacing:0.01em;
+  }
+  .brand-sub{
+    font-size:12px;
+    color:var(--ink-soft);
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+  }
+  .who{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    font-size:13.5px;
+  }
+  .who-role{
+    padding:3px 10px;
+    border:1px solid var(--line-strong);
+    border-radius:100px;
+    font-size:11.5px;
+    letter-spacing:0.05em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+  }
+  .who-name{font-weight:600;}
+  .logout{
+    font-size:13px;
+    color:var(--ink-soft);
+    text-decoration:none;
+    border-bottom:1px dotted var(--ink-soft);
+  }
+
+  .wrap{
+    max-width:1180px;
+    margin:0 auto;
+    padding:40px 32px 90px;
+  }
+
+  /* ---------- Hero: membership card + quick stats ---------- */
+  .hero{
+    display:grid;
+    grid-template-columns:1.15fr 1fr;
+    gap:28px;
+    margin-bottom:48px;
+    align-items:stretch;
+  }
+
+  .idcard{
+    position:relative;
+    background:
+      repeating-linear-gradient(115deg, rgba(27,42,74,0.025) 0 2px, transparent 2px 26px),
+      var(--card);
+    border:1px solid var(--line-strong);
+    border-radius:18px;
+    padding:26px 28px 24px;
+    box-shadow:var(--shadow);
+    overflow:hidden;
+  }
+  .idcard::before{
+    content:"";
+    position:absolute;
+    top:0; left:0; right:0; height:5px;
+    background:linear-gradient(90deg, var(--ink) 0 65%, var(--gold) 65% 100%);
+  }
+  .idcard-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    margin-bottom:20px;
+  }
+  .idcard-label{
+    font-size:11px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    margin:0 0 4px;
+  }
+  .idcard-title{
+    font-family:'Fraunces', serif;
+    font-size:15px;
+    font-weight:500;
+    color:var(--ink-soft);
+  }
+  .matricule{
+    font-size:13px;
+    letter-spacing:0.03em;
+    color:var(--ink-soft);
+  }
+  .idcard-body{
+    display:flex;
+    gap:20px;
+    align-items:center;
+  }
+  .photo{
+    width:76px;height:76px;
+    border-radius:50%;
+    border:1.5px solid var(--line-strong);
+    background:linear-gradient(160deg,#DCE3D6,#C9D2C1);
+    flex-shrink:0;
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Fraunces', serif;
+    font-size:26px;
+    font-weight:600;
+    color:var(--ink);
+  }
+  .identity h2{
+    font-family:'Fraunces', serif;
+    font-size:26px;
+    font-weight:600;
+    margin:0 0 6px;
+  }
+  .tagrow{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+  .tag{
+    font-size:12px;
+    padding:4px 10px;
+    border-radius:100px;
+    background:var(--paper-deep);
+    color:var(--ink-soft);
+    border:1px solid var(--line);
+  }
+
+  /* the stamp: signature element */
+  .stamp{
+    position:absolute;
+    right:22px;
+    bottom:20px;
+    width:104px;height:104px;
+    border-radius:50%;
+    border:2.5px dashed;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    transform:rotate(-9deg);
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:12px;
+    letter-spacing:0.04em;
+    line-height:1.25;
+    text-transform:uppercase;
+    mix-blend-mode:multiply;
+  }
+  .stamp.ok{ border-color:var(--green); color:var(--green); }
+  .stamp.late{ border-color:var(--red); color:var(--red); }
+  .stamp span{display:block;}
+  .stamp .stamp-sub{font-family:'IBM Plex Mono', monospace; font-size:9.5px; font-weight:400; text-transform:none; margin-top:3px; letter-spacing:0.02em;}
+
+  .stat-stack{
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+  }
+  .stat-card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:18px 20px;
+    box-shadow:var(--shadow);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+  }
+  .stat-card.election{
+    background:linear-gradient(120deg, var(--ink) 0%, #24345A 100%);
+    color:#F1EEE2;
+    border-color:var(--ink);
+  }
+  .stat-card.election .stat-label{color:#C7CEDE;}
+  .stat-label{
+    font-size:11.5px;
+    text-transform:uppercase;
+    letter-spacing:0.09em;
+    color:var(--ink-soft);
+    margin:0 0 6px;
+  }
+  .stat-value{
+    font-family:'Fraunces', serif;
+    font-size:24px;
+    font-weight:600;
+  }
+  .stat-note{font-size:12.5px; color:var(--ink-soft); margin-top:2px;}
+  .stat-card.election .stat-note{color:#B9C1D6;}
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    padding:9px 16px;
+    border-radius:9px;
+    border:1px solid var(--ink);
+    background:var(--ink);
+    color:var(--card);
+    font-size:13px;
+    font-weight:500;
+    font-family:'IBM Plex Sans', sans-serif;
+    cursor:pointer;
+    text-decoration:none;
+    white-space:nowrap;
+    transition:transform .12s ease, box-shadow .12s ease;
+  }
+  .btn:hover{transform:translateY(-1px); box-shadow:0 4px 12px rgba(27,42,74,0.22);}
+  .btn.gold{background:var(--gold); border-color:var(--gold-deep); color:#241A03;}
+  .btn.ghost{background:transparent; color:var(--card); border-color:rgba(241,238,226,0.5);}
+  .btn.outline{background:transparent; color:var(--ink); border-color:var(--line-strong);}
+  .btn:disabled{opacity:0.45; cursor:not-allowed; transform:none; box-shadow:none;}
+
+  /* ---------- Tabs ---------- */
+  .tabs{
+    display:flex;
+    gap:6px;
+    border-bottom:1px solid var(--line-strong);
+    margin-bottom:32px;
+    overflow-x:auto;
+  }
+  .tab{
+    background:none;
+    border:none;
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:14px;
+    font-weight:500;
+    color:var(--ink-soft);
+    padding:12px 6px;
+    margin-right:22px;
+    cursor:pointer;
+    position:relative;
+    white-space:nowrap;
+  }
+  .tab .count{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10.5px;
+    margin-left:5px;
+    color:var(--ink-soft);
+  }
+  .tab::after{
+    content:"";
+    position:absolute;
+    left:0; right:0; bottom:-1px;
+    height:2.5px;
+    background:var(--gold);
+    transform:scaleX(0);
+    transition:transform .15s ease;
+  }
+  .tab.active{color:var(--ink);}
+  .tab.active::after{transform:scaleX(1);}
+
+  .panel{display:none;}
+  .panel.active{display:block; animation:fade .25s ease;}
+  @keyframes fade{from{opacity:0; transform:translateY(4px);} to{opacity:1; transform:none;}}
+
+  .section-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    margin-bottom:18px;
+  }
+  .section-head h3{
+    font-family:'Fraunces', serif;
+    font-size:21px;
+    font-weight:600;
+    margin:0;
+  }
+  .section-head p{font-size:13px; color:var(--ink-soft); margin:2px 0 0;}
+
+  /* ---------- Annonces ---------- */
+  .notice-list{
+    display:flex;
+    flex-direction:column;
+    border:1px solid var(--line);
+    border-radius:14px;
+    overflow:hidden;
+    background:var(--card);
+    box-shadow:var(--shadow);
+  }
+  .notice{
+    display:grid;
+    grid-template-columns:96px 1fr auto;
+    gap:18px;
+    align-items:flex-start;
+    padding:18px 22px;
+    border-bottom:1px solid var(--line);
+  }
+  .notice:last-child{border-bottom:none;}
+  .notice-date{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12.5px;
+    color:var(--ink-soft);
+    padding-top:2px;
+  }
+  .notice h4{margin:0 0 4px; font-size:15px; font-weight:600;}
+  .notice p{margin:0; font-size:13.5px; color:var(--ink-soft);}
+  .cat{
+    font-size:10.5px;
+    text-transform:uppercase;
+    letter-spacing:0.07em;
+    padding:4px 9px;
+    border-radius:100px;
+    white-space:nowrap;
+    height:fit-content;
+  }
+  .cat.finance{background:var(--green-bg); color:var(--green);}
+  .cat.election{background:#E4E1F0; color:#4B3E8C;}
+  .cat.activite{background:#F4E7D3; color:#8A5A16;}
+  .cat.info{background:var(--paper-deep); color:var(--ink-soft);}
+
+  /* ---------- Activités ---------- */
+  .grid-activities{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(250px,1fr));
+    gap:16px;
+  }
+  .activity-card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:18px;
+    box-shadow:var(--shadow);
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+  .activity-top{display:flex; justify-content:space-between; align-items:flex-start; gap:10px;}
+  .activity-card h4{margin:0; font-size:15.5px; font-weight:600; font-family:'Fraunces',serif;}
+  .badge{
+    font-size:10.5px;
+    padding:3px 8px;
+    border-radius:100px;
+    text-transform:uppercase;
+    letter-spacing:0.05em;
+    white-space:nowrap;
+  }
+  .badge.upcoming{background:var(--green-bg); color:var(--green);}
+  .badge.done{background:var(--paper-deep); color:var(--ink-soft);}
+  .activity-meta{font-size:12.5px; color:var(--ink-soft); display:flex; flex-direction:column; gap:3px;}
+  .activity-meta span{display:flex; gap:6px;}
+
+  /* ---------- Réunions ---------- */
+  .meeting-row{
+    display:grid;
+    grid-template-columns:130px 1fr auto;
+    gap:18px;
+    align-items:center;
+    padding:16px 20px;
+    border:1px solid var(--line);
+    border-radius:12px;
+    background:var(--card);
+    margin-bottom:10px;
+    box-shadow:var(--shadow);
+  }
+  .meeting-date{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12.5px;
+    color:var(--ink-soft);
+  }
+  .meeting-row h4{margin:0 0 3px; font-size:14.5px; font-weight:600;}
+  .meeting-row p{margin:0; font-size:12.5px; color:var(--ink-soft);}
+  .cr-link{font-size:12.5px; text-decoration:underline; color:var(--ink); white-space:nowrap;}
+
+  /* ---------- Cotisation ---------- */
+  .cotis-grid{
+    display:grid;
+    grid-template-columns:1fr 1.4fr;
+    gap:24px;
+  }
+  .cotis-summary{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:24px;
+    box-shadow:var(--shadow);
+    position:relative;
+    overflow:hidden;
+  }
+  .cotis-summary .stamp{right:16px; bottom:16px; width:92px; height:92px; font-size:11px;}
+  .cotis-amount{font-family:'Fraunces', serif; font-size:34px; font-weight:600; margin:6px 0 2px;}
+  .cotis-summary .idcard-label{margin-bottom:2px;}
+
+  table.receipts{
+    width:100%;
+    border-collapse:collapse;
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:14px;
+    overflow:hidden;
+    box-shadow:var(--shadow);
+  }
+  table.receipts th{
+    text-align:left;
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    color:var(--ink-soft);
+    padding:12px 16px;
+    border-bottom:1px solid var(--line-strong);
+    background:var(--paper-deep);
+  }
+  table.receipts td{
+    padding:12px 16px;
+    font-size:13px;
+    border-bottom:1px solid var(--line);
+  }
+  table.receipts tr:last-child td{border-bottom:none;}
+  .receipt-link{font-size:12px; text-decoration:underline;}
+
+  /* ---------- Élections ---------- */
+  .election-banner{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    background:linear-gradient(120deg, var(--ink), #24345A);
+    color:#F1EEE2;
+    border-radius:16px;
+    padding:22px 26px;
+    margin-bottom:24px;
+  }
+  .election-banner h3{font-family:'Fraunces', serif; margin:0 0 4px; font-size:19px;}
+  .election-banner p{margin:0; font-size:13px; color:#C7CEDE;}
+  .countdown{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:13px;
+    background:rgba(241,238,226,0.1);
+    border:1px solid rgba(241,238,226,0.25);
+    padding:8px 14px;
+    border-radius:10px;
+  }
+
+  .lists-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(260px,1fr));
+    gap:16px;
+    margin-bottom:26px;
+  }
+  .list-card{
+    background:var(--card);
+    border:1.5px solid var(--line);
+    border-radius:14px;
+    padding:20px;
+    box-shadow:var(--shadow);
+    cursor:pointer;
+    position:relative;
+    transition:border-color .12s ease, transform .12s ease;
+  }
+  .list-card:hover{transform:translateY(-2px);}
+  .list-card.selected{border-color:var(--gold-deep); box-shadow:0 0 0 3px rgba(199,154,43,0.18), var(--shadow);}
+  .list-card input{position:absolute; top:18px; right:18px; width:18px; height:18px; accent-color:var(--gold-deep);}
+  .list-logo{
+    width:44px;height:44px;
+    border-radius:10px;
+    background:linear-gradient(160deg,#DCE3D6,#C9D2C1);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    margin-bottom:12px;
+  }
+  .list-card h4{margin:0 0 3px; font-family:'Fraunces', serif; font-size:17px; font-weight:600;}
+  .list-card .slogan{font-size:12.5px; font-style:italic; color:var(--ink-soft); margin:0 0 10px;}
+  .list-card .president{font-size:12.5px; color:var(--ink-soft); margin:0 0 10px;}
+  .list-card .see-program{font-size:12px; text-decoration:underline;}
+
+  .vote-actions{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:18px 22px;
+    box-shadow:var(--shadow);
+  }
+  .vote-actions p{margin:0; font-size:13px; color:var(--ink-soft); max-width:420px;}
+
+  .vote-confirmed{
+    display:none;
+    align-items:center;
+    gap:22px;
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:26px;
+    box-shadow:var(--shadow);
+  }
+  .vote-confirmed.show{display:flex;}
+  .vote-confirmed .stamp{
+    position:static;
+    transform:rotate(-9deg);
+    width:110px;height:110px;
+    flex-shrink:0;
+  }
+  .vote-confirmed h4{margin:0 0 4px; font-family:'Fraunces', serif; font-size:18px;}
+  .vote-confirmed p{margin:0; font-size:13px; color:var(--ink-soft); max-width:460px;}
+
+  footer{
+    text-align:center;
+    font-size:12px;
+    color:var(--ink-soft);
+    padding:30px 0 10px;
+  }
+
+  @media (max-width: 880px){
+    .hero{grid-template-columns:1fr;}
+    .cotis-grid{grid-template-columns:1fr;}
+    .notice{grid-template-columns:1fr; gap:6px;}
+    .meeting-row{grid-template-columns:1fr; gap:6px;}
+    .topbar{padding:16px 18px;}
+    .wrap{padding:28px 18px 70px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand">
+    <div class="brand-mark">AG</div>
+    <div>
+      <div class="brand-name">AGES</div>
+      <div class="brand-sub">Association des étudiants</div>
+    </div>
+  </div>
+  <div class="who">
+    <span class="who-role">Étudiant membre</span>
+    <span class="who-name">Aïcha Ndongo</span>
+    <a class="logout" href="#">Se déconnecter</a>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- HERO: carte de membre + résumé -->
+  <div class="hero">
+    <div class="idcard">
+      <div class="idcard-top">
+        <div>
+          <p class="idcard-label">Carte de membre</p>
+          <p class="idcard-title">Année académique 2025–2026</p>
+        </div>
+        <div class="matricule mono">N° 24‑INFO‑0187</div>
+      </div>
+      <div class="idcard-body">
+        <div class="photo">AN</div>
+        <div class="identity">
+          <h2>Aïcha Ndongo</h2>
+          <div class="tagrow">
+            <span class="tag">Génie Informatique</span>
+            <span class="tag">Niveau 3</span>
+            <span class="tag">Membre actif</span>
+          </div>
+        </div>
+      </div>
+      <div class="stamp ok">
+        <span>À jour<br>de cotisation</span>
+        <span class="stamp-sub">15 000 XAF</span>
+      </div>
+    </div>
+
+    <div class="stat-stack">
+      <div class="stat-card election">
+        <div>
+          <p class="stat-label">Élection en cours</p>
+          <div class="stat-value" style="font-size:19px;">Bureau AGES 2026–2027</div>
+          <p class="stat-note">Le scrutin est ouvert — vous n'avez pas encore voté</p>
+        </div>
+        <a class="btn gold" href="#votez">Voter</a>
+      </div>
+      <div class="stat-card">
+        <div>
+          <p class="stat-label">Prochaine réunion</p>
+          <div class="stat-value">Jeu. 6 août</div>
+          <p class="stat-note">Assemblée générale — Amphi B, 17h00</p>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div>
+          <p class="stat-label">Activités à venir</p>
+          <div class="stat-value">3</div>
+          <p class="stat-note">Prochaine : Journée d'intégration, 12 août</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs" role="tablist">
+    <button class="tab active" data-tab="annonces">Annonces <span class="count">04</span></button>
+    <button class="tab" data-tab="activites">Activités <span class="count">05</span></button>
+    <button class="tab" data-tab="reunions">Réunions <span class="count">02</span></button>
+    <button class="tab" data-tab="cotisation">Cotisation</button>
+    <button class="tab" data-tab="elections">Élections</button>
+  </div>
+
+  <!-- PANEL: ANNONCES -->
+  <section class="panel active" id="annonces">
+    <div class="section-head">
+      <div>
+        <h3>Annonces</h3>
+        <p>Communiqués et informations publiés par le bureau</p>
+      </div>
+    </div>
+    <div class="notice-list">
+      <div class="notice">
+        <div class="notice-date">24 juil.</div>
+        <div>
+          <h4>Ouverture du scrutin pour le bureau 2026–2027</h4>
+          <p>Le vote est ouvert du 29 juillet au 2 août. Consultez les listes candidates et votez depuis l'onglet Élections.</p>
+        </div>
+        <span class="cat election">Élection</span>
+      </div>
+      <div class="notice">
+        <div class="notice-date">18 juil.</div>
+        <div>
+          <h4>Rappel — cotisations 2025–2026</h4>
+          <p>La date limite de paiement est fixée au 30 septembre. Les membres en retard ne pourront pas participer au vote.</p>
+        </div>
+        <span class="cat finance">Cotisation</span>
+      </div>
+      <div class="notice">
+        <div class="notice-date">10 juil.</div>
+        <div>
+          <h4>Journée d'intégration — inscriptions ouvertes</h4>
+          <p>Places limitées. Inscrivez-vous depuis l'onglet Activités avant le 5 août.</p>
+        </div>
+        <span class="cat activite">Activité</span>
+      </div>
+      <div class="notice">
+        <div class="notice-date">2 juil.</div>
+        <div>
+          <h4>Nouveaux horaires du secrétariat</h4>
+          <p>Le bureau de l'association reçoit désormais du lundi au vendredi, 9h–15h.</p>
+        </div>
+        <span class="cat info">Info</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- PANEL: ACTIVITÉS -->
+  <section class="panel" id="activites">
+    <div class="section-head">
+      <div>
+        <h3>Activités</h3>
+        <p>Événements académiques, culturels, sportifs et sociaux</p>
+      </div>
+    </div>
+    <div class="grid-activities">
+      <div class="activity-card">
+        <div class="activity-top">
+          <h4>Journée d'intégration</h4>
+          <span class="badge upcoming">À venir</span>
+        </div>
+        <div class="activity-meta">
+          <span>📅 12 août 2026</span>
+          <span>📍 Campus principal</span>
+          <span>👥 210 inscrits</span>
+        </div>
+      </div>
+      <div class="activity-card">
+        <div class="activity-top">
+          <h4>Tournoi inter‑filières</h4>
+          <span class="badge upcoming">À venir</span>
+        </div>
+        <div class="activity-meta">
+          <span>📅 20 août 2026</span>
+          <span>📍 Terrain omnisports</span>
+          <span>👥 96 inscrits</span>
+        </div>
+      </div>
+      <div class="activity-card">
+        <div class="activity-top">
+          <h4>Atelier CV & entretien</h4>
+          <span class="badge upcoming">À venir</span>
+        </div>
+        <div class="activity-meta">
+          <span>📅 28 août 2026</span>
+          <span>📍 Amphi A</span>
+          <span>👥 54 inscrits</span>
+        </div>
+      </div>
+      <div class="activity-card">
+        <div class="activity-top">
+          <h4>Collecte solidaire de rentrée</h4>
+          <span class="badge done">Terminée</span>
+        </div>
+        <div class="activity-meta">
+          <span>📅 15 juin 2026</span>
+          <span>📍 Hall central</span>
+          <span>👥 138 participants</span>
+        </div>
+      </div>
+      <div class="activity-card">
+        <div class="activity-top">
+          <h4>Soirée culturelle des nations</h4>
+          <span class="badge done">Terminée</span>
+        </div>
+        <div class="activity-meta">
+          <span>📅 3 mai 2026</span>
+          <span>📍 Amphi B</span>
+          <span>👥 300 participants</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PANEL: RÉUNIONS -->
+  <section class="panel" id="reunions">
+    <div class="section-head">
+      <div>
+        <h3>Réunions</h3>
+        <p>Convocations et comptes rendus des assemblées</p>
+      </div>
+    </div>
+    <div class="meeting-row">
+      <div class="meeting-date">06 août<br>17h00</div>
+      <div>
+        <h4>Assemblée générale de rentrée</h4>
+        <p>Amphi B — Ordre du jour : bilan financier, présentation du bureau élu, calendrier des activités</p>
+      </div>
+      <span class="badge upcoming">Convocation publiée</span>
+    </div>
+    <div class="meeting-row">
+      <div class="meeting-date">14 mai<br>16h30</div>
+      <div>
+        <h4>Réunion du bureau élargie</h4>
+        <p>Salle des associations — Ordre du jour : préparation de l'élection, budget des activités</p>
+      </div>
+      <a class="cr-link" href="#">Voir le compte‑rendu</a>
+    </div>
+  </section>
+
+  <!-- PANEL: COTISATION -->
+  <section class="panel" id="cotisation">
+    <div class="section-head">
+      <div>
+        <h3>Ma cotisation</h3>
+        <p>Suivi de vos paiements pour l'année académique en cours</p>
+      </div>
+    </div>
+    <div class="cotis-grid">
+      <div class="cotis-summary">
+        <p class="idcard-label">Année 2025–2026</p>
+        <div class="cotis-amount">15 000 XAF</div>
+        <p class="stat-note">Montant total payé sur 15 000 XAF dus</p>
+        <div class="stamp ok" style="position:absolute;">
+          <span>À jour</span>
+          <span class="stamp-sub">reçu n°0421</span>
+        </div>
+      </div>
+      <table class="receipts">
+        <thead>
+          <tr><th>Date</th><th>Motif</th><th>Montant</th><th>Moyen</th><th></th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="mono">03/10/2025</td>
+            <td>Cotisation annuelle</td>
+            <td>10 000 XAF</td>
+            <td>Mobile money</td>
+            <td><a class="receipt-link" href="#">Reçu</a></td>
+          </tr>
+          <tr>
+            <td class="mono">28/10/2025</td>
+            <td>Solde cotisation</td>
+            <td>5 000 XAF</td>
+            <td>Espèces</td>
+            <td><a class="receipt-link" href="#">Reçu</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- PANEL: ÉLECTIONS -->
+  <section class="panel" id="elections">
+    <div class="election-banner" id="votez">
+      <div>
+        <h3>Élection du bureau AGES 2026–2027</h3>
+        <p>Scrutin de liste — un seul vote par étudiant, non modifiable une fois confirmé</p>
+      </div>
+      <div class="countdown">Clôture dans 3 j 06 h</div>
+    </div>
+
+    <div id="ballot">
+      <div class="section-head">
+        <div>
+          <h3 style="font-size:17px;">Listes candidates validées</h3>
+          <p>Sélectionnez une liste, puis confirmez votre choix</p>
+        </div>
+      </div>
+
+      <div class="lists-grid">
+        <label class="list-card" data-list="Horizon">
+          <input type="radio" name="liste" value="Horizon">
+          <div class="list-logo">H</div>
+          <h4>Liste Horizon</h4>
+          <p class="slogan">« Ensemble, allons plus loin »</p>
+          <p class="president">Présidente : Fatou Bella</p>
+          <a class="see-program" href="#">Voir le programme</a>
+        </label>
+
+        <label class="list-card" data-list="Renouveau">
+          <input type="radio" name="liste" value="Renouveau">
+          <div class="list-logo">R</div>
+          <h4>Liste Renouveau</h4>
+          <p class="slogan">« Une association proche de vous »</p>
+          <p class="president">Président : Junior Eyenga</p>
+          <a class="see-program" href="#">Voir le programme</a>
+        </label>
+
+        <label class="list-card" data-list="Unité">
+          <input type="radio" name="liste" value="Unité">
+          <div class="list-logo">U</div>
+          <h4>Liste Unité</h4>
+          <p class="slogan">« Une seule voix pour tous »</p>
+          <p class="president">Présidente : Carine Mballa</p>
+          <a class="see-program" href="#">Voir le programme</a>
+        </label>
+      </div>
+
+      <div class="vote-actions">
+        <p>Votre choix reste confidentiel : le système atteste votre participation sans révéler votre vote à qui que ce soit.</p>
+        <button class="btn gold" id="confirmBtn" disabled>Confirmer mon vote</button>
+      </div>
+    </div>
+
+    <div class="vote-confirmed" id="voteConfirmed">
+      <div class="stamp ok">
+        <span>Vote<br>enregistré</span>
+        <span class="stamp-sub" id="voteTime"></span>
+      </div>
+      <div>
+        <h4>Votre participation est enregistrée</h4>
+        <p>Merci d'avoir voté. Votre choix reste confidentiel et ne pourra plus être modifié. Les résultats seront publiés dans l'onglet Annonces après la clôture du scrutin.</p>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<footer>Espace étudiant — AGES · toutes les données affichées sont des exemples de démonstration</footer>
+
+<script>
+  // Tabs
+  const tabs = document.querySelectorAll('.tab');
+  const panels = document.querySelectorAll('.panel');
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      panels.forEach(p => p.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById(tab.dataset.tab).classList.add('active');
+    });
+  });
+  document.querySelectorAll('a[href="#votez"]').forEach(a=>{
+    a.addEventListener('click', (e)=>{
+      e.preventDefault();
+      tabs.forEach(t => t.classList.remove('active'));
+      panels.forEach(p => p.classList.remove('active'));
+      document.querySelector('.tab[data-tab="elections"]').classList.add('active');
+      document.getElementById('elections').classList.add('active');
+    });
+  });
+
+  // Vote selection
+  const cards = document.querySelectorAll('.list-card');
+  const confirmBtn = document.getElementById('confirmBtn');
+  cards.forEach(card => {
+    card.addEventListener('click', () => {
+      cards.forEach(c => c.classList.remove('selected'));
+      card.classList.add('selected');
+      card.querySelector('input').checked = true;
+      confirmBtn.disabled = false;
+    });
+  });
+
+  confirmBtn.addEventListener('click', () => {
+    document.getElementById('ballot').style.display = 'none';
+    document.getElementById('voteConfirmed').classList.add('show');
+    const now = new Date();
+    document.getElementById('voteTime').textContent =
+      now.toLocaleDateString('fr-FR') + ' — ' + now.toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'});
+  });
+</script>
+
+</body>
+</html>

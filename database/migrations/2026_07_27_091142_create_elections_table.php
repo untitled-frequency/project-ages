@@ -13,12 +13,12 @@ return new class extends Migration
     {
         Schema::create('elections', function (Blueprint $table) {
             $table->id();
-            $table->date("dateDebutDepot");
-            $table->date("dateFinDepot");
-            $table->date("dateDebutCampagne");
-            $table->date("dateFinCampagne");
-            $table->date("dateDebutVote");
-            $table->date("dateFinVote");
+            $table->date("debutDepot");
+            $table->date("finDepot");
+            $table->date("debutCampagne");
+            $table->date("finCampagne");
+            $table->dateTime("debutVote");
+            $table->dateTime("finVote");
             $table->foreignId("annee_id")->constrained();
         });
     }

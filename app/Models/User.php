@@ -41,8 +41,26 @@ class User extends Authenticatable
     protected function casts(): array
     {
         return [
-            'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
     }
+
+    public function roles()
+    {
+        return $this->hasMany(Role::class);
+    }
+
+    public function hasRole(string $roleName): bool
+    {
+        return $this->roles()
+            ->whereHas('mandat', fn($q) => $q->where('status', 'actif'))
+            ->where('role', $roleName)
+            ->exists();
+    }
+
+    public function operations()
+    {
+        return $this->hasMany(OperationFinanciere::class);
+    }
+
 }

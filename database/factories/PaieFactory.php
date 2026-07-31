@@ -2,13 +2,13 @@
 
 namespace Database\Factories;
 
-use App\Models\Contribution;
+use App\Models\Paie;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends Factory<Contribution>
+ * @extends Factory<Paie>
  */
-class ContributionFactory extends Factory
+class PaieFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -18,8 +18,7 @@ class ContributionFactory extends Factory
     public function definition(): array
     {
         return [
-            "montant" => $this->faker->numberBetween(10000, 30000),
-            "annee_id" => $this->faker->randomElement([1, 2, 3]),
+            //
         ];
     }
 }
