@@ -57,4 +57,10 @@ class User extends Authenticatable
             ->where('role', $roleName)
             ->exists();
     }
+
+    public function operations()
+    {
+        return $this->hasMany(OperationFinanciere::class);
+    }
+
 }
