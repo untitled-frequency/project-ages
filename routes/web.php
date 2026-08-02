@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\FinanceController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -34,5 +35,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/roles', [RoleController::class, 'store'])->name('roles.store');
     Route::delete('/roles', [RoleController::class, 'destroy'])->name('roles.destroy');
 });
+
+Route::get('/finance', [FinanceController::class, 'index'])->name('finance.index');
 
 require __DIR__.'/auth.php';

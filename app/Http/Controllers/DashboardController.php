@@ -23,10 +23,6 @@ class DashboardController extends Controller
             ->get()
             ->values();
 
-<<<<<<< HEAD
-        $reunions = Reunion::orderBy('dateHeure', 'desc')
-            ->take(3)
-=======
         $reunions = Reunion::where('dateHeure', '>=', now())
             ->orderBy('dateHeure', 'asc')
             ->take(3)
@@ -36,7 +32,6 @@ class DashboardController extends Controller
         $activites = Activite::whereDate('datePublication', '>=', now())
             ->orderBy('datePublication', 'desc')
             ->take(2)
->>>>>>> main
             ->get()
             ->reverse()
             ->values();
@@ -86,13 +81,10 @@ class DashboardController extends Controller
         return Inertia::render('Dashboard', [
             'annonces' => $annonces,
             'reunions' => $reunions,
-<<<<<<< HEAD
-=======
             'activites' => $activites,
             'anneeEnCour' => $anneeEnCourFormatted,
             'contributions' => $contributions,
             'election' => $election,
->>>>>>> main
         ]);
     }
 }
