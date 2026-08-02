@@ -16,7 +16,6 @@ use Inertia\Response;
 
 class DashboardController extends Controller
 {
-    // app/Http/Controllers/DashboardController.php
     public function index(): Response
     {
         $annonces = Annonce::orderBy('datePublication', 'desc')
@@ -34,7 +33,10 @@ class DashboardController extends Controller
             ->orderBy('datePublication', 'desc')
             ->take(2)
             ->get()
+            ->reverse()
             ->values();
+        
+        
 
         $idAnneeEnCour = Annee::max('id');
 
