@@ -3,11 +3,15 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\UpdateContributionRequest;
+use App\Http\Requests\StoreContributionRequest;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use App\Models\Paie;
 use App\Models\Annee;
 use App\Models\Contribution;
 use App\Models\User;
+
 
 class ContributionController extends Controller
 {
@@ -43,8 +47,7 @@ class ContributionController extends Controller
      */
     public function create()
     {
-        // Fetch all users/members for the selection dropdown
-        $users = User::all();
+        $users = User::select('id', 'nom', 'email')->get();
 
         return Inertia::render('Contribution/Create', [
             'users' => $users,
@@ -54,30 +57,26 @@ class ContributionController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreContributionRequest $request)
     {
-        $validated = $request->validate([
-            'user_id' => 'required|exists:users,id',
-            'montant' => 'required|numeric|min:0',
-        ]);
+        $validated = $request->validated();
 
-        // 2. Fetch the current active school year ID (Max ID)
+        
         $idAnneeEnCours = Annee::max('id');
 
-            
-        // Step A: Create the Contribution record
-        $contribution = Contribution::create([
-            'user_id'  => $validated['user_id'],
-            'montant'  => $validated['montant'],
-            'annee_id' => $idAnneeEnCours,
-            'dateContribution' => now()->format('Y-m-d'),  
-        ]);
+        DB::transaction(function () use ($validated, $idAnneeEnCours) {
+            $contribution = Contribution::create([
+                'user_id'  => $validated['user_id'],
+                'montant'  => $validated['montant'],
+                'annee_id' => $idAnneeEnCours,
+                'dateContribution' => now()->format('Y-m-d'),  
+            ]);
 
-        // Step B: Create the Paie record
-        Paie::create([
-            'user_id'         => $validated['user_id'],        
-            'contribution_id' => $contribution->id,                    
-        ]);
+            Paie::create([
+                'user_id'         => $validated['user_id'],        
+                'contribution_id' => $contribution->id,                    
+            ]);
+        });
 
         return redirect()->route('contributions.index')
             ->with('success', 'Contribution enregistrée avec succès.');
@@ -94,24 +93,48 @@ class ContributionController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Contribution $contribution)
     {
-        //
+        $paie = Paie::where('contribution_id', $contribution->id)
+            ->with('user')
+            ->first();
+
+        return Inertia::render('Contribution/Edit', [
+            'contribution' => $contribution,
+            'paie'        => $paie,
+            'user'        => $paie?->user, // Pass the single user directly
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateContributionRequest $request, Contribution $contribution)
     {
-        //
+        // 1. Use validated() on custom FormRequest
+        $validated = $request->validated(); 
+        
+        // 2. Only update montant in contribution table
+        DB::transaction(function () use ($validated, $contribution) {
+            $contribution->update([
+                'montant' => $validated['montant'], 
+            ]);
+        });
+
+        return redirect()->route('contributions.index')
+            ->with('success', 'Contribution modifiée avec succès.');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Contribution $contribution)
     {
-        //
+        DB::transaction(function () use ($contribution) {
+            $contribution->delete();
+        });
+        
+        return redirect()->route('contributions.index')
+            ->with('success', 'Contribution supprimée avec succès.');
     }
 }
