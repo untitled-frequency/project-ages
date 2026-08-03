@@ -4,7 +4,8 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RoleController;
-use App\Http\Controllers\FinanceController;
+use App\Http\Controllers\ContributionController;
+use App\Http\Controllers\OperationFinanciereController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -36,6 +37,10 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/roles', [RoleController::class, 'destroy'])->name('roles.destroy');
 });
 
-Route::get('/finance', [FinanceController::class, 'index'])->name('finance.index');
+Route::middleware(['auth'])->group(function () {
+    Route::resource('contributions', ContributionController::class);
+});
+
+Route::get('/operationFinanciere', [OperationFinanciereController::class, 'index'])->name('operationFinanciere.index');
 
 require __DIR__.'/auth.php';

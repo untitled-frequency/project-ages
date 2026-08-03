@@ -14,7 +14,14 @@ class Contribution extends Model
 
     protected $fillable = [
         "montant",
+        "dateContribution",
+        "annee_id",
     ];
+
+    public function paie()
+    {
+        return $this->hasMany(Paie::class, 'contribution_id');
+    }
 
     public function users()
     {

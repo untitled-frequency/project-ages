@@ -7,6 +7,7 @@ use App\Models\Reunion;
 use App\Models\Activite;
 use App\Models\Paie;
 use App\Models\Annee;
+use App\Models\Contribution;
 use App\Models\Election;
 use App\Models\ListeCandidat;
 use Illuminate\Support\Facades\Auth;
@@ -50,14 +51,10 @@ class DashboardController extends Controller
             $anneeEnCourFormatted = "{$startYear}-{$endYear}"; 
         }
             
-        $contributions = Paie::where('user_id', Auth::id())
-            ->whereHas('contribution', function ($query) use ($idAnneeEnCour) {
-                $query->where('annee_id', $idAnneeEnCour);
-            })
-            ->with('contribution')
-            ->orderBy('datePaiement', 'desc')
-            ->get()
-            ->values();
+        $contributions = Contribution::with('paie')
+            ->where('user_id', Auth::id())
+            ->where('annee_id', $idAnneeEnCour)
+            ->orderBy('dateContribution', 'desc');
 
         // --- Election Retrieval for Current Year ---
         $election = Election::where('annee_id', $idAnneeEnCour)
