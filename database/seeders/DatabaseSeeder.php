@@ -25,7 +25,7 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // User::factory(10)->create();
-        /*
+        
         User::factory()->create([
             'nom' => 'teufack',
             'email' => 'teufack@gmail.com',
@@ -65,9 +65,9 @@ class DatabaseSeeder extends Seeder
             "dateDebut" => "2026-10-01",
             "dateFin" => "2027-05-31",
         ]);
-        */
+        
 
-        Contribution::factory(10)->create();
+        Contribution::factory(70)->create();
         
         Election::factory()->create([
             "debutDepot" => "2024-10-01",

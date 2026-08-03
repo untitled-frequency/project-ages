@@ -57,7 +57,7 @@ export default function Index({ paies }) {
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Contact</th>
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Montant</th>
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Date Contribution</th>
-                            <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Actions</th>
+                            <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">Actions</th>
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200">
@@ -77,19 +77,30 @@ export default function Index({ paies }) {
                                     <td className="px-6 py-4 text-sm text-gray-500">
                                         {paie.contribution?.dateContribution || 'N/A'}
                                     </td>
-                                    <td className="px-6 py-4 text-right text-sm">
-                                        <button className="text-blue-600 hover:text-blue-900 font-medium px-2">
+                                    <td className="px-6 py-4 flex justify-center gap-2 text-sm text-gray-500">
+
+                                        <Link
+                                            href={route('contributions.edit', paie.contribution.id)}
+                                            className="bg-gray-100 text-gray-800 px-2 py-1 rounded-lg hover:bg-gray-300 font-medium"
+                                        >
                                             Modifier
-                                        </button>
-                                        <button className="text-red-600 hover:text-red-900 font-medium">
-                                            Retirer
+                                        </Link> 
+                                        <button
+                                            onClick={() => {
+                                                if (confirm('Êtes-vous sûr de vouloir supprimer cette contribution ?')) {
+                                                    router.delete(route('contributions.destroy', paie.contribution.id));
+                                                }
+                                            }}
+                                            className="bg-red-500 text-white px-2 py-1 rounded-lg hover:bg-red-600 font-medium text-xs transition"
+                                        >
+                                            Supprimer
                                         </button>
                                     </td>
                                 </tr>
                             ))
                         ) : (
                             <tr>
-                                <td colSpan="4" className="px-6 py-4 text-center text-gray-500 italic">
+                                <td colSpan="4" className="px-6 py-4 text-center text-gray-500">
                                     Aucune contribution enregistrée pour cette année.
                                 </td>
                             </tr>

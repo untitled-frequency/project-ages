@@ -1,18 +1,21 @@
 import ApplicationLogo from '@/Components/ApplicationLogo';
 import Dropdown from '@/Components/Dropdown';
 import { Link, usePage } from '@inertiajs/react';
-import { LayoutDashboard, Users, BriefcaseBusiness, CircleDollarSign, HandCoins, ChevronDown } from 'lucide-react';
+import { LayoutDashboard, Users, BriefcaseBusiness, CircleDollarSign, HandCoins, BanknoteArrowUp, ChevronDown, BanknoteArrowDown } from 'lucide-react';
 
 function CollapseLinks() {
-    const isFinanceActive = route().current('contributions.index'); 
+    const isFinanceActive = 
+        route().current('contributions.*') || 
+        route().current('operationFinanciere.*');
 
     return (
         <details 
+            key={isFinanceActive ? 'open' : 'closed'} 
             className="group [&_summary::-webkit-details-marker]:hidden"
             open={isFinanceActive}
         >
             <summary className={`flex cursor-pointer items-center justify-between rounded-lg px-3 py-2 text-sm font-medium transition-colors list-none ${
-                isFinanceActive ? 'text-gray-900 font-semibold' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                isFinanceActive ? 'text-gray-900 font-semibold bg-gray-50' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
             }`}>
                 <div className="flex items-center gap-3">
                     <CircleDollarSign className="h-4 w-4" />
@@ -26,7 +29,7 @@ function CollapseLinks() {
                 <Link
                     href={route('contributions.index')}
                     className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
-                    route().current('contributions.index')
+                    route().current('contributions.*')
                         ? 'bg-gray-100 text-gray-900'
                         : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
                     }`}
@@ -34,18 +37,28 @@ function CollapseLinks() {
                     <HandCoins className="h-4 w-4" />
                     <span>Contributions</span>
                 </Link>
-            </div>
-            <div className="mt-1 space-y-1 pl-6">
+
                 <Link
                     href={route('operationFinanciere.index')}
                     className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
-                    route().current('operationFinanciere.index')
+                    route().current('operationFinanciere.*')
                         ? 'bg-gray-100 text-gray-900'
                         : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
                     }`}
                 >
-                    <HandCoins className="h-4 w-4" />
-                    <span>Opérations financières</span>
+                    <BanknoteArrowUp className="h-4 w-4" />
+                    <span>Dépenses</span>
+                </Link>
+                <Link
+                    href={route('operationFinanciere.index')}
+                    className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
+                    route().current('operationFinanciere.*')
+                        ? 'bg-gray-100 text-gray-900'
+                        : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                    }`}
+                >
+                    <BanknoteArrowDown className="h-4 w-4" />
+                    <span>Recettes</span>
                 </Link>
             </div>
         </details>
