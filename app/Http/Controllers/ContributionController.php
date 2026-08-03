@@ -12,33 +12,44 @@ use App\Models\Annee;
 use App\Models\Contribution;
 use App\Models\User;
 
-
 class ContributionController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of the resource grouped by user.
      */
     public function index(Request $request)
     {   
         $idAnneeEnCours = Annee::max('id');
 
-        $query = Paie::query();
-
-        if($search = $request->input('search')) {
-            $query->whereHas('user', function ($q) use ($search) {
-                $q->where('nom', 'like', '%' . $search . '%')
-                  ->orWhere('email', 'like', '%' . $search . '%');
-            });
-        }
-
-        $paies = $query->with(['user', 'contribution'])
-            ->whereHas('contribution', function ($q) use ($idAnneeEnCours) {
-                $q->where('annee_id', $idAnneeEnCours);
+        $users = User::query()
+            ->when($request->input('search'), function ($query, $search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('nom', 'like', '%' . $search . '%')
+                      ->orWhere('email', 'like', '%' . $search . '%');
+                });
             })
+            // Select user details along with aggregated contribution total and latest contribution ID
+            ->select('users.*')
+            ->selectRaw('SUM(contributions.montant) as montantTotal')
+            ->join('paies', 'users.id', '=', 'paies.user_id')
+            ->join('contributions', 'paies.contribution_id', '=', 'contributions.id')
+            ->where('contributions.annee_id', $idAnneeEnCours)
+            ->groupBy('users.id')
             ->paginate(10);
+        
+        $users->getCollection()->transform(function ($user) use ($idAnneeEnCours) {
+            $user->latestContributionId = Contribution::whereHas('paie', function ($q) use ($user) {
+                $q->where('user_id', $user->id);
+            })
+            ->where('annee_id', $idAnneeEnCours)
+            ->latest('id')
+            ->value('id');
 
+        return $user;
+    });
+            
         return Inertia::render('Contribution/Index', [
-            'paies' => $paies,
+            'users' => $users,
         ]);
     }
 
@@ -60,8 +71,6 @@ class ContributionController extends Controller
     public function store(StoreContributionRequest $request)
     {
         $validated = $request->validated();
-
-        
         $idAnneeEnCours = Annee::max('id');
 
         DB::transaction(function () use ($validated, $idAnneeEnCours) {
@@ -83,14 +92,6 @@ class ContributionController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      */
     public function edit(Contribution $contribution)
@@ -102,7 +103,7 @@ class ContributionController extends Controller
         return Inertia::render('Contribution/Edit', [
             'contribution' => $contribution,
             'paie'        => $paie,
-            'user'        => $paie?->user, // Pass the single user directly
+            'user'        => $paie?->user,
         ]);
     }
 
@@ -111,10 +112,8 @@ class ContributionController extends Controller
      */
     public function update(UpdateContributionRequest $request, Contribution $contribution)
     {
-        // 1. Use validated() on custom FormRequest
         $validated = $request->validated(); 
         
-        // 2. Only update montant in contribution table
         DB::transaction(function () use ($validated, $contribution) {
             $contribution->update([
                 'montant' => $validated['montant'], 

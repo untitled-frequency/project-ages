@@ -1,7 +1,7 @@
 import React from 'react';
 import { useForm, Link, Head } from '@inertiajs/react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { CirclePlus } from 'lucide-react';
+import { CirclePlus, Save, ArrowLeft } from 'lucide-react';
 
 export default function Create({ users, auth }) {
     const { data, setData, post, processing, errors } = useForm({
@@ -82,14 +82,20 @@ export default function Create({ users, auth }) {
                                     href={route('contributions.index')}
                                     className="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
                                 >
-                                    Annuler
+                                    <div className="flex items-center">
+                                        <ArrowLeft className="w-4 h-4 mr-2" />
+                                        Annuler 
+                                    </div>
                                 </Link>
                                 <button
                                     type="submit"
                                     disabled={processing}
                                     className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md text-sm font-medium shadow-sm disabled:opacity-50"
                                 >
-                                    {processing ? 'Enregistrement...' : 'Enregistrer le paiement'}
+                                    <div className="flex items-center">
+                                        <Save className="w-4 h-4 mr-2" />
+                                        {processing ? 'Enregistrement...' : 'Enregistrer le paiement'}
+                                    </div>
                                 </button>
                             </div>
 

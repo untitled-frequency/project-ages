@@ -1,12 +1,10 @@
 import React, { useState } from 'react'
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout'
 import { Head, Link, router } from '@inertiajs/react'
-import { FolderKanban, Pencil } from 'lucide-react'
+import { FolderKanban, Save } from 'lucide-react'
 
-export default function Index({ paies }) {
-    console.log('Paies prop data:', paies);
-
-    const paieList = paies?.data || (Array.isArray(paies) ? paies : []);
+export default function Index({ users }) {
+    const userList = users?.data || (Array.isArray(users) ? users : []);
 
     const [search, setSearch] = useState('');
     
@@ -45,7 +43,10 @@ export default function Index({ paies }) {
                         </button>
                     </form>
                     <Link href={route('contributions.create')} className="ml-4 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md text-sm font-medium shadow-sm">
-                        Enregistrer une contribution
+                        <div className="flex items-center">
+                            <Save className="w-4 h-4 mr-2" />
+                            Enregistrer une contribution
+                        </div>
                     </Link>
                 </div>
                 {/* Table */}
@@ -55,46 +56,31 @@ export default function Index({ paies }) {
                         <tr>
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nom/Email</th>
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Contact</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Montant</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Date Contribution</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Montant Total</th>
                             <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">Actions</th>
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200">
-                        {paieList.length > 0 ? (
-                            paieList.map((paie, index) => (
-                                <tr key={index}>
+                        {userList.length > 0 ? (
+                            userList.map((user) => (
+                                <tr key={user.id}>
                                     <td className="px-6 py-4 text-sm font-medium text-gray-900">
-                                        <div>{paie.user?.nom || 'Membre Inconnu'}</div>
-                                        <div className="text-xs text-gray-500">{paie.user?.email || ''}</div>
+                                        <div>{user.nom || 'Membre Inconnu'}</div>
+                                        <div className="text-xs text-gray-500">{user.email || ''}</div>
                                     </td>
                                     <td className="px-6 py-4 text-sm font-medium text-gray-900">
-                                        <div>{paie.user?.tel || 'N/A'}</div>
+                                        <div>{user.tel || 'N/A'}</div>
                                     </td>
                                     <td className="px-6 py-4 text-sm font-semibold text-emerald-600">
-                                        {(paie.contribution?.montant || 0).toLocaleString('fr-FR')} FCFA
-                                    </td>
-                                    <td className="px-6 py-4 text-sm text-gray-500">
-                                        {paie.contribution?.dateContribution || 'N/A'}
+                                        {Number(user.montantTotal || 0).toLocaleString('fr-FR')} FCFA
                                     </td>
                                     <td className="px-6 py-4 flex justify-center gap-2 text-sm text-gray-500">
-
                                         <Link
-                                            href={route('contributions.edit', paie.contribution.id)}
+                                            href={route('contributions.edit', user.latestContributionId)}
                                             className="bg-gray-100 text-gray-800 px-2 py-1 rounded-lg hover:bg-gray-300 font-medium"
                                         >
                                             Modifier
-                                        </Link> 
-                                        <button
-                                            onClick={() => {
-                                                if (confirm('Êtes-vous sûr de vouloir supprimer cette contribution ?')) {
-                                                    router.delete(route('contributions.destroy', paie.contribution.id));
-                                                }
-                                            }}
-                                            className="bg-red-500 text-white px-2 py-1 rounded-lg hover:bg-red-600 font-medium text-xs transition"
-                                        >
-                                            Supprimer
-                                        </button>
+                                        </Link>
                                     </td>
                                 </tr>
                             ))
