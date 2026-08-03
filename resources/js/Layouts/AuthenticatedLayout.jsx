@@ -37,7 +37,6 @@ function CollapseLinks() {
                     <HandCoins className="h-4 w-4" />
                     <span>Contributions</span>
                 </Link>
-
                 <Link
                     href={route('operationFinanciere.index')}
                     className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
@@ -47,18 +46,7 @@ function CollapseLinks() {
                     }`}
                 >
                     <BanknoteArrowUp className="h-4 w-4" />
-                    <span>Dépenses</span>
-                </Link>
-                <Link
-                    href={route('operationFinanciere.index')}
-                    className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
-                    route().current('operationFinanciere.*')
-                        ? 'bg-gray-100 text-gray-900'
-                        : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
-                    }`}
-                >
-                    <BanknoteArrowDown className="h-4 w-4" />
-                    <span>Recettes</span>
+                    <span>Entrées & Sorties</span>
                 </Link>
             </div>
         </details>
