@@ -28,10 +28,10 @@ export default function Dashboard({ auth, annonces, reunions, activites, contrib
                 {/* Row 2: Activités & Contributions */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <ActivitesFutureCard activites={activites} />
-                    <MyContributionsCard contributions={contributions} anneeEnCour={anneeEnCour} />
+                    {/*<MyContributionsCard contributions={contributions} anneeEnCour={anneeEnCour} />*/}
                 </div>
                 <div>
-                    <ElectionEnCour election={election} />
+                    {/*<ElectionEnCour election={election} />*/}
                 </div>
             </div>
         </AuthenticatedLayout>

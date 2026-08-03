@@ -24,7 +24,7 @@ export default function MyContributionsCard({
         : 0;
 
     // Get the last 3 transactions (contributions array is already sorted desc in controller)
-    const recentTransactions = contributions.slice(0, 4);
+    
 
     return (
         <div className="p-6 bg-white border border-gray-200 rounded-2xl shadow-sm space-y-3">

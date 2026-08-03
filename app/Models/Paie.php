@@ -13,8 +13,7 @@ class Paie extends Model
 
     protected $fillable = [
         'user_id',
-        'contribution_id',
-        'datePaiement',
+        'contribution_id'
     ];
 
     public function contribution()

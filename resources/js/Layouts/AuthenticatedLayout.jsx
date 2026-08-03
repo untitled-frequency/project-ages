@@ -1,7 +1,57 @@
 import ApplicationLogo from '@/Components/ApplicationLogo';
 import Dropdown from '@/Components/Dropdown';
 import { Link, usePage } from '@inertiajs/react';
-import { LayoutDashboard, Users, BriefcaseBusiness, DollarSign } from 'lucide-react';
+import { LayoutDashboard, Users, BriefcaseBusiness, CircleDollarSign, HandCoins, ChevronDown } from 'lucide-react';
+
+function CollapseLinks() {
+    const isFinanceActive = route().current('contributions.index'); 
+
+    return (
+        <details 
+            className="group [&_summary::-webkit-details-marker]:hidden"
+            open={isFinanceActive}
+        >
+            <summary className={`flex cursor-pointer items-center justify-between rounded-lg px-3 py-2 text-sm font-medium transition-colors list-none ${
+                isFinanceActive ? 'text-gray-900 font-semibold' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+            }`}>
+                <div className="flex items-center gap-3">
+                    <CircleDollarSign className="h-4 w-4" />
+                    <span>Finance</span>
+                </div>
+                
+                <ChevronDown className="h-4 w-4 transition-transform duration-200 group-open:-rotate-180 text-gray-400" />
+            </summary>
+
+            <div className="mt-1 space-y-1 pl-6">
+                <Link
+                    href={route('contributions.index')}
+                    className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
+                    route().current('contributions.index')
+                        ? 'bg-gray-100 text-gray-900'
+                        : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                    }`}
+                >
+                    <HandCoins className="h-4 w-4" />
+                    <span>Contributions</span>
+                </Link>
+            </div>
+            <div className="mt-1 space-y-1 pl-6">
+                <Link
+                    href={route('operationFinanciere.index')}
+                    className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
+                    route().current('operationFinanciere.index')
+                        ? 'bg-gray-100 text-gray-900'
+                        : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                    }`}
+                >
+                    <HandCoins className="h-4 w-4" />
+                    <span>Opérations financières</span>
+                </Link>
+            </div>
+        </details>
+    );
+}
+
 
 export default function AuthenticatedLayout({ header, children }) {
     const user = usePage().props.auth.user;
@@ -10,7 +60,6 @@ export default function AuthenticatedLayout({ header, children }) {
         { name: 'Tableau de bord', href: route('dashboard'), active: route().current('dashboard'), icon: LayoutDashboard },
         { name: 'Utilisateur', href: route('users.index'), active: route().current('users.index'), icon: Users },
         { name: 'Rôles', href: route('roles.index'), active: route().current('roles.index'), icon: BriefcaseBusiness },
-        { name: 'Finance', href: route('finance.index'), active: route().current('finance.index'), icon: DollarSign },
     ];
 
     const userName = user.nom || user.name || 'User';
@@ -53,11 +102,12 @@ export default function AuthenticatedLayout({ header, children }) {
                                     {item.name}
                                 </Link>
                             ))}
+                            <CollapseLinks />
                         </nav>
                     </div>
                 </div>
 
-                {/* Bottom User Menu with Upward Dropdown Container */}
+                {/* Bottom User Menuu with Upward Dropdown Container */}
                 <div className="relative border-t border-gray-100 pt-4">
                     <Dropdown>
                         <Dropdown.Trigger>
