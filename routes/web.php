@@ -29,7 +29,9 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::resource('users', UserController::class)->except(['create', 'edit', 'show']);
+Route::middleware(['auth'])->group(function () {
+    Route::resource('users', UserController::class);
+});
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/roles', [RoleController::class, 'index'])->name('roles.index');
@@ -41,6 +43,9 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('contributions', ContributionController::class);
 });
 
-Route::get('/operationFinanciere', [OperationFinanciereController::class, 'index'])->name('operationFinanciere.index');
+Route::middleware(['auth'])->group(function () {
+    Route::resource('operationFinanciere', OperationFinanciereController::class);
+});
+
 
 require __DIR__.'/auth.php';

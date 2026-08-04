@@ -42,7 +42,7 @@ export default function Index({ users }) {
                             Rechercher
                         </button>
                     </form>
-                    <Link href={route('contributions.create')} className="ml-4 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md text-sm font-medium shadow-sm">
+                    <Link href={route('contributions.create')} className="ml-4 px-4 py-2 bg-violet-500 hover:bg-violet-600 text-white rounded-md text-sm font-medium shadow-sm">
                         <div className="flex items-center">
                             <Save className="w-4 h-4 mr-2" />
                             Enregistrer une contribution
