@@ -11,6 +11,7 @@ use App\Models\Contribution;
 use App\Models\Election;
 use App\Models\listeCandidat;
 use App\Models\Mandat;
+use App\Models\OperationFinanciere;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -26,6 +27,7 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
         
+        /*
         User::factory()->create([
             'nom' => 'teufack',
             'email' => 'teufack@gmail.com',
@@ -124,6 +126,9 @@ class DatabaseSeeder extends Seeder
             "status" => "actif",
             "annee_id" => 3,
         ]);
-    
+        
+        */
+
+        OperationFinanciere::factory(100)->create();
     }
 }

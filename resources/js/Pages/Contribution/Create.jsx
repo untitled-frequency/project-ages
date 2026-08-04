@@ -25,7 +25,7 @@ export default function Create({ users, auth }) {
                 </h2>}
         >
             <Head title="Enregistrer une Contribution" />
-            <div className="py-12">
+            <div className="py-6">
                 <div className="max-w-2xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
                         
@@ -39,7 +39,7 @@ export default function Create({ users, auth }) {
                                 <select
                                     value={data.user_id}
                                     onChange={(e) => setData('user_id', e.target.value)}
-                                    className={`w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 ${
+                                    className={`500w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo- ${
                                         errors.user_id ? 'border-red-500' : ''
                                     }`}
                                 >

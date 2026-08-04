@@ -17,6 +17,7 @@ return new class extends Migration
             $table->datetime("dateHeure");
             $table->string("lieu");
             $table->text("compteRendu");
+            $table->file("PJ")->nullable();
         });
     }
 

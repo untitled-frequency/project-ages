@@ -1,7 +1,7 @@
 import ApplicationLogo from '@/Components/ApplicationLogo';
 import Dropdown from '@/Components/Dropdown';
 import { Link, usePage } from '@inertiajs/react';
-import { LayoutDashboard, Users, BriefcaseBusiness, CircleDollarSign, HandCoins, BanknoteArrowUp, ChevronDown, BanknoteArrowDown } from 'lucide-react';
+import { LayoutDashboard, Users, BriefcaseBusiness, CircleDollarSign, HandCoins, ChevronDown, Landmark } from 'lucide-react';
 
 function CollapseLinks() {
     const isFinanceActive = 
@@ -45,8 +45,8 @@ function CollapseLinks() {
                         : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
                     }`}
                 >
-                    <BanknoteArrowUp className="h-4 w-4" />
-                    <span>Entrées & Sorties</span>
+                    <Landmark className="h-4 w-4" />
+                    <span>Depenses & Revenus</span>
                 </Link>
             </div>
         </details>

@@ -50,7 +50,7 @@ export default function RoleIndex({ roles, users, mandats, selectedMandatId, ava
                     </div>
                     <button
                         onClick={() => setIsModalOpen(true)}
-                        className="px-4 py-2 bg-violet-500 text-white rounded-lg hover:bg-violet-700 transition font-medium"
+                        className="px-4 py-2 bg-violet-500 text-white rounded-lg hover:bg-violet-600 transition font-medium"
                     >
                         + Attribuer un Rôle
                     </button>

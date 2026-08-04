@@ -45,8 +45,8 @@ class ContributionController extends Controller
             ->latest('id')
             ->value('id');
 
-        return $user;
-    });
+            return $user;
+        });
             
         return Inertia::render('Contribution/Index', [
             'users' => $users,

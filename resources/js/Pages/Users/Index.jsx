@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { router, useForm, usePage, Head } from '@inertiajs/react';
+import { router, useForm, usePage, Head, Link } from '@inertiajs/react';
+import { Save, User } from 'lucide-react';
 
 export default function Index({ users, filters }) {
     const { flash } = usePage().props;
@@ -67,43 +68,42 @@ export default function Index({ users, filters }) {
     };
 
     return (
-        <AuthenticatedLayout>
+        <AuthenticatedLayout
+            header={
+                <div className='flex items-center'>
+                    <User className='mr-2' />
+                    <h2 className="text-2xl font-bold text-gray-800">Gestion des Utilisateurs</h2>
+                </div>
+            }
+        >
             <Head title="Utilisateurs" />
             <div className="p-6 max-w-7xl mx-auto space-y-6">
-                {/* Header */}
-                <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-                    <h1 className="text-2xl font-bold text-gray-800">Gestion des Utilisateurs</h1>
-                    <button
-                        onClick={() => openModal()}
-                        className="bg-violet-500 hover:bg-violet-600 text-white px-4 py-2 rounded-lg font-medium shadow transition"
+                <div className='flex justify-between'>
+                    <form onSubmit={handleSearch} className="flex gap-2">
+                        <input
+                            type="text"
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
+                            placeholder="Rechercher par nom, email ou téléphone..."
+                            className="w-full md:w-2/3 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                        />
+                        <button
+                            type="submit"
+                            className="bg-gray-800 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition"
+                        >
+                            Rechercher
+                        </button>
+                    </form>
+                    <Link 
+                        href={route('users.create')} className="ml-4 px-4 py-2 bg-violet-500 hover:bg-violet-600 text-white rounded-md text-sm font-medium shadow-sm"
                     >
-                        + Ajouter
-                    </button>
+                        <div className='flex items-center'>
+                            <Save className='w-4 h-4 mr-2' />
+                            Ajouter un Utilisateur 
+                        </div>
+                    
+                    </Link>
                 </div>
-
-                {/* Flash Message */}
-                {flash?.success && (
-                    <div className="p-4 bg-green-100 border-l-4 border-green-500 text-green-700 rounded">
-                        {flash.success}
-                    </div>
-                )}
-
-                {/* Search Bar */}
-                <form onSubmit={handleSearch} className="flex gap-2">
-                    <input
-                        type="text"
-                        value={search}
-                        onChange={(e) => setSearch(e.target.value)}
-                        placeholder="Rechercher par nom, email ou téléphone..."
-                        className="w-full md:w-1/3 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                    />
-                    <button
-                        type="submit"
-                        className="bg-gray-800 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition"
-                    >
-                        Rechercher
-                    </button>
-                </form>
 
                 {/* Data Table */}
                 <div className="bg-white shadow rounded-lg overflow-hidden border">
