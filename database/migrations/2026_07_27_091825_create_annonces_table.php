@@ -16,6 +16,9 @@ return new class extends Migration
             $table->string("titre");
             $table->date("datePublication");
             $table->text("contenu");
+            $table->string("PJ")->nullable();
+            $table->string("type");
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
         });
     }
 

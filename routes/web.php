@@ -6,6 +6,10 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\ContributionController;
 use App\Http\Controllers\OperationFinanciereController;
+use App\Http\Controllers\AnnonceController;
+use App\Http\Controllers\ReunionController;
+use App\Http\Controllers\CommuniqueController;
+use App\Http\Controllers\ActiviteController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -47,5 +51,20 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('operationFinanciere', OperationFinanciereController::class);
 });
 
+Route::middleware(['auth'])->group(function () {
+    Route::resource('annonces', AnnonceController::class);
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::resource('reunions', ReunionController::class);
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::resource('communique', CommuniqueController::class);
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::resource('activites', ActiviteController::class);
+});
 
 require __DIR__.'/auth.php';

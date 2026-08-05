@@ -19,9 +19,11 @@ class ActiviteFactory extends Factory
     {
         return [
             'titre' => $this->faker->sentence(1),
-            'datePublication' => $this->faker->dateTimeBetween('now', '+1 year'),
+            'date' => $this->faker->dateTimeBetween('-1 month', '+1 year'),
             'description' => $this->faker->paragraph(3),
             'lieu' => $this->faker->name(),
+            'budget' => $this->faker->numberBetween(1000, 100000),
+            'responsable_id' => $this->faker->numberBetween(1, 10),
         ];
     }
 }

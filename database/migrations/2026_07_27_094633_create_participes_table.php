@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('participes', function (Blueprint $table) {
             $table->foreignId("user_id")->constrained();
             $table->foreignId("activite_id")->constrained();
+            $table->primary(['user_id', 'activite_id']);
         });
     }
 

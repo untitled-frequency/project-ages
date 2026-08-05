@@ -12,11 +12,22 @@ class Activite extends Model
 
     protected $fillable = [
         'titre',
-        'datePublication',
+        'date',
         'description',
         'lieu',
-        'dateHeure',
+        'budget',
+        'responsable_id',
     ];
 
     public $timestamps = false;
+
+    public function responsable()
+    {
+        return $this->belongsTo(User::class, 'responsable_id');
+    }
+
+    public function participants()
+    {
+        return $this->belongsToMany(User::class, 'participe', 'activite_id', 'user_id');
+    }
 }

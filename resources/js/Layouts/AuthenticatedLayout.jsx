@@ -1,7 +1,18 @@
 import ApplicationLogo from '@/Components/ApplicationLogo';
 import Dropdown from '@/Components/Dropdown';
 import { Link, usePage } from '@inertiajs/react';
-import { LayoutDashboard, Users, BriefcaseBusiness, CircleDollarSign, HandCoins, ChevronDown, Landmark } from 'lucide-react';
+import { 
+    LayoutDashboard, 
+    Users, 
+    BriefcaseBusiness, 
+    CircleDollarSign, 
+    HandCoins, 
+    ChevronDown, 
+    Landmark,
+    Megaphone,
+    Share2,
+    CalendarClock
+} from 'lucide-react';
 
 function CollapseLinks() {
     const isFinanceActive = 
@@ -61,9 +72,12 @@ export default function AuthenticatedLayout({ header, children }) {
         { name: 'Tableau de bord', href: route('dashboard'), active: route().current('dashboard'), icon: LayoutDashboard },
         { name: 'Utilisateur', href: route('users.index'), active: route().current('users.index'), icon: Users },
         { name: 'Rôles', href: route('roles.index'), active: route().current('roles.index'), icon: BriefcaseBusiness },
+        { name: 'Reunions', href: route('reunions.index'), active: route().current('reunions.index'), icon: CalendarClock },
+        { name: 'Communique', href: route('communique.index'), active: route().current('communique.index'), icon: Megaphone },
+        { name: 'Activites', href: route('activites.index'), active: route().current('activites.index'), icon: Share2 },
     ];
 
-    const userName = user.nom || user.name || 'User';
+    const userName = user.nom || 'User';
     const initials = userName
         .split(' ')
         .map((n) => n[0])

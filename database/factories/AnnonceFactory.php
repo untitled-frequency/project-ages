@@ -21,6 +21,8 @@ class AnnonceFactory extends Factory
             'titre' => $this->faker->sentence(4),
             'datePublication' => $this->faker->date(),
             'contenu' => $this->faker->paragraphs(3, true),
+            'type' => $this->faker->randomElement(['communiqués', 'activités', 'informations importantes', 'autres']),
+            'user_id' => $this->faker->numberBetween(1, 10),
         ];
     }
 }
