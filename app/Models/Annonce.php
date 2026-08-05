@@ -15,5 +15,13 @@ class Annonce extends Model
         'titre',
         'contenu',
         'datePublication',
+        'PJ',
+        'type',
+        'user_id',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

@@ -27,7 +27,7 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
         
-        /*
+        
         User::factory()->create([
             'nom' => 'teufack',
             'email' => 'teufack@gmail.com',
@@ -127,7 +127,6 @@ class DatabaseSeeder extends Seeder
             "annee_id" => 3,
         ]);
         
-        */
 
         OperationFinanciere::factory(100)->create();
     }

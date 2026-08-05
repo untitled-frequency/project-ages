@@ -30,8 +30,8 @@ class DashboardController extends Controller
             ->get()
             ->values();
 
-        $activites = Activite::whereDate('datePublication', '>=', now())
-            ->orderBy('datePublication', 'desc')
+        $activites = Activite::whereDate('date', '>=', now())
+            ->orderBy('date', 'desc')
             ->take(2)
             ->get()
             ->reverse()

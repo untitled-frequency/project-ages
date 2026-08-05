@@ -11,14 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('activites', function (Blueprint $table) {
+        Schema::create('assiste', function (Blueprint $table) {
             $table->id();
-            $table->string("titre");
-            $table->dateTime("date");
-            $table->text("description");
-            $table->string("lieu");
-            $table->decimal("budget", 10, 2);
-            $table->foreignId("responsable_id")->constrained("users")->cascadeOnDelete();
+            $table->foreignId('reunion_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->string('presence')->default('absent');
             $table->timestamps();
         });
     }
@@ -28,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('activites');
+        Schema::dropIfExists('assiste');
     }
 };
