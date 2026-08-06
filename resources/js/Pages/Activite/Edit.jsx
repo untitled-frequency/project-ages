@@ -35,11 +35,11 @@ export default function Edit({ activite, users }) { // 1. Accept activite prop
 
             <div className='max-w-4xl mx-auto space-y-6'>
                 <Link
-                    href={route('activites.index')}
-                    className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-gray-700 font-medium"
+                    href={route('communique.index', { tab: 'activites' })}
+                    className="inline-flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900"
                 >
                     <ArrowLeft className="w-4 h-4" />
-                    Retour à la liste
+                    Retour aux activités
                 </Link>
 
                 <form onSubmit={handleSubmit} className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm space-y-6">
@@ -63,7 +63,7 @@ export default function Edit({ activite, users }) { // 1. Accept activite prop
                             Date
                         </label>
                         <input
-                            type="datetime"
+                            type="datetime-local"
                             id="date"
                             value={data.date}
                             onChange={(e) => setData('date', e.target.value)}

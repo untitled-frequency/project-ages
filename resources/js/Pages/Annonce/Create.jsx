@@ -109,7 +109,7 @@ export default function Create() {
                             </div>
 
                             <div className="flex justify-end gap-2">
-                                <Link href={route('annonces.index')}>
+                                <Link href={route('communique.index')}>
                                     <button 
                                         type="button" 
                                         className="inline-flex items-center px-4 py-2 bg-gray-100 border border-transparent rounded-md font-semibold text-gray-700 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"

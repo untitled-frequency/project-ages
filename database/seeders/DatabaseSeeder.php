@@ -27,7 +27,7 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
         
-        
+        /*
         User::factory()->create([
             'nom' => 'teufack',
             'email' => 'teufack@gmail.com',
@@ -44,7 +44,7 @@ class DatabaseSeeder extends Seeder
 
         User::factory(99)->create();
 
-        
+        */
         Annonce::factory(10)->create();
         
         Reunion::factory(10)->create();
@@ -52,6 +52,7 @@ class DatabaseSeeder extends Seeder
         
         Activite::factory(10)->create();
         
+        /*
         Annee::factory()->create([
             "dateDebut" => "2024-10-01",
             "dateFin" => "2025-05-31",
@@ -128,6 +129,6 @@ class DatabaseSeeder extends Seeder
         ]);
         
 
-        OperationFinanciere::factory(100)->create();
+        OperationFinanciere::factory(100)->create();*/
     }
 }

@@ -41,7 +41,7 @@ class AnnonceController extends Controller
         $validated['user_id'] = Auth::id();
         Annonce::create($validated);
 
-        return redirect()->route('annonces.index');
+        return redirect()->route('communique.index');
     }
 
     public function edit(Annonce $annonce)
@@ -62,7 +62,7 @@ class AnnonceController extends Controller
         unset($validated['datePublication']);
         $annonce->update($validated);
 
-        return redirect()->route('annonces.index');
+        return redirect()->route('communique.index');
     }
 
 
@@ -71,6 +71,6 @@ class AnnonceController extends Controller
         $annonce = Annonce::findOrFail($id);
         $annonce->delete();
 
-        return redirect()->route('annonces.index');
+        return redirect()->route('communique.index');
     }
 }

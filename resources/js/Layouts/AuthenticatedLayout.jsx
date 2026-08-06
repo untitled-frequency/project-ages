@@ -38,17 +38,6 @@ function CollapseLinks() {
 
             <div className="mt-1 space-y-1 pl-6">
                 <Link
-                    href={route('contributions.index')}
-                    className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
-                    route().current('contributions.*')
-                        ? 'bg-gray-100 text-gray-900'
-                        : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
-                    }`}
-                >
-                    <HandCoins className="h-4 w-4" />
-                    <span>Contributions</span>
-                </Link>
-                <Link
                     href={route('operationFinanciere.index')}
                     className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
                     route().current('operationFinanciere.*')
@@ -58,6 +47,17 @@ function CollapseLinks() {
                 >
                     <Landmark className="h-4 w-4" />
                     <span>Depenses & Revenus</span>
+                </Link>
+                <Link
+                    href={route('contributions.index')}
+                    className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
+                    route().current('contributions.*')
+                        ? 'bg-gray-100 text-gray-900'
+                        : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                    }`}
+                >
+                    <HandCoins className="h-4 w-4" />
+                    <span>Contributions</span>
                 </Link>
             </div>
         </details>
@@ -72,11 +72,14 @@ export default function AuthenticatedLayout({ header, children }) {
     { name: 'Tableau de bord', href: route('dashboard'), active: route().current('dashboard'), icon: LayoutDashboard },
     { name: 'Utilisateur', href: route('users.index'), active: route().current('users.*'), icon: Users },
     { name: 'Rôles', href: route('roles.index'), active: route().current('roles.*'), icon: BriefcaseBusiness },
-    { name: 'Reunions', href: route('reunions.index'), active: route().current('reunions.*'), icon: CalendarClock },
-    { name: 'Communique', href: route('communique.index'), active: route().current('communique.*'), icon: Megaphone },
-    { name: 'Activites', href: route('activites.index'), active: route().current('activites.*'), icon: Share2 },
-    { name: 'Annonces', href: route('annonces.index'), active: route().current('annonces.*'), icon: Megaphone },
-];
+    { name: 'Communique', href: route('communique.index'), active: 
+        route().current('communique.*') ||
+        route().current('annonces.*') ||
+        route().current('activites.*') ||
+        route().current('reunions.*'), 
+        icon: Megaphone 
+    },
+    ];
 
     const userName = user.nom || 'User';
     const initials = userName

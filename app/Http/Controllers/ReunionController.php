@@ -56,7 +56,7 @@ class ReunionController extends Controller
 
         $reunion = Reunion::create($validated);
 
-        return redirect()->route('reunions.index');
+        return redirect()->route('communique.index', ['tab' => 'reunions']);
     }
 
     
@@ -94,17 +94,15 @@ class ReunionController extends Controller
     $participants = $request->input('participants', []);
     $reunion->participants()->sync($participants);
 
-    return redirect()->route('reunions.index');
+    return redirect()->route('communique.index', ['tab' => 'reunions']);
     }
 
     public function destroy(string $id)
     {
         $reunion = Reunion::findOrFail($id);
-        DB::transaction(function () use ($reunion) {
-            $reunion->delete();
-        });
+        $reunion->delete();
 
         
-        return redirect()->route('reunions.index');
+        return redirect()->route('communique.index', ['tab' => 'reunions']);
     }
 }
