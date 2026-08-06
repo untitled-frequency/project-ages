@@ -69,13 +69,14 @@ export default function AuthenticatedLayout({ header, children }) {
     const user = usePage().props.auth.user;
 
     const navItems = [
-        { name: 'Tableau de bord', href: route('dashboard'), active: route().current('dashboard'), icon: LayoutDashboard },
-        { name: 'Utilisateur', href: route('users.index'), active: route().current('users.index'), icon: Users },
-        { name: 'Rôles', href: route('roles.index'), active: route().current('roles.index'), icon: BriefcaseBusiness },
-        { name: 'Reunions', href: route('reunions.index'), active: route().current('reunions.index'), icon: CalendarClock },
-        { name: 'Communique', href: route('communique.index'), active: route().current('communique.index'), icon: Megaphone },
-        { name: 'Activites', href: route('activites.index'), active: route().current('activites.index'), icon: Share2 },
-    ];
+    { name: 'Tableau de bord', href: route('dashboard'), active: route().current('dashboard'), icon: LayoutDashboard },
+    { name: 'Utilisateur', href: route('users.index'), active: route().current('users.*'), icon: Users },
+    { name: 'Rôles', href: route('roles.index'), active: route().current('roles.*'), icon: BriefcaseBusiness },
+    { name: 'Reunions', href: route('reunions.index'), active: route().current('reunions.*'), icon: CalendarClock },
+    { name: 'Communique', href: route('communique.index'), active: route().current('communique.*'), icon: Megaphone },
+    { name: 'Activites', href: route('activites.index'), active: route().current('activites.*'), icon: Share2 },
+    { name: 'Annonces', href: route('annonces.index'), active: route().current('annonces.*'), icon: Megaphone },
+];
 
     const userName = user.nom || 'User';
     const initials = userName
