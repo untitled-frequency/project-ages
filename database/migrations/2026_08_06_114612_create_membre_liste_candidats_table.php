@@ -11,21 +11,20 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('liste_candidats', function (Blueprint $table) {
+        Schema::create('membre_liste_candidats', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('election_id')->constrained()->cascadeOnDelete();
-            $table->string('nom');
-            $table->text('programme')->nullable();
-            $table->string('slogan')->nullable();
+            $table->foreignId('liste_candidat_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->string('role');
             $table->timestamps();
         });
     }
 
-    /** 
+    /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('liste_candidats');
+        Schema::dropIfExists('membre_liste_candidats');
     }
 };
