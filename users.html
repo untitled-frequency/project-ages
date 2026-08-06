@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Maquette — Tableau de bord Étudiant AGES</title>
+    <style>
+        :root {
+            --bg: #f4f5f3;
+            --card: #ffffff;
+            --border: #e3e2da;
+            --text: #1f1f1d;
+            --muted: #8a897f;
+            --muted2: #5c5b54;
+            --accent: #d97757;
+            --green: #3d7a5c;
+            --red: #b8503f;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, "Segoe UI", Inter, system-ui, sans-serif;
+            background: var(--bg);
+            margin: 0;
+            padding: 24px;
+            color: var(--text);
+        }
+
+        .wrap {
+            max-width: 760px;
+            margin: 0 auto;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .title {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            font-size: 13px;
+            color: var(--muted);
+            margin-top: 2px;
+        }
+
+        .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .pill {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 8px 14px;
+            font-size: 13px;
+            color: var(--muted2);
+        }
+
+        .avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--accent);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+
+        .card-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .card-sub {
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: 14px;
+        }
+
+        /* Ma cotisation */
+        .cotis-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .cotis-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .cotis-status.ok {
+            background: #e7f2ec;
+            color: var(--green);
+        }
+
+        .cotis-status.late {
+            background: #fbeae7;
+            color: var(--red);
+        }
+
+        .cotis-amount {
+            font-size: 12px;
+            color: var(--muted);
+            margin-top: 6px;
+        }
+
+        /* Election */
+        .election-banner {
+            background: linear-gradient(135deg, #fdf1ec, #fff);
+            border: 1px solid #f2ddd2;
+            border-radius: 10px;
+            padding: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .election-banner .label {
+            font-size: 12px;
+            color: var(--accent);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: .03em;
+            margin-bottom: 4px;
+        }
+
+        .election-banner .name {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .election-banner .deadline {
+            font-size: 12px;
+            color: var(--muted2);
+            margin-top: 2px;
+        }
+
+        .btn-vote {
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 18px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* Lists */
+        .entry {
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .entry:last-child {
+            border-bottom: none;
+        }
+
+        .entry-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+        }
+
+        .entry .main {
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .entry .meta {
+            font-size: 12px;
+            color: var(--muted);
+            margin-top: 2px;
+        }
+
+        .tag {
+            font-size: 11px;
+            color: var(--muted);
+            background: var(--bg);
+            border-radius: 6px;
+            padding: 2px 8px;
+        }
+
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        @media (max-width: 600px) {
+            .two-col {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+
+        <div class="topbar">
+            <div>
+                <div class="title">Mon espace — AGES</div>
+                <div class="subtitle">Bonjour, Awa Ndiaye · Licence 2 Informatique</div>
+            </div>
+            <div class="topbar-right">
+                <div class="pill">🔔 2 nouvelles annonces</div>
+                <div class="avatar">AN</div>
+            </div>
+        </div>
+
+        <!-- Election en cours : mis en avant en priorité si votable -->
+        <div class="card">
+            <div class="election-banner">
+                <div>
+                    <div class="label">Élection en cours</div>
+                    <div class="name">Bureau AGES 2026-2027</div>
+                    <div class="deadline">Vote ouvert jusqu'au 29 juillet, 18h00</div>
+                </div>
+                <button class="btn-vote">Voter maintenant</button>
+            </div>
+        </div>
+
+        <!-- Ma cotisation -->
+        <div class="card">
+            <div class="card-title">Ma cotisation</div>
+            <div class="card-sub">Année académique 2025-2026</div>
+            <div class="cotis-row">
+                <div>
+                    <span class="cotis-status ok">✓ À jour</span>
+                    <div class="cotis-amount">Dernier paiement : 5 000 FCFA le 12 mars 2026</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="two-col">
+            <!-- Prochaines réunions/activités -->
+            <div class="card">
+                <div class="card-title">À venir</div>
+                <div class="card-sub">Réunions et activités ouvertes</div>
+                <div class="entry">
+                    <div class="entry-row">
+                        <div class="main">Assemblée générale</div>
+                        <span class="tag">Réunion</span>
+                    </div>
+                    <div class="meta">28 juillet · 15h00 · Amphi A</div>
+                </div>
+                <div class="entry">
+                    <div class="entry-row">
+                        <div class="main">Journée d'intégration</div>
+                        <span class="tag">Activité</span>
+                    </div>
+                    <div class="meta">15 septembre · Campus</div>
+                </div>
+                <div class="entry">
+                    <div class="entry-row">
+                        <div class="main">Tournoi inter-filières</div>
+                        <span class="tag">Activité</span>
+                    </div>
+                    <div class="meta">30 septembre · Terrain omnisports</div>
+                </div>
+            </div>
+
+            <!-- Annonces -->
+            <div class="card">
+                <div class="card-title">Dernières annonces</div>
+                <div class="card-sub">Publiées par le bureau</div>
+                <div class="entry">
+                    <div class="main">Rappel cotisation 2025-2026</div>
+                    <div class="meta">Il y a 2 jours</div>
+                </div>
+                <div class="entry">
+                    <div class="main">Ouverture des candidatures au bureau</div>
+                    <div class="meta">Il y a 5 jours</div>
+                </div>
+                <div class="entry">
+                    <div class="main">Compte rendu de l'AG du 10 mars</div>
+                    <div class="meta">Il y a 3 semaines</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+
+</html>
