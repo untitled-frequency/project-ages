@@ -10,15 +10,13 @@ class Election extends Model
     /** @use HasFactory<\Database\Factories\ElectionFactory> */
     use HasFactory;
 
-    public $timestamps = false;
-
     protected $fillable = [
-        'debutDepot',
-        'finDepot',
-        'debutCampagne',
-        'finCampagne',
-        'debutVote',
-        'finVote',
+        'dateDebutDepot',
+        'dateFinDepot',
+        'dateDebutCampagne',
+        'dateFinCampagne',
+        'dateOuvertureVote',
+        'dateClotureVote',
         'annee_id',
     ];
 

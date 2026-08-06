@@ -44,7 +44,7 @@ class DatabaseSeeder extends Seeder
 
         User::factory(99)->create();
 
-        */
+        
         Annonce::factory(10)->create();
         
         Reunion::factory(10)->create();
@@ -52,7 +52,7 @@ class DatabaseSeeder extends Seeder
         
         Activite::factory(10)->create();
         
-        /*
+        
         Annee::factory()->create([
             "dateDebut" => "2024-10-01",
             "dateFin" => "2025-05-31",
@@ -73,36 +73,34 @@ class DatabaseSeeder extends Seeder
         Contribution::factory(70)->create();
         
         Election::factory()->create([
-            "debutDepot" => "2024-10-01",
-            "finDepot" => "2024-10-01",
-            "debutCampagne" => "2024-10-20",
-            "finCampagne" => "2024-10-25",
-            "debutVote" => "2024-10-26",
-            "finVote" => "2024-10-26",
+            "dateDebutDepot" => "2024-10-01",
+            "dateFinDepot" => "2024-10-01",
+            "dateDebutCampagne" => "2024-10-20",
+            "dateFinCampagne" => "2024-10-25",
+            "dateOuvertureVote" => "2024-10-26",
+            "dateClotureVote" => "2024-10-26",
             "annee_id" => 1,
         ]);
         
-        
         Election::factory()->create([
-            "debutDepot" => "2025-10-01",
-            "finDepot" => "2025-10-01",
-            "debutCampagne" => "2025-10-20",
-            "finCampagne" => "2025-10-25",
-            "debutVote" => "2025-10-26",
-            "finVote" => "2025-10-26",
+            "dateDebutDepot" => "2025-10-01",
+            "dateFinDepot" => "2025-10-01",
+            "dateDebutCampagne" => "2025-10-20",
+            "dateFinCampagne" => "2025-10-25",
+            "dateOuvertureVote" => "2025-10-26",
+            "dateClotureVote" => "2025-10-26",
             "annee_id" => 2,
         ]);
         
         Election::factory()->create([
-            "debutDepot" => "2026-10-01",
-            "finDepot" => "2026-10-01",
-            "debutCampagne" => "2026-10-20",
-            "finCampagne" => "2026-10-25",
-            "debutVote" => "2026-10-26",
-            "finVote" => "2026-10-26",
+            "dateDebutDepot" => "2026-10-01",
+            "dateFinDepot" => "2026-10-01",
+            "dateDebutCampagne" => "2026-10-20",
+            "dateFinCampagne" => "2026-10-25",
+            "dateOuvertureVote" => "2026-10-26",
+            "dateClotureVote" => "2026-10-26",
             "annee_id" => 3,
         ]);
-        
 
         ListeCandidat::factory(25)->create();
         
@@ -129,6 +127,7 @@ class DatabaseSeeder extends Seeder
         ]);
         
 
-        OperationFinanciere::factory(100)->create();*/
+        OperationFinanciere::factory(100)->create();
+        */
     }
 }

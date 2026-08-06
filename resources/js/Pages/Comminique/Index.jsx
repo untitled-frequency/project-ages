@@ -30,7 +30,7 @@ export default function Index({ reunions, activites, annonces, activeTab = 'anno
                 <div className="flex items-center gap-2 text-gray-800">
                     <Megaphone className="w-5 h-5 text-gray-600" />
                     <h2 className="font-semibold text-xl leading-tight">
-                        Gestion des Communiqués
+                        Communiqués
                     </h2>
                 </div>
             }

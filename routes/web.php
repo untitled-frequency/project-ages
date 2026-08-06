@@ -10,6 +10,7 @@ use App\Http\Controllers\AnnonceController;
 use App\Http\Controllers\ReunionController;
 use App\Http\Controllers\CommuniqueController;
 use App\Http\Controllers\ActiviteController;
+use App\Http\Controllers\ElectionController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -60,11 +61,15 @@ Route::middleware(['auth'])->group(function () {
 });
 
 Route::middleware(['auth'])->group(function () {
+    Route::resource('activites', ActiviteController::class);
+});
+
+Route::middleware(['auth'])->group(function () {
     Route::resource('communique', CommuniqueController::class);
 });
 
 Route::middleware(['auth'])->group(function () {
-    Route::resource('activites', ActiviteController::class);
+    Route::resource('election', ElectionController::class);
 });
 
 require __DIR__.'/auth.php';

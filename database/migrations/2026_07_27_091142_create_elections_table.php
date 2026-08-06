@@ -13,13 +13,15 @@ return new class extends Migration
     {
         Schema::create('elections', function (Blueprint $table) {
             $table->id();
-            $table->date("debutDepot");
-            $table->date("finDepot");
-            $table->date("debutCampagne");
-            $table->date("finCampagne");
-            $table->dateTime("debutVote");
-            $table->dateTime("finVote");
-            $table->foreignId("annee_id")->constrained();
+            $table->foreignId('annee_id')->constrained('annees')->cascadeOnDelete();
+            $table->string('title')->default('Election du bureau de l\'AGES');
+            $table->dateTime('dateDebutDepot');
+            $table->dateTime('dateFinDepot');
+            $table->dateTime('dateDebutCampagne');
+            $table->dateTime('dateFinCampagne');
+            $table->dateTime('dateOuvertureVote');
+            $table->dateTime('dateClotureVote');
+            $table->timestamps();
         });
     }
 

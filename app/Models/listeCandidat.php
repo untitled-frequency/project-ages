@@ -16,7 +16,6 @@ class ListeCandidat extends Model
         "nom",
         "programme",
         "slogan",
-        "membres",
         "election_id",
     ];
 

@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import ApplicationLogo from '@/Components/ApplicationLogo';
 import Dropdown from '@/Components/Dropdown';
 import { Link, usePage } from '@inertiajs/react';
@@ -10,8 +11,9 @@ import {
     ChevronDown, 
     Landmark,
     Megaphone,
-    Share2,
-    CalendarClock
+    Menu,
+    X,
+    Vote
 } from 'lucide-react';
 
 function CollapseLinks() {
@@ -32,7 +34,6 @@ function CollapseLinks() {
                     <CircleDollarSign className="h-4 w-4" />
                     <span>Finance</span>
                 </div>
-                
                 <ChevronDown className="h-4 w-4 transition-transform duration-200 group-open:-rotate-180 text-gray-400" />
             </summary>
 
@@ -64,24 +65,24 @@ function CollapseLinks() {
     );
 }
 
-
 export default function AuthenticatedLayout({ header, children }) {
     const user = usePage().props.auth.user;
+    const [sidebarOpen, setSidebarOpen] = useState(false);
 
     const navItems = [
-    { name: 'Tableau de bord', href: route('dashboard'), active: route().current('dashboard'), icon: LayoutDashboard },
-    { name: 'Utilisateur', href: route('users.index'), active: route().current('users.*'), icon: Users },
-    { name: 'Rôles', href: route('roles.index'), active: route().current('roles.*'), icon: BriefcaseBusiness },
-    { name: 'Communique', href: route('communique.index'), active: 
-        route().current('communique.*') ||
-        route().current('annonces.*') ||
-        route().current('activites.*') ||
-        route().current('reunions.*'), 
-        icon: Megaphone 
-    },
+        { name: 'Tableau de bord', href: route('dashboard'), active: route().current('dashboard'), icon: LayoutDashboard },
+        { name: 'Utilisateur', href: route('users.index'), active: route().current('users.*'), icon: Users },
+        { name: 'Rôles', href: route('roles.index'), active: route().current('roles.*'), icon: BriefcaseBusiness },
+        { name: 'Communique', href: route('communique.index'), active: 
+            route().current('communique.*') ||
+            route().current('annonces.*') ||
+            route().current('activites.*') ||
+            route().current('reunions.*'), 
+            icon: Megaphone 
+        },
     ];
 
-    const userName = user.nom || 'User';
+    const userName = user?.nom || 'User';
     const initials = userName
         .split(' ')
         .map((n) => n[0])
@@ -90,16 +91,34 @@ export default function AuthenticatedLayout({ header, children }) {
         .slice(0, 2);
 
     return (
-        <div className="flex min-h-screen text-gray-900">
-            {/* Fixed Sidebar with independent scroll */}
-            <aside className="sticky top-0 flex h-screen w-65 flex-col justify-between border-r border-gray-200 bg-white p-4">
+        <div className="flex min-h-screen text-gray-900 bg-gray-50/50">
+            {/* Mobile Backdrop Overlay */}
+            {sidebarOpen && (
+                <div 
+                    className="fixed inset-0 z-40 bg-black/50 lg:hidden"
+                    onClick={() => setSidebarOpen(false)}
+                />
+            )}
+
+            {/* Sidebar (Responsive Drawer) */}
+            <aside className={`fixed inset-y-0 left-0 z-50 flex w-64 flex-col justify-between border-r border-gray-200 bg-white p-4 transition-transform duration-200 ease-in-out lg:static lg:translate-x-0 ${
+                sidebarOpen ? 'translate-x-0' : '-translate-x-full'
+            }`}>
                 <div className="flex flex-1 flex-col overflow-y-auto space-y-6 pr-1">
                     {/* Brand Header */}
-                    <div className="flex items-center space-x-3 px-2">
+                    <div className="flex items-center justify-between px-2">
                         <Link href="/" className="flex items-center gap-2">
                             <ApplicationLogo className="h-8 w-auto fill-current text-black" />
-                            <span className="font-semibold text-gray-900">All Generations of ESSFAR</span>
+                            <span className="font-semibold text-gray-900 text-sm">All Generations of ESSFAR</span>
                         </Link>
+                        
+                        {/* Close button for mobile */}
+                        <button 
+                            onClick={() => setSidebarOpen(false)}
+                            className="lg:hidden p-1 text-gray-500 hover:text-gray-700"
+                        >
+                            <X className="h-5 w-5" />
+                        </button>
                     </div>
 
                     {/* Navigation Group */}
@@ -112,6 +131,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                 <Link
                                     key={item.name}
                                     href={item.href}
+                                    onClick={() => setSidebarOpen(false)}
                                     className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${item.active
                                             ? 'bg-gray-100 text-gray-900'
                                             : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
@@ -122,11 +142,21 @@ export default function AuthenticatedLayout({ header, children }) {
                                 </Link>
                             ))}
                             <CollapseLinks />
+                            <Link
+                                href={route('election.index')}
+                                className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${route().current('election.*')
+                                        ? 'bg-gray-100 text-gray-900'
+                                        : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                                    }`}
+                            >
+                                <Vote className="h-4 w-4" />
+                                Election
+                            </Link>
                         </nav>
                     </div>
                 </div>
 
-                {/* Bottom User Menuu with Upward Dropdown Container */}
+                {/* Bottom User Menu */}
                 <div className="relative border-t border-gray-100 pt-4">
                     <Dropdown>
                         <Dropdown.Trigger>
@@ -145,7 +175,6 @@ export default function AuthenticatedLayout({ header, children }) {
                             </button>
                         </Dropdown.Trigger>
 
-                        {/* Content wrapper customized to render upwards */}
                         <div className="absolute bottom-full left-0 mb-2 w-full">
                             <Dropdown.Content alignment="left">
                                 <Dropdown.Link href={route('profile.edit')}>Profile</Dropdown.Link>
@@ -158,17 +187,30 @@ export default function AuthenticatedLayout({ header, children }) {
                 </div>
             </aside>
 
-            {/* Main Layout Area */}
+            {/* Main Content Viewport */}
             <div className="flex flex-1 flex-col min-w-0">
-                {/* Header / Breadcrumb Topbar */}
+                {/* Mobile Navigation Header */}
+                <header className="flex h-16 items-center justify-between border-b border-gray-200 bg-white px-4 lg:hidden">
+                    <div className="flex items-center gap-3">
+                        <button
+                            onClick={() => setSidebarOpen(true)}
+                            className="p-2 text-gray-600 hover:bg-gray-100 rounded-lg"
+                        >
+                            <Menu className="h-6 w-6" />
+                        </button>
+                        <span className="font-semibold text-gray-900 text-sm">AGES</span>
+                    </div>
+                </header>
+
+                {/* Page Header Header / Breadcrumb Topbar */}
                 {header && (
-                    <header className="flex h-16 items-center border-b border-gray-200 bg-white px-8">
+                    <header className="flex min-h-16 items-center border-b border-gray-200 bg-white px-4 sm:px-8 py-3">
                         {header}
                     </header>
                 )}
 
                 {/* Main Content Area */}
-                <main className="flex-1 p-8 overflow-y-auto">{children}</main>
+                <main className="flex-1 p-4 sm:p-8 overflow-y-auto">{children}</main>
             </div>
         </div>
     );
