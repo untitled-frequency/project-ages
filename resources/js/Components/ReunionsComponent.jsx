@@ -26,7 +26,7 @@ export default function ReunionsComponent({ reunions }) {
 
                 {/* Cards Container */}
                 {reunionList.length > 0 ? (
-                    <div className="grid grid-cols-1 md:grid-cols-1 gap-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         {reunionList.map((reunion) => (
                             <div 
                                 key={reunion.id} 
