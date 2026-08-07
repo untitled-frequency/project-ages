@@ -2,12 +2,11 @@
 
 ## Gestion des Membres
 **Manques**
-- la modification du profil ne marche pas
 - utilisation des modals au lieu des pages/formulaires
 
 **Function Operaitionel**
 - Creation, modification, suppression des membres
-- 
+- Modification du profil 
 
 ## Gestion des Roles
 **Manques**
