@@ -8,3 +8,40 @@ git push origin feature/teufack
 
 
 add meetings
+
+<div className="mt-6">
+                        <InputLabel
+                            htmlFor="password"
+                            value="Mot de passe"
+                            className="sr-only"
+                        />
+
+                        <TextInput
+                            id="password"
+                            type="password"
+                            name="password"
+                            ref={passwordInput}
+                            value={data.password}
+                            onChange={(e) =>
+                                setData('password', e.target.value)
+                            }
+                            className="mt-1 block w-3/4"
+                            isFocused
+                            placeholder="Mot de passe"
+                        />
+
+                        <InputError
+                            message={errors.password}
+                            className="mt-2"
+                        />
+                    </div>
+
+                    <div className="mt-6 flex justify-end">
+                        <SecondaryButton    >
+                            Annuler
+                        </SecondaryButton>
+
+                        <DangerButton className="ms-3" disabled={processing}>
+                            Supprimer le compte
+                        </DangerButton>
+                    </div>
