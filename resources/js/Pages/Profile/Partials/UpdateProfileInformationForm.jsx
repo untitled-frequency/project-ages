@@ -16,6 +16,7 @@ export default function UpdateProfileInformation({
         useForm({
             nom: user.nom,
             email: user.email,
+            tel: user.tel,
         });
 
     const submit = (e) => {
@@ -67,6 +68,22 @@ export default function UpdateProfileInformation({
                     />
 
                     <InputError className="mt-2" message={errors.email} />
+                </div>
+
+                <div>
+                    <InputLabel htmlFor="tel" value="Téléphone" />
+
+                    <TextInput
+                        id="tel"
+                        type="tel"
+                        className="mt-1 block w-full"
+                        value={data.tel}
+                        onChange={(e) => setData('tel', e.target.value)}
+                        required
+                        autoComplete="tel"
+                    />
+
+                    <InputError className="mt-2" message={errors.tel} />
                 </div>
 
                 {mustVerifyEmail && user.email_verified_at === null && (

@@ -35,16 +35,21 @@ class UserController extends Controller
         return Inertia::render('Users/Create');
     }
 
+    public function edit(User $user) {
+        return Inertia::render('Users/Edit', [
+            'user' => $user,
+        ]);
+    }
+
     public function store(StoreUserRequest $request)
     {
         $validated = $request->validated();
         
-        // Use default password if not provided
-        $validated['password'] = Hash::make($validated['password'] ?? 'password');
+        $validated['password'] = Hash::make('password');
 
         User::create($validated);
 
-        return redirect()->back()->with('success', 'Utilisateur créé avec succès.');
+        return redirect()->route('users.index')->with('success', 'Utilisateur créé avec succès.');
     }
 
     public function update(UpdateUserRequest $request, User $user)
@@ -59,13 +64,13 @@ class UserController extends Controller
 
         $user->update($validated);
 
-        return redirect()->back()->with('success', 'Utilisateur mis à jour avec succès.');
+        return redirect()->route('users.index')->with('success', 'Utilisateur mis à jour avec succès.');
     }
 
     public function destroy(User $user)
     {
         $user->delete();
 
-        return redirect()->back()->with('success', 'Utilisateur supprimé avec succès.');
+        return redirect()->route('users.index')->with('success', 'Utilisateur supprimé avec succès.');
     }
 }
