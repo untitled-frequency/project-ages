@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { router, useForm, usePage, Head, Link } from '@inertiajs/react';
-import { Save, User } from 'lucide-react';
+import { Save, User, SquarePen, Trash2 } from 'lucide-react';
+import DangerButton from '@/Components/DangerButton';
+import Paginate from '@/Components/Paginate';
 
 export default function Index({ users, filters }) {
     const { flash } = usePage().props;
     const [search, setSearch] = useState(filters.search || '');
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [editingUser, setEditingUser] = useState(null);
 
     const { data, setData, post, put, delete: destroy, processing, errors, reset, clearErrors } = useForm({
         nom: '',
@@ -22,42 +22,13 @@ export default function Index({ users, filters }) {
         router.get('/users', { search }, { preserveState: true, replace: true });
     };
 
-    // Open Modal for Create or Edit
-    const openModal = (user = null) => {
-        clearErrors();
-        if (user) {
-            setEditingUser(user);
-            setData({
-                nom: user.nom,
-                email: user.email,
-                tel: user.tel,
-                password: '',
-            });
-        } else {
-            setEditingUser(null);
-            reset();
-        }
-        setIsModalOpen(true);
-    };
-
-    const closeModal = () => {
-        setIsModalOpen(false);
-        setEditingUser(null);
-        reset();
-    };
-
-    // Form Submission
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        if (editingUser) {
-            put(`/users/${editingUser.id}`, {
-                onSuccess: () => closeModal(),
-            });
-        } else {
-            post('/users', {
-                onSuccess: () => closeModal(),
-            });
-        }
+    // Handle Page Change (keeps the current search term in the query string)
+    const handlePageChange = (page) => {
+        router.get(
+            '/users',
+            { search, page },
+            { preserveState: true, preserveScroll: true, replace: true }
+        );
     };
 
     // Delete User
@@ -106,7 +77,8 @@ export default function Index({ users, filters }) {
                 </div>
 
                 {/* Data Table */}
-                <div className="bg-white shadow rounded-lg overflow-hidden border">
+                {/* Desktop Table View */}
+                <div className="hidden md:block bg-white shadow rounded-lg overflow-x-auto border">
                     <table className="w-full text-left border-collapse">
                         <thead className="bg-gray-50 border-b">
                             <tr>
@@ -118,137 +90,57 @@ export default function Index({ users, filters }) {
                             </tr>
                         </thead>
                         <tbody className="divide-y">
-                            {users.data.length > 0 ? (
-                                users.data.map((user) => (
-                                    <tr key={user.id} className="hover:bg-gray-50">
-                                        <td className="p-4 text-gray-800 font-medium">{user.id}</td>
-                                        <td className="p-4 text-gray-800 font-medium">{user.nom}</td>
-                                        <td className="p-4 text-gray-600">{user.email}</td>
-                                        <td className="p-4 text-gray-600">{user.tel}</td>
-                                        <td className="p-4 text-right space-x-2">
-                                            <button
-                                                onClick={() => openModal(user)}
-                                                className="font-medium bg-gray-200 px-1 py-1 rounded-lg hover:bg-gray-400"
-                                            >
-                                                Éditer
-                                            </button>
-                                            <button
-                                                onClick={() => handleDelete(user.id)}
-                                                className="text-white bg-red-500 font-medium px-1 py-1 rounded-lg hover:bg-red-600"
-                                            >
-                                                Supprimer
-                                            </button>
-                                        </td>
-                                    </tr>
-                                ))
-                            ) : (
-                                <tr>
-                                    <td colSpan="4" className="p-4 text-center text-gray-500">
-                                        Aucun utilisateur trouvé.
+                            {users.data.map((user) => (
+                                <tr key={user.id} className="hover:bg-gray-50">
+                                    <td className="p-4">{user.id}</td>
+                                    <td className="p-4">{user.nom}</td>
+                                    <td className="p-4">{user.email}</td>
+                                    <td className="p-4">{user.tel}</td>
+                                    <td className="p-4 text-right space-x-2">
+                                        <Link href={route('users.edit', user.id)} className="inline-flex items-center px-3 py-1.5 bg-gray-100 text-gray-700 rounded-lg">
+                                            <SquarePen className="w-4 h-4 mr-1" /> Éditer
+                                        </Link>
+                                        <DangerButton onClick={() => handleDelete(user.id)}>
+                                            <Trash2 className="w-4 h-4 mr-1" /> Supprimer
+                                        </DangerButton>
                                     </td>
                                 </tr>
-                            )}
+                            ))}
                         </tbody>
                     </table>
                 </div>
 
-                {/* Pagination */}
-                <div className="flex justify-center items-center gap-1 pt-4">
-                    {users.links.map((link, idx) => (
-                        <button
-                            key={idx}
-                            disabled={!link.url}
-                            onClick={() => router.get(link.url, {}, { preserveState: true })}
-                            dangerouslySetInnerHTML={{ __html: link.label }}
-                            className={`min-w-[2.25rem] px-3 py-1.5 rounded-md border text-sm font-medium transition-colors duration-150
-                                ${link.active
-                                    ? 'bg-indigo-600 border-indigo-600 text-white shadow-sm'
-                                    : 'bg-white border-gray-200 text-gray-600'
-                                }
-                                ${!link.url
-                                    ? 'opacity-40 cursor-not-allowed'
-                                    : !link.active && 'hover:bg-indigo-50 hover:border-indigo-200 hover:text-indigo-600'
-                                }
-                                focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-1`}
-                        />
+                {/* Mobile Card View */}
+                <div className="grid grid-cols-1 gap-4 md:hidden">
+                    {users.data.map((user) => (
+                        <div key={user.id} className="bg-white p-4 rounded-lg border shadow-sm space-y-2">
+                            <div className="flex justify-between items-center border-b pb-2">
+                                <span className="font-bold text-gray-800">{user.nom}</span>
+                                <span className="text-xs text-gray-500">#{user.id}</span>
+                            </div>
+                            <div className="text-sm text-gray-600 space-y-1">
+                                <p><strong>Email:</strong> {user.email}</p>
+                                <p><strong>Téléphone:</strong> {user.tel}</p>
+                            </div>
+                            <div className="flex justify-end gap-2 pt-2 border-t">
+                                <Link href={route('users.edit', user.id)} className="px-3 py-1.5 bg-gray-100 text-xs text-gray-700 rounded-md inline-flex items-center">
+                                    <SquarePen className="w-3.5 h-3.5 mr-1" /> Éditer
+                                </Link>
+                                <DangerButton onClick={() => handleDelete(user.id)} className="text-xs px-3 py-1.5">
+                                    <Trash2 className="w-3.5 h-3.5 mr-1" /> Supprimer
+                                </DangerButton>
+                            </div>
+                        </div>
                     ))}
                 </div>
 
-                {/* Modal Form */}
-                {isModalOpen && (
-                    <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-                        <div className="bg-white rounded-lg shadow-xl max-w-md w-full p-6">
-                            <h2 className="text-xl font-bold mb-4">
-                                {editingUser ? 'Modifier l\'utilisateur' : 'Créer un utilisateur'}
-                            </h2>
+                {/* Pagination — driven by Laravel's paginator meta (current_page / last_page) */}
+                <Paginate
+                    currentPage={users.current_page}
+                    lastPage={users.last_page}
+                    onPageChange={handlePageChange}
+                />
 
-                            <form onSubmit={handleSubmit} className="space-y-4">
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700">Nom</label>
-                                    <input
-                                        type="text"
-                                        value={data.nom}
-                                        onChange={(e) => setData('nom', e.target.value)}
-                                        className="w-full mt-1 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 border-gray-300"
-                                    />
-                                    {errors.nom && <span className="text-red-500 text-xs">{errors.nom}</span>}
-                                </div>
-
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700">Email</label>
-                                    <input
-                                        type="email"
-                                        value={data.email}
-                                        onChange={(e) => setData('email', e.target.value)}
-                                        className="w-full mt-1 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 border-gray-300"
-                                    />
-                                    {errors.email && <span className="text-red-500 text-xs">{errors.email}</span>}
-                                </div>
-
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700">Téléphone</label>
-                                    <input
-                                        type="text"
-                                        value={data.tel}
-                                        onChange={(e) => setData('tel', e.target.value)}
-                                        className="w-full mt-1 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 border-gray-300"
-                                    />
-                                    {errors.tel && <span className="text-red-500 text-xs">{errors.tel}</span>}
-                                </div>
-
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700">
-                                        Mot de passe {editingUser && '(laisser vide pour ne pas modifier)'}
-                                    </label>
-                                    <input
-                                        type="password"
-                                        value={data.password}
-                                        onChange={(e) => setData('password', e.target.value)}
-                                        className="w-full mt-1 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 border-gray-300"
-                                    />
-                                    {errors.password && <span className="text-red-500 text-xs">{errors.password}</span>}
-                                </div>
-
-                                <div className="flex justify-end space-x-2 pt-4 border-t">
-                                    <button
-                                        type="button"
-                                        onClick={closeModal}
-                                        className="px-4 py-2 border rounded-lg text-gray-600 hover:bg-gray-100"
-                                    >
-                                        Annuler
-                                    </button>
-                                    <button
-                                        type="submit"
-                                        disabled={processing}
-                                        className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition"
-                                    >
-                                        {processing ? 'Enregistrement...' : 'Enregistrer'}
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                )}
             </div>
         </AuthenticatedLayout>
     );
