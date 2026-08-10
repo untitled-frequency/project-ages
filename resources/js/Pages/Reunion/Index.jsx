@@ -83,7 +83,7 @@ export default function Index({ reunions, reunionsFuture }) {
                                         <div className="pt-2 border-t border-gray-100 text-sm text-gray-600 space-y-1">
                                             <div className="flex items-center gap-1.5 text-gray-400 font-medium">
                                                 <FileText className="w-3 h-3" />
-                                                <h2 className='font-semibold'>Compte rendu</h2>
+                                                <h2 className="font-semibold">Compte rendu</h2>
                                             </div>
                                             <p className="line-clamp-2 leading-relaxed">
                                                 {reunion.compteRendu}

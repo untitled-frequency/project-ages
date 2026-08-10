@@ -30,6 +30,15 @@ class ActiviteController extends Controller
         ]);
     }
 
+    public function show(Activite $activite)
+    {
+        $activite->load('responsable');
+        
+        return Inertia::render('Activite/Show', [
+            'activite' => $activite,
+        ]);
+    }
+
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -47,9 +56,8 @@ class ActiviteController extends Controller
         return redirect()->route('communique.index', ['tab' => 'activites']);
     }
 
-    public function edit(string $id)
+    public function edit(Activite $activite)
     {
-        $activite = Activite::with('responsable')->findOrFail($id);
         $users = User::select('id', 'nom')->orderBy('nom')->get();
 
         return Inertia::render('Activite/Edit', [

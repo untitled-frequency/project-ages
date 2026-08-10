@@ -70,10 +70,10 @@ export default function AuthenticatedLayout({ header, children }) {
     const [sidebarOpen, setSidebarOpen] = useState(false);
 
     const navItems = [
-        { name: 'Tableau de bord', href: route('dashboard'), active: route().current('dashboard'), icon: LayoutDashboard },
-        { name: 'Utilisateur', href: route('users.index'), active: route().current('users.*'), icon: Users },
+        { name: 'Dashboard', href: route('dashboard'), active: route().current('dashboard'), icon: LayoutDashboard },
+        { name: 'Utilisateurs', href: route('users.index'), active: route().current('users.*'), icon: Users },
         { name: 'Rôles', href: route('roles.index'), active: route().current('roles.*'), icon: BriefcaseBusiness },
-        { name: 'Communique', href: route('communique.index'), active: 
+        { name: 'Communiqués', href: route('communique.index'), active: 
             route().current('communique.*') ||
             route().current('annonces.*') ||
             route().current('activites.*') ||
@@ -101,7 +101,7 @@ export default function AuthenticatedLayout({ header, children }) {
             )}
 
             {/* Sidebar — fixed at all breakpoints */}
-            <aside className={`fixed inset-y-0 left-0 z-50 flex w-64 flex-col border-r border-gray-200 bg-white p-4 transition-transform duration-200 ease-in-out lg:translate-x-0 ${
+            <aside className={`fixed inset-y-0 left-0 z-50 flex w-65 flex-col border-r border-gray-200 bg-white p-4 transition-transform duration-200 ease-in-out lg:translate-x-0 ${
                 sidebarOpen ? 'translate-x-0' : '-translate-x-full'
             }`}>
                 <div className="flex flex-1 flex-col overflow-y-auto space-y-6 pr-1">

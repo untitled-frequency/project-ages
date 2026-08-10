@@ -1,7 +1,7 @@
 import React from 'react'
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout'
 import { Head, useForm, Link } from '@inertiajs/react'
-import { ArrowLeft, Save, PhoneIncoming, MailPlus, UserPlus, SquarePen } from 'lucide-react';
+import { ArrowLeft, Save, PhoneIncoming, MailPlus, UserPlus, UserCog } from 'lucide-react';
 import PrimaryButton from '@/Components/PrimaryButton';
 import DefaultButton from '@/Components/DefaultButton';
 
@@ -22,7 +22,7 @@ export default function Edit({user}) {
         <AuthenticatedLayout
             header={
                 <div className="flex items-center gap-2 text-gray-800">
-                    <SquarePen className="w-5 h-5 text-gray-600" />
+                    <UserCog className="w-5 h-5 text-gray-600" />
                     <h2 className="font-semibold text-xl leading-tight">
                         Modifier l'utilisateur
                     </h2>

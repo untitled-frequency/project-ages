@@ -2,11 +2,13 @@
 
 ## Gestion des Membres
 **Manques**
-- utilisation des modals au lieu des pages/formulaires
+
 
 **Function Operaitionel**
 - Creation, modification, suppression des membres
 - Modification du profil 
+- utilisation des modals au lieu des pages/formulaires
+- layout adaptatif
 
 ## Gestion des Roles
 **Manques**
@@ -39,17 +41,17 @@
 
 ## Gestion des Reunions
 **Manques**
-- distinction des reunions a venir/passées
-- traitement des PJ *cahier de charge*
 - creation d'un template pour les reunions (creation dynamique des pages) *idee*
+- selection des membres presents/absents lors de la modification d'une reunion
 
 **Function Operaitionel**
 - creation, modification, suppression des reunions
+- distinction des reunions a venir/passées
 - 
+
 
 ## Gestion des Activites
 **Manques**
-- traitement des PJ *cahier de charge*
 - creation d'un template pour les activites (creation dynamique des pages) *idee*
 
 **Function Operaitionel**
@@ -58,11 +60,11 @@
 
 ## Gestion des Annonces
 **Manques**
-- traitement des PJ *cahier de charge*
 - creation d'un template pour les annonces (creation dynamique des pages) *idee*
-- recherche
+
 
 **Function Operaitionel**
 - creation, modification, suppression des annonces
-- 
+- recherche
+
 
