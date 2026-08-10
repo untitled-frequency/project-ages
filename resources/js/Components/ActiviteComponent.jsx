@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useForm, router } from '@inertiajs/react';
 import { Plus, Calendar, MapPin, NotepadText, Users, CircleDollarSign, Edit3, Trash2, Loader2 } from 'lucide-react';
+import PrimaryButton from './PrimaryButton';
 
 export default function ActiviteComponent({ activites }) {
     const [activiteList, setActiviteList] = useState(activites?.data || []);
@@ -62,14 +63,13 @@ export default function ActiviteComponent({ activites }) {
 
     return (
         <div className="max-w-7xl mx-auto space-y-6">
-            <div className="flex justify-between items-center">
-                <Link 
-                    href={route('activites.create')} 
-                    className="ml-4 px-4 py-2 bg-violet-500 flex items-center gap-2 hover:bg-violet-600 text-white rounded-md text-sm font-medium shadow-sm"
+            <div className="flex justify-center items-center">
+                <PrimaryButton
+                    onClick={() => router.get(route('activites.create'))}
                 >
                     <Plus className="w-4 h-4" />
                     Enregistrer une activité
-                </Link>
+                </PrimaryButton>
             </div>
 
             <div>
@@ -83,9 +83,11 @@ export default function ActiviteComponent({ activites }) {
                             >
                                 <div className="space-y-3">
                                     <div className="flex items-start justify-between gap-2">
-                                        <h3 className="font-semibold text-gray-900 text-base leading-snug">
-                                            {activite.titre}
-                                        </h3>
+                                        <Link href={route('activites.show', activite.id)}>
+                                            <h3 className="font-semibold text-gray-900 text-base leading-snug">
+                                                {activite.titre}
+                                            </h3>
+                                        </Link>
                                         {isPastDate(activite.date) ? (
                                             <div className="flex items-center gap-1.5 text-gray-400 text-xs font-semibold mb-2">
                                                 Statut: 

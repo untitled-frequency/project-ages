@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { router, useForm, usePage, Head, Link } from '@inertiajs/react';
-import { Save, User, SquarePen, Trash2 } from 'lucide-react';
+import { UserPlus, Users, SquarePen, Trash2, UserRoundSearch } from 'lucide-react';
 import DangerButton from '@/Components/DangerButton';
 import Paginate from '@/Components/Paginate';
+import PrimaryButton from '@/Components/PrimaryButton';
 
 export default function Index({ users, filters }) {
     const { flash } = usePage().props;
@@ -19,7 +20,7 @@ export default function Index({ users, filters }) {
     // Handle Live Search
     const handleSearch = (e) => {
         e.preventDefault();
-        router.get('/users', { search }, { preserveState: true, replace: true });
+        router.get('/users', { search }, { preserveState: true, replace: true, preserveScroll: true });
     };
 
     // Handle Page Change (keeps the current search term in the query string)
@@ -42,38 +43,36 @@ export default function Index({ users, filters }) {
         <AuthenticatedLayout
             header={
                 <div className='flex items-center'>
-                    <User className='mr-2' />
+                    <Users className='mr-2' />
                     <h2 className="text-2xl font-bold text-gray-800">Gestion des Utilisateurs</h2>
                 </div>
             }
         >
             <Head title="Utilisateurs" />
             <div className="p-6 max-w-7xl mx-auto space-y-6">
-                <div className='flex justify-between'>
-                    <form onSubmit={handleSearch} className="flex gap-2">
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                    <form onSubmit={handleSearch} className="flex w-full gap-2 sm:max-w-md">
                         <input
                             type="text"
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
                             placeholder="Rechercher par nom, email ou téléphone..."
-                            className="w-full md:w-2/3 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
                         />
                         <button
                             type="submit"
-                            className="bg-gray-800 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition"
+                            className="flex-shrink-0 bg-gray-800 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition"
                         >
-                            Rechercher
+                            <UserRoundSearch className="h-5 w-5" />
                         </button>
                     </form>
-                    <Link 
-                        href={route('users.create')} className="ml-4 px-4 py-2 bg-violet-500 hover:bg-violet-600 text-white rounded-md text-sm font-medium shadow-sm"
-                    >
-                        <div className='flex items-center'>
-                            <Save className='w-4 h-4 mr-2' />
-                            Ajouter un Utilisateur 
-                        </div>
-                    
-                    </Link>
+
+                    <PrimaryButton className="w-full sm:w-auto">
+                        <Link href={route('users.create')} className="flex items-center justify-center gap-2">
+                            <UserPlus className="w-4 h-4" />
+                            <span className="whitespace-nowrap">Ajouter un Utilisateur</span>
+                        </Link>
+                    </PrimaryButton>
                 </div>
 
                 {/* Data Table */}

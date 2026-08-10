@@ -43,6 +43,14 @@ class ReunionController extends Controller
         return Inertia::render('Reunion/Create');
     }
 
+    public function show(Reunion $reunion)
+    {
+        $reunion->load('user:id,nom', 'participants:id,nom');
+
+        return Inertia::render('Reunion/Show', [
+            'reunion' => $reunion,
+        ]);
+    }
     
     public function store(Request $request)
     {

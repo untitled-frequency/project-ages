@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useForm, router } from '@inertiajs/react';
 import { NotepadText, Plus, Calendar, MapPin, Edit3, Trash2, FileText, Users, Loader2 } from 'lucide-react';
+import PrimaryButton from './PrimaryButton';
 
 export default function ReunionsComponent({ reunions }) {
     const [reunionList, setReunionList] = useState(reunions?.data || []);
@@ -51,19 +52,24 @@ export default function ReunionsComponent({ reunions }) {
                 setIsLoading(false);
             }
         }
-    );
-};
+        );
+    };
+
+    const isFutureDate = (date) => {
+        const today = new Date();
+        const reunionDate = new Date(date);
+        return reunionDate > today;
+    };
 
     return (
         <div className="max-w-7xl mx-auto space-y-6">
-            <div className="flex justify-between items-center">
-                <Link 
-                    href={route('reunions.create')} 
-                    className="ml-4 px-4 py-2 bg-violet-500 flex items-center gap-2 hover:bg-violet-600 text-white rounded-md text-sm font-medium shadow-sm"
+            <div className="flex justify-center items-center">
+                <PrimaryButton
+                    onClick={() => router.get(route('reunions.create'))}
                 >
                     <Plus className="w-4 h-4" />
                     Enregistrer une réunion
-                </Link>
+                </PrimaryButton>
             </div>
 
             {reunionList.length > 0 ? (
@@ -76,9 +82,27 @@ export default function ReunionsComponent({ reunions }) {
                         >
                             <div className="space-y-3">
                                 <div className="flex items-start justify-between gap-2">
-                                    <h3 className="font-semibold text-gray-900 text-base leading-snug">
-                                        {reunion.ordreJour}
-                                    </h3>
+                                    <Link href={route('reunions.show', reunion.id)}>
+                                        <h3 className="font-semibold text-gray-900 text-base leading-snug">
+                                            {reunion.ordreJour} 
+                                        </h3>
+                                    </Link>
+
+                                    {isFutureDate(reunion.dateHeure) ? (
+                                        <div className="flex items-center gap-1.5 text-gray-400 text-xs font-semibold mb-2">
+                                            Statut: 
+                                            <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-700">
+                                                À venir
+                                            </span>
+                                        </div>
+                                    ) : (
+                                        <div className="flex items-center gap-1.5 text-gray-400 text-xs font-semibold mb-2">
+                                            Statut: 
+                                            <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-orange-200 text-orange-700">
+                                                Passée
+                                            </span>
+                                        </div>
+                                    )}
                                 </div>
 
                                 <div className="space-y-1.5 text-xs text-gray-500">

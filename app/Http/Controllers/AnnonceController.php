@@ -29,6 +29,14 @@ class AnnonceController extends Controller
         return Inertia::render('Annonce/Create');
     }
 
+    public function show(Annonce $annonce)
+    {
+        $annonce = Annonce::with('user:id,nom')->findOrFail($annonce->id);
+        return Inertia::render('Annonce/Show', [
+            'annonce' => $annonce,
+        ]);
+    }
+
     public function store(Request $request)
     {
         $validated = $request->validate([

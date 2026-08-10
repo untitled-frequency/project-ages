@@ -78,8 +78,12 @@ export default function Create() {
                                     id="contenu"
                                     name="contenu" 
                                     value={data.contenu} 
-                                    onChange={(e) => setData('contenu', e.target.value)}
-                                    className="mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" 
+                                    onChange={(e) => {
+                                        setData('contenu', e.target.value);
+                                        e.target.style.height = 'auto';
+                                        e.target.style.height = `${e.target.scrollHeight}px`;
+                                    }}
+                                    className="mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 resize-none overflow-hidden" 
                                 />
                                 {errors.contenu && <span className="text-red-500 text-xs">{errors.contenu}</span>}
                             </div>
