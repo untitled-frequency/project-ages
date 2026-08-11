@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout'
 import { Head, useForm, Link, router } from '@inertiajs/react'
-import { Megaphone, Plus, Calendar, Edit3, Trash2, Loader2 } from 'lucide-react'
+import { Megaphone, Plus, Calendar, Edit3, Trash2, Loader2, UserRoundSearch } from 'lucide-react'
 
-export default function Index({ annonces }) {
+export default function Index({ annonces, filters }) {
     // 1. Maintain local list state to accumulate announcements
     const [annoncesList, setAnnoncesList] = useState(annonces?.data || []);
     const [nextPageUrl, setNextPageUrl] = useState(annonces?.next_page_url);
     const [isLoading, setIsLoading] = useState(false);
+    const [search, setSearch] = useState(filters.search || '');
 
     // Sync state if props change (e.g. after deletion or initial load)
     useEffect(() => {
@@ -16,6 +17,11 @@ export default function Index({ annonces }) {
     }, [annonces]);
 
     const { delete: destroy } = useForm();
+
+    const handleSearch = (e) => {
+        e.preventDefault();
+        router.get(route('annonces.index'), { search }, { preserveState: true });
+    };
 
     const handleDelete = (id) => {
         if (confirm('Êtes-vous sûr de vouloir supprimer cette annonce ?')) {
@@ -60,8 +66,22 @@ export default function Index({ annonces }) {
         >
             <Head title="Annonces" />
             <div className='max-w-7xl mx-auto space-y-6'>
-
-                <div className="flex justify-between items-center">
+                    <form onSubmit={handleSearch} className="flex w-full gap-2 sm:max-w-md">
+                        <input
+                            type="text"
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
+                            placeholder="Rechercher par titre ou contenu..."
+                            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                        />
+                        <button
+                            type="submit"
+                            className="flex-shrink-0 bg-gray-800 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition"
+                        >
+                            <UserRoundSearch className="h-5 w-5" />
+                            df
+                        </button>
+                    </form>
                     <Link href={route('annonces.create')} className="ml-4 px-4 py-2 bg-violet-500 flex items-center gap-2 hover:bg-violet-600 text-white rounded-md text-sm font-medium shadow-sm">
                         <Plus className="w-4 h-4" />
                         Publier une annonce

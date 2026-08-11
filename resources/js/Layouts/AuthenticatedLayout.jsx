@@ -70,10 +70,10 @@ export default function AuthenticatedLayout({ header, children }) {
     const [sidebarOpen, setSidebarOpen] = useState(false);
 
     const navItems = [
-        { name: 'Tableau de bord', href: route('dashboard'), active: route().current('dashboard'), icon: LayoutDashboard },
-        { name: 'Utilisateur', href: route('users.index'), active: route().current('users.*'), icon: Users },
+        { name: 'Dashboard', href: route('dashboard'), active: route().current('dashboard'), icon: LayoutDashboard },
+        { name: 'Utilisateurs', href: route('users.index'), active: route().current('users.*'), icon: Users },
         { name: 'Rôles', href: route('roles.index'), active: route().current('roles.*'), icon: BriefcaseBusiness },
-        { name: 'Communique', href: route('communique.index'), active: 
+        { name: 'Communiqués', href: route('communique.index'), active: 
             route().current('communique.*') ||
             route().current('annonces.*') ||
             route().current('activites.*') ||
@@ -100,8 +100,8 @@ export default function AuthenticatedLayout({ header, children }) {
                 />
             )}
 
-            {/* Sidebar (Responsive Drawer) */}
-            <aside className={`fixed inset-y-0 left-0 z-50 flex w-64 flex-col justify-between border-r border-gray-200 bg-white p-4 transition-transform duration-200 ease-in-out lg:static lg:translate-x-0 ${
+            {/* Sidebar — fixed at all breakpoints */}
+            <aside className={`fixed inset-y-0 left-0 z-50 flex w-65 flex-col border-r border-gray-200 bg-white p-4 transition-transform duration-200 ease-in-out lg:translate-x-0 ${
                 sidebarOpen ? 'translate-x-0' : '-translate-x-full'
             }`}>
                 <div className="flex flex-1 flex-col overflow-y-auto space-y-6 pr-1">
@@ -155,59 +155,53 @@ export default function AuthenticatedLayout({ header, children }) {
                         </nav>
                     </div>
                 </div>
-
-                {/* Bottom User Menu */}
-                <div className="relative border-t border-gray-100 pt-4">
-                    <Dropdown>
-                        <Dropdown.Trigger>
-                            <button className="flex w-full items-center justify-between rounded-lg p-2 text-left hover:bg-gray-50">
-                                <div className="flex items-center gap-3">
-                                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-200 text-xs font-semibold text-gray-700">
-                                        {initials}
-                                    </div>
-                                    <div className="text-sm font-medium text-gray-800">
-                                        {userName}
-                                    </div>
-                                </div>
-                                <svg className="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 9l4-4 4 4m0 6l-4 4-4-4" />
-                                </svg>
-                            </button>
-                        </Dropdown.Trigger>
-
-                        <div className="absolute bottom-full left-0 mb-2 w-full">
-                            <Dropdown.Content alignment="left">
-                                <Dropdown.Link href={route('profile.edit')}>Profile</Dropdown.Link>
-                                <Dropdown.Link href={route('logout')} method="post" as="button">
-                                    Log Out
-                                </Dropdown.Link>
-                            </Dropdown.Content>
-                        </div>
-                    </Dropdown>
-                </div>
             </aside>
 
-            {/* Main Content Viewport */}
-            <div className="flex flex-1 flex-col min-w-0">
-                {/* Mobile Navigation Header */}
-                <header className="flex h-16 items-center justify-between border-b border-gray-200 bg-white px-4 lg:hidden">
-                    <div className="flex items-center gap-3">
+            {/* Main Content Wrapper — offset by sidebar width on desktop */}
+            <div className="flex flex-1 flex-col min-w-0 lg:ml-64">
+                {/* Top Bar — sticky, holds mobile toggle, page header, and profile menu */}
+                <header className="sticky top-0 z-30 flex h-16 items-center justify-between gap-4 border-b border-gray-200 bg-white px-4 sm:px-8">
+                    <div className="flex min-w-0 items-center gap-3">
+                        {/* Mobile menu toggle */}
                         <button
                             onClick={() => setSidebarOpen(true)}
-                            className="p-2 text-gray-600 hover:bg-gray-100 rounded-lg"
+                            className="p-2 -ml-2 text-gray-600 hover:bg-gray-100 rounded-lg lg:hidden"
                         >
                             <Menu className="h-6 w-6" />
                         </button>
-                        <span className="font-semibold text-gray-900 text-sm">AGES</span>
+
+                        {/* Page header / breadcrumb content, or fallback brand on mobile */}
+                        {header ? (
+                            <div className="min-w-0 truncate">{header}</div>
+                        ) : (
+                            <span className="font-semibold text-gray-900 text-sm lg:hidden">AGES</span>
+                        )}
+                    </div>
+
+                    {/* Profile Menu — top right, horizontal */}
+                    <div className="relative flex-shrink-0">
+                        <Dropdown>
+                            <Dropdown.Trigger>
+                                <button className="flex items-center gap-2 rounded-lg p-1.5 pr-2 hover:bg-gray-50">
+                                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-200 text-xs font-semibold text-gray-700">
+                                        {initials}
+                                    </div>
+                                    <span className="hidden sm:block text-sm font-medium text-gray-800">
+                                        {userName}
+                                    </span>
+                                    <ChevronDown className="h-4 w-4 text-gray-400" />
+                                </button>
+                            </Dropdown.Trigger>
+
+                            <Dropdown.Content alignment="right">
+                                <Dropdown.Link href={route('profile.edit')}>Profil</Dropdown.Link>
+                                <Dropdown.Link href={route('logout')} method="post" as="button">
+                                    Déconnexion
+                                </Dropdown.Link>
+                            </Dropdown.Content>
+                        </Dropdown>
                     </div>
                 </header>
-
-                {/* Page Header Header / Breadcrumb Topbar */}
-                {header && (
-                    <header className="flex min-h-16 items-center border-b border-gray-200 bg-white px-4 sm:px-8 py-3">
-                        {header}
-                    </header>
-                )}
 
                 {/* Main Content Area */}
                 <main className="flex-1 p-4 sm:p-8 overflow-y-auto">{children}</main>

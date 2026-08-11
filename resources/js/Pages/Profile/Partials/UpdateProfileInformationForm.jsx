@@ -14,8 +14,9 @@ export default function UpdateProfileInformation({
 
     const { data, setData, patch, errors, processing, recentlySuccessful } =
         useForm({
-            name: user.name,
+            nom: user.nom,
             email: user.email,
+            tel: user.tel,
         });
 
     const submit = (e) => {
@@ -28,29 +29,29 @@ export default function UpdateProfileInformation({
         <section className={className}>
             <header>
                 <h2 className="text-lg font-medium text-gray-900">
-                    Profile Information
+                    Informations du profil
                 </h2>
 
                 <p className="mt-1 text-sm text-gray-600">
-                    Update your account's profile information and email address.
+                    Modifier les informations de votre profil.
                 </p>
             </header>
 
             <form onSubmit={submit} className="mt-6 space-y-6">
                 <div>
-                    <InputLabel htmlFor="name" value="Name" />
+                    <InputLabel htmlFor="nom" value="Nom" />
 
                     <TextInput
-                        id="name"
+                        id="nom"
                         className="mt-1 block w-full"
-                        value={data.name}
-                        onChange={(e) => setData('name', e.target.value)}
+                        value={data.nom}
+                        onChange={(e) => setData('nom', e.target.value)}
                         required
                         isFocused
-                        autoComplete="name"
+                        autoComplete="nom"
                     />
 
-                    <InputError className="mt-2" message={errors.name} />
+                    <InputError className="mt-2" message={errors.nom} />
                 </div>
 
                 <div>
@@ -69,31 +70,46 @@ export default function UpdateProfileInformation({
                     <InputError className="mt-2" message={errors.email} />
                 </div>
 
+                <div>
+                    <InputLabel htmlFor="tel" value="Téléphone" />
+
+                    <TextInput
+                        id="tel"
+                        type="tel"
+                        className="mt-1 block w-full"
+                        value={data.tel}
+                        onChange={(e) => setData('tel', e.target.value)}
+                        required
+                        autoComplete="tel"
+                    />
+
+                    <InputError className="mt-2" message={errors.tel} />
+                </div>
+
                 {mustVerifyEmail && user.email_verified_at === null && (
                     <div>
                         <p className="mt-2 text-sm text-gray-800">
-                            Your email address is unverified.
+                            Votre email n'est pas vérifié.
                             <Link
                                 href={route('verification.send')}
                                 method="post"
                                 as="button"
                                 className="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                             >
-                                Click here to re-send the verification email.
+                                Cliquez ici pour renvoyer le mail de vérification.
                             </Link>
                         </p>
 
                         {status === 'verification-link-sent' && (
                             <div className="mt-2 text-sm font-medium text-green-600">
-                                A new verification link has been sent to your
-                                email address.
+                                Un nouveau lien de vérification a été envoyé à votre adresse email.
                             </div>
                         )}
                     </div>
                 )}
 
                 <div className="flex items-center gap-4">
-                    <PrimaryButton disabled={processing}>Save</PrimaryButton>
+                    <PrimaryButton disabled={processing}>Enregistrer</PrimaryButton>
 
                     <Transition
                         show={recentlySuccessful}
@@ -103,7 +119,7 @@ export default function UpdateProfileInformation({
                         leaveTo="opacity-0"
                     >
                         <p className="text-sm text-gray-600">
-                            Saved.
+                            Enregistré.
                         </p>
                     </Transition>
                 </div>

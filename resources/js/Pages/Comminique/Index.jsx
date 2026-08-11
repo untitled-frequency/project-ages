@@ -39,8 +39,7 @@ export default function Index({ reunions, activites, annonces, activeTab = 'anno
 
             <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8 space-y-6">
                 
-                {/* Navigation / Tabs Selector */}
-                <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-2 flex space-x-2 justify-center w-fit mx-auto">
+                <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-1.5 flex space-x-1.5 w-full sm:w-fit max-w-full overflow-x-auto no-scrollbar mx-auto">
                     {tabs.map((tab) => {
                         const Icon = tab.icon;
                         const isActive = activeTab === tab.id;
@@ -48,16 +47,16 @@ export default function Index({ reunions, activites, annonces, activeTab = 'anno
                             <button
                                 key={tab.id}
                                 onClick={() => handleTabChange(tab.id)}
-                                className={`flex items-center gap-2 px-4 py-2.5 text-sm font-medium rounded-lg transition-all ${
+                                className={`flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium rounded-lg transition-all flex-shrink-0 whitespace-nowrap ${
                                     isActive
                                         ? 'bg-violet-600 text-white shadow-sm'
                                         : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
                                 }`}
                             >
-                                <Icon className="w-4 h-4" />
-                                <span>{tab.label}</span>
+                                <Icon className="w-4 h-4 flex-shrink-0" />
+                                <span className='font-semibold'>{tab.label}</span>
                                 <span
-                                    className={`ml-1.5 px-2 py-0.5 text-xs rounded-full ${
+                                    className={`ml-1 px-1.5 sm:px-2 py-0.5 text-xs rounded-full ${
                                         isActive
                                             ? 'bg-violet-700 text-white'
                                             : 'bg-gray-200 text-gray-700'

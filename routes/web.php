@@ -55,6 +55,7 @@ Route::middleware(['auth'])->group(function () {
 Route::middleware(['auth'])->group(function () {
     Route::resource('annonces', AnnonceController::class);
 });
+Route::get('/annonces/{annonce}', [AnnonceController::class, 'show'])->name('annonces.show');
 
 Route::middleware(['auth'])->group(function () {
     Route::resource('reunions', ReunionController::class);
