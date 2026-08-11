@@ -37,34 +37,31 @@
 
 **Function Operaitionel**
 - creation, modification, suppression des contributions
-- 
 
 ## Gestion des Reunions
 **Manques**
-- creation d'un template pour les reunions (creation dynamique des pages) *idee*
-- selection des membres presents/absents lors de la modification d'une reunion
 
 **Function Operaitionel**
 - creation, modification, suppression des reunions
 - distinction des reunions a venir/passées
-- 
+- selection des membres presents/absents lors de la modification d'une reunion
+- creation d'un template pour les reunions (creation dynamique des pages) *idee*
 
 
 ## Gestion des Activites
 **Manques**
-- creation d'un template pour les activites (creation dynamique des pages) *idee*
 
 **Function Operaitionel**
 - creation, modification, suppression des activites
-- 
+- creation d'un template pour les activites (creation dynamique des pages) *idee*
 
 ## Gestion des Annonces
 **Manques**
-- creation d'un template pour les annonces (creation dynamique des pages) *idee*
 
 
 **Function Operaitionel**
 - creation, modification, suppression des annonces
 - recherche
+- creation d'un template pour les annonces (creation dynamique des pages) *idee*
 
 
