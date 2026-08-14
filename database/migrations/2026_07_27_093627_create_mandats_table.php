@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('mandats', function (Blueprint $table) {
             $table->id();
             $table->date("dateDebut");
-            $table->date("dateFin");
+            $table->date("dateFin")->nullable();
             $table->string("status");
             $table->foreignId("annee_id")->constrained();
         });

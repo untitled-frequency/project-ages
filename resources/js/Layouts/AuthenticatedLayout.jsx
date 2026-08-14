@@ -2,35 +2,38 @@ import React, { useState } from 'react';
 import ApplicationLogo from '@/Components/ApplicationLogo';
 import Dropdown from '@/Components/Dropdown';
 import { Link, usePage } from '@inertiajs/react';
-import { 
-    LayoutDashboard, 
-    Users, 
-    BriefcaseBusiness, 
-    CircleDollarSign, 
-    HandCoins, 
-    ChevronDown, 
+import {
+    LayoutDashboard,
+    Users,
+    BriefcaseBusiness,
+    CircleDollarSign,
+    HandCoins,
+    ChevronDown,
     Landmark,
     Megaphone,
     Menu,
     X,
     Vote,
+<<<<<<< HEAD
+    CalendarDays
+=======
     Wallet
+>>>>>>> main
 } from 'lucide-react';
 
 function CollapseLinks() {
-    const isFinanceActive = 
-        route().current('contributions.*') || 
+    const isFinanceActive =
+        route().current('contributions.*') ||
         route().current('operationFinanciere.*');
 
     return (
-        <details 
-            key={isFinanceActive ? 'open' : 'closed'} 
+        <details
+            key={isFinanceActive ? 'open' : 'closed'}
             className="group [&_summary::-webkit-details-marker]:hidden"
             open={isFinanceActive}
         >
-            <summary className={`flex cursor-pointer items-center justify-between rounded-lg px-3 py-2 text-sm font-medium transition-colors list-none ${
-                isFinanceActive ? 'text-gray-900 font-semibold bg-gray-50' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
-            }`}>
+            <summary className={`flex cursor-pointer items-center justify-between rounded-lg px-3 py-2 text-sm font-medium transition-colors list-none ${isFinanceActive ? 'text-gray-900 font-semibold bg-gray-50' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                }`}>
                 <div className="flex items-center gap-3">
                     <CircleDollarSign className="h-4 w-4" />
                     <span>Finance</span>
@@ -41,22 +44,20 @@ function CollapseLinks() {
             <div className="mt-1 space-y-1 pl-6">
                 <Link
                     href={route('operationFinanciere.index')}
-                    className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
-                    route().current('operationFinanciere.*')
+                    className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${route().current('operationFinanciere.*')
                         ? 'bg-gray-100 text-gray-900'
                         : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
-                    }`}
+                        }`}
                 >
                     <Landmark className="h-4 w-4" />
                     <span>Depenses & Revenus</span>
                 </Link>
                 <Link
                     href={route('contributions.index')}
-                    className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
-                    route().current('contributions.*')
+                    className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${route().current('contributions.*')
                         ? 'bg-gray-100 text-gray-900'
                         : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
-                    }`}
+                        }`}
                 >
                     <Wallet className="h-4 w-4" />
                     <span>Contributions</span>
@@ -74,13 +75,15 @@ export default function AuthenticatedLayout({ header, children }) {
         { name: 'Dashboard', href: route('dashboard'), active: route().current('dashboard'), icon: LayoutDashboard },
         { name: 'Utilisateurs', href: route('users.index'), active: route().current('users.*'), icon: Users },
         { name: 'Rôles', href: route('roles.index'), active: route().current('roles.*'), icon: BriefcaseBusiness },
-        { name: 'Communiqués', href: route('communique.index'), active: 
-            route().current('communique.*') ||
-            route().current('annonces.*') ||
-            route().current('activites.*') ||
-            route().current('reunions.*'), 
-            icon: Megaphone 
+        {
+            name: 'Communiqués', href: route('communique.index'), active:
+                route().current('communique.*') ||
+                route().current('annonces.*') ||
+                route().current('activites.*') ||
+                route().current('reunions.*'),
+            icon: Megaphone
         },
+        { name: 'Mandat', href: route('mandats.index'), active: route().current('mandats.*'), icon: CalendarDays },
     ];
 
     const userName = user?.nom || 'User';
@@ -95,16 +98,21 @@ export default function AuthenticatedLayout({ header, children }) {
         <div className="flex min-h-screen text-gray-900 bg-gray-50/50">
             {/* Mobile Backdrop Overlay */}
             {sidebarOpen && (
-                <div 
+                <div
                     className="fixed inset-0 z-40 bg-black/50 lg:hidden"
                     onClick={() => setSidebarOpen(false)}
                 />
             )}
 
             {/* Sidebar — fixed at all breakpoints */}
+<<<<<<< HEAD
+            <aside className={`fixed inset-y-0 left-0 z-50 flex w-65 flex-col border-r border-gray-200 bg-white p-4 transition-transform duration-200 ease-in-out lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'
+                }`}>
+=======
             <aside className={`fixed inset-y-0 left-0 z-50 flex w-67 flex-col border-r border-gray-200 bg-white p-4 transition-transform duration-200 ease-in-out lg:translate-x-0 ${
                 sidebarOpen ? 'translate-x-0' : '-translate-x-full'
             }`}>
+>>>>>>> main
                 <div className="flex flex-1 flex-col overflow-y-auto space-y-6 pr-1">
                     {/* Brand Header */}
                     <div className="flex items-center justify-between px-2">
@@ -112,9 +120,9 @@ export default function AuthenticatedLayout({ header, children }) {
                             <ApplicationLogo className="h-8 w-auto fill-current text-black" />
                             <span className="font-semibold text-gray-900 text-sm">All Generations of ESSFAR</span>
                         </Link>
-                        
+
                         {/* Close button for mobile */}
-                        <button 
+                        <button
                             onClick={() => setSidebarOpen(false)}
                             className="lg:hidden p-1 text-gray-500 hover:text-gray-700"
                         >
@@ -134,8 +142,8 @@ export default function AuthenticatedLayout({ header, children }) {
                                     href={item.href}
                                     onClick={() => setSidebarOpen(false)}
                                     className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${item.active
-                                            ? 'bg-gray-100 text-gray-900'
-                                            : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                                        ? 'bg-gray-100 text-gray-900'
+                                        : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
                                         }`}
                                 >
                                     <item.icon className="h-4 w-4" />
@@ -146,8 +154,8 @@ export default function AuthenticatedLayout({ header, children }) {
                             <Link
                                 href={route('election.index')}
                                 className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${route().current('election.*')
-                                        ? 'bg-gray-100 text-gray-900'
-                                        : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                                    ? 'bg-gray-100 text-gray-900'
+                                    : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
                                     }`}
                             >
                                 <Vote className="h-4 w-4" />

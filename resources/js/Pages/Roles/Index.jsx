@@ -1,26 +1,9 @@
-import React, { useState } from 'react';
-import { useForm, router } from '@inertiajs/react';
+import React from 'react';
+import { Link, router } from '@inertiajs/react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
 
 export default function RoleIndex({ roles, users, mandats, selectedMandatId, availableRoleTypes }) {
-    const [isModalOpen, setIsModalOpen] = useState(false);
-
-    const { data, setData, post, processing, errors, reset } = useForm({
-        user_id: '',
-        mandat_id: selectedMandatId || '',
-        role: 'tresorier',
-    });
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        post(route('roles.store'), {
-            onSuccess: () => {
-                reset();
-                setIsModalOpen(false);
-            },
-        });
-    };
 
     const handleMandatFilter = (e) => {
         const mandatId = e.target.value;
@@ -48,12 +31,12 @@ export default function RoleIndex({ roles, users, mandats, selectedMandatId, ava
                         <h1 className="text-2xl font-bold text-gray-800">Gestion des Rôles & Mandats</h1>
                         <p className="text-sm text-gray-600">Attribution des rôles et fonctions par mandat</p>
                     </div>
-                    <button
-                        onClick={() => setIsModalOpen(true)}
-                        className="px-4 py-2 bg-violet-500 text-white rounded-lg hover:bg-violet-600 transition font-medium"
+                    <Link
+                        href={route('roles.create')}
+                        className="inline-flex items-center gap-2 px-4 py-2 bg-ages-blue-600 text-white rounded-lg hover:bg-ages-blue-700 transition font-medium"
                     >
                         + Attribuer un Rôle
-                    </button>
+                    </Link>
                 </div>
 
                 {/* Mandat Filter Dropdown */}
@@ -62,7 +45,7 @@ export default function RoleIndex({ roles, users, mandats, selectedMandatId, ava
                     <select
                         value={selectedMandatId || ''}
                         onChange={handleMandatFilter}
-                        className="w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+                        className="w-full border-gray-300 rounded-md shadow-sm focus:ring-ages-blue-500 focus:border-ages-blue-500"
                     >
                         <option value="">Tous les mandats</option>
                         {mandats.map((mandat) => (
@@ -95,7 +78,7 @@ export default function RoleIndex({ roles, users, mandats, selectedMandatId, ava
                                         </td>
                                         <td className="px-6 py-4 text-sm text-gray-500">{item.user?.tel}</td>
                                         <td className="px-6 py-4 text-sm font-semibold">
-                                            <span className="px-1 py-1 bg-indigo-50 text-indigo-700 rounded-full text-xs border border-indigo-200">
+                                            <span className="px-1 py-1 bg-ages-blue-50 text-ages-blue-700 rounded-full text-xs border border-ages-blue-200">
                                                 {availableRoleTypes[item.role] || item.role}
                                             </span>
                                         </td>
@@ -105,7 +88,7 @@ export default function RoleIndex({ roles, users, mandats, selectedMandatId, ava
                                         <td className="px-6 py-4 text-right text-sm">
                                             <button
                                                 onClick={() => handleDelete(item)}
-                                                className="text-red-600 hover:text-red-900 font-medium"
+                                                className="text-ages-red-600 hover:text-ages-red-800 font-medium"
                                             >
                                                 Retirer
                                             </button>
@@ -122,83 +105,6 @@ export default function RoleIndex({ roles, users, mandats, selectedMandatId, ava
                         </tbody>
                     </table>
                 </div>
-
-                {/* Modal Form */}
-                {isModalOpen && (
-                    <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50">
-                        <div className="bg-white rounded-lg p-6 w-full max-w-md shadow-lg">
-                            <h2 className="text-xl font-bold text-gray-800 mb-4">Attribuer un Rôle</h2>
-                            <form onSubmit={handleSubmit} className="space-y-4">
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700">Utilisateur</label>
-                                    <select
-                                        value={data.user_id}
-                                        onChange={(e) => setData('user_id', e.target.value)}
-                                        className="mt-1 w-full border-gray-300 rounded-md shadow-sm"
-                                    >
-                                        <option value="">-- Sélectionner un utilisateur --</option>
-                                        {users.map((u) => (
-                                            <option key={u.id} value={u.id}>
-                                                {u.nom} ({u.email})
-                                            </option>
-                                        ))}
-                                    </select>
-                                    {errors.user_id && <p className="text-red-500 text-xs mt-1">{errors.user_id}</p>}
-                                </div>
-
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700">Mandat</label>
-                                    <select
-                                        value={data.mandat_id}
-                                        onChange={(e) => setData('mandat_id', e.target.value)}
-                                        className="mt-1 w-full border-gray-300 rounded-md shadow-sm"
-                                    >
-                                        <option value="">-- Sélectionner un mandat --</option>
-                                        {mandats.map((m) => (
-                                            <option key={m.id} value={m.id}>
-                                                {m.label} {m.status === 'actif' ? '(Actif)' : ''}
-                                            </option>
-                                        ))}
-                                    </select>
-                                    {errors.mandat_id && <p className="text-red-500 text-xs mt-1">{errors.mandat_id}</p>}
-                                </div>
-
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700">Rôle / Fonction</label>
-                                    <select
-                                        value={data.role}
-                                        onChange={(e) => setData('role', e.target.value)}
-                                        className="mt-1 w-full border-gray-300 rounded-md shadow-sm"
-                                    >
-                                        {Object.entries(availableRoleTypes).map(([key, label]) => (
-                                            <option key={key} value={key}>
-                                                {label}
-                                            </option>
-                                        ))}
-                                    </select>
-                                    {errors.role && <p className="text-red-500 text-xs mt-1">{errors.role}</p>}
-                                </div>
-
-                                <div className="flex justify-end space-x-3 pt-4">
-                                    <button
-                                        type="button"
-                                        onClick={() => setIsModalOpen(false)}
-                                        className="px-4 py-2 border rounded-md text-gray-600 hover:bg-gray-100"
-                                    >
-                                        Annuler
-                                    </button>
-                                    <button
-                                        type="submit"
-                                        disabled={processing}
-                                        className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700"
-                                    >
-                                        Enregistrer
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                )}
             </div>
         </AuthenticatedLayout>
     );
