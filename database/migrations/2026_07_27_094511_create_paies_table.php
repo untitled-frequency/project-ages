@@ -12,8 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('paies', function (Blueprint $table) {
+            $table->id();
             $table->foreignId("user_id")->constrained();
-            $table->foreignId("contribution_id")->constrained()->cascadeOnDelete();  
+            $table->foreignId("contribution_id")->constrained()->cascadeOnDelete();
+            $table->decimal("montantPaye", 10, 2);  
+            $table->timestamps();
         });
     }
 

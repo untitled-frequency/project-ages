@@ -86,7 +86,7 @@ export default function Index({ annonces, filters }) {
                         <Plus className="w-4 h-4" />
                         Publier une annonce
                     </Link>    
-                </div>
+            </div>
 
                 <div>
                     {annoncesList.length > 0 ? (
@@ -157,8 +157,7 @@ export default function Index({ annonces, filters }) {
                         </div>
                     )}
                 </div>
-
-            </div>
+th
         </AuthenticatedLayout>
     )
 }

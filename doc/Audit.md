@@ -38,6 +38,7 @@
 **Function Operaitionel**
 - creation, modification, suppression des contributions
 
+# Communication
 ## Gestion des Reunions
 **Manques**
 
