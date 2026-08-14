@@ -3,137 +3,264 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Requests\UpdateContributionRequest;
-use App\Http\Requests\StoreContributionRequest;
-use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
+use Inertia\Response;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
 use App\Models\Paie;
 use App\Models\Annee;
 use App\Models\Contribution;
+use App\Models\OperationFinanciere;
 use App\Models\User;
 
 class ContributionController extends Controller
 {
     /**
-     * Display a listing of the resource grouped by user.
+     * Liste des membres avec leur statut de contribution pour l'année en cours,
+     * plus une carte récapitulative (contributions perçues / dépenses / solde).
      */
-    public function index(Request $request)
-    {   
+    public function index(Request $request): Response
+    {
         $idAnneeEnCours = Annee::max('id');
+        $annee = Annee::find($idAnneeEnCours);
 
-        $users = User::query()
-            ->when($request->input('search'), function ($query, $search) {
-                $query->where(function ($q) use ($search) {
-                    $q->where('nom', 'like', '%' . $search . '%')
-                      ->orWhere('email', 'like', '%' . $search . '%');
-                });
-            })
-            // Select user details along with aggregated contribution total and latest contribution ID
-            ->select('users.*')
-            ->selectRaw('SUM(contributions.montant) as montantTotal')
-            ->join('paies', 'users.id', '=', 'paies.user_id')
-            ->join('contributions', 'paies.contribution_id', '=', 'contributions.id')
-            ->where('contributions.annee_id', $idAnneeEnCours)
-            ->groupBy('users.id')
-            ->paginate(10);
-        
-        $users->getCollection()->transform(function ($user) use ($idAnneeEnCours) {
-            $user->latestContributionId = Contribution::whereHas('paie', function ($q) use ($user) {
-                $q->where('user_id', $user->id);
-            })
-            ->where('annee_id', $idAnneeEnCours)
-            ->latest('id')
-            ->value('id');
+        $contribution = Contribution::where('annee_id', $idAnneeEnCours)->first();
 
-            return $user;
-        });
-            
-        return Inertia::render('Contribution/Index', [
-            'users' => $users,
+        $montantMembre = $contribution?->montantMembre ?? 0;
+        $montantMembreBureau = $contribution?->montantMembreBureau ?? 0;
+
+        $selectedStatut = $request->input('statut');
+        $search = $request->input('search'); // 1. Capture search query
+
+        $usersQuery = User::with([
+            'roles',
+            'paies' => function ($query) use ($idAnneeEnCours) {
+                $query->whereHas('contribution', fn ($q) => $q->where('annee_id', $idAnneeEnCours))
+                    ->orderBy('id', 'desc');
+            },
         ]);
-    }
+
+        // 2. Filter by search query (Name or Email)
+        if ($search) {
+            $usersQuery->where(function ($q) use ($search) {
+                $q->where('nom', 'like', "%{$search}%")
+                ->orWhere('email', 'like', "%{$search}%");
+            });
+        }
+
+        $users = $usersQuery->get()->map(function ($user) use ($montantMembre, $montantMembreBureau) {
+            $estMembreBureau = $user->roles->isNotEmpty();
+            $montantExige = $estMembreBureau ? $montantMembreBureau : $montantMembre;
+
+            $montantTotalPaye = $user->paies->sum('montantPaye');
+            $resteAPayer = max($montantExige - $montantTotalPaye, 0);
+            $statut = $resteAPayer <= 0 ? 'A jour' : 'En retard';
+
+            return [
+                'id' => $user->id,
+                'nom' => $user->nom,
+                'email' => $user->email,
+                'estMembreBureau' => $estMembreBureau,
+                'dernierPaiement' => $user->paies->first(),
+                'montantTotalPaye' => $montantTotalPaye,
+                'totalAPayer' => $montantExige,
+                'resteAPayer' => $resteAPayer,
+                'statut' => $statut,
+            ];
+        });
+
+        if ($selectedStatut) {
+            $users = $users->filter(function ($u) use ($selectedStatut) {
+                return $selectedStatut === 'a_jour'
+                    ? $u['statut'] === 'A jour'
+                    : $u['statut'] === 'En retard';
+            })->values();
+        }
+
+        $perPage = 10;
+        $currentPage = LengthAwarePaginator::resolveCurrentPage();
+
+        $usersPaginated = new LengthAwarePaginator(
+            $users->slice(($currentPage - 1) * $perPage, $perPage)->values(),
+            $users->count(),
+            $perPage,
+            $currentPage,
+            [
+                'path' => Paginator::resolveCurrentPath(),
+                'query' => $request->query(),
+            ]
+        );
+
+        $totalContributionsPercues = Paie::whereHas(
+            'contribution',
+            fn ($q) => $q->where('annee_id', $idAnneeEnCours)
+        )->sum('montantPaye');
+
+        $operationsQuery = OperationFinanciere::query();
+        if ($annee?->dateDebut && $annee?->dateFin) {
+            $operationsQuery->whereBetween('date', [$annee->dateDebut, $annee->dateFin]);
+        }
+
+        $totalDepenses = (clone $operationsQuery)->where('type', 'depense')->sum('montant');
+        $totalRecettes = (clone $operationsQuery)->where('type', 'recette')->sum('montant');
+
+        $solde = ($totalContributionsPercues + $totalRecettes) - $totalDepenses;
+
+        return Inertia::render('Contribution/Index', [
+            'users' => $usersPaginated,
+            'selectedStatut' => $selectedStatut,
+            'search' => $search, // 3. Pass search query back to frontend
+            'contribution' => $contribution,
+            'recap' => [
+                'totalContributions' => $totalContributionsPercues,
+                'totalDepenses' => $totalDepenses,
+                'totalRecettes' => $totalRecettes,
+                'solde' => $solde,
+            ],
+        ]);
+}
 
     /**
-     * Show the form for creating a new resource.
+     * Formulaire de définition du montant de la contribution pour l'année en cours.
      */
     public function create()
     {
-        $users = User::select('id', 'nom', 'email')->get();
-
-        return Inertia::render('Contribution/Create', [
-            'users' => $users,
-        ]);
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreContributionRequest $request)
-    {
-        $validated = $request->validated();
         $idAnneeEnCours = Annee::max('id');
 
-        DB::transaction(function () use ($validated, $idAnneeEnCours) {
-            $contribution = Contribution::create([
-                'user_id'  => $validated['user_id'],
-                'montant'  => $validated['montant'],
-                'annee_id' => $idAnneeEnCours,
-                'dateContribution' => now()->format('Y-m-d'),  
-            ]);
+        if (Contribution::where('annee_id', $idAnneeEnCours)->exists()) {
+            return redirect()->route('contribution.index')
+                ->with('error', "Une contribution est déjà définie pour l'année en cours.");
+        }
 
-            Paie::create([
-                'user_id'         => $validated['user_id'],        
-                'contribution_id' => $contribution->id,                    
-            ]);
-        });
+        return Inertia::render('Contribution/Create');
+    }
 
-        return redirect()->route('contributions.index')
-            ->with('success', 'Contribution enregistrée avec succès.');
+    public function store(Request $request)
+    {
+        $idAnneeEnCours = Annee::max('id');
+
+        $validated = $request->validate([
+            'montantMembre' => 'required|numeric|min:0',
+            'montantMembreBureau' => 'required|numeric|min:0|gte:montantMembre',
+        ]);
+
+        if (Contribution::where('annee_id', $idAnneeEnCours)->exists()) {
+            return back()->withErrors([
+                'annee_id' => "Une contribution est déjà définie pour l'année en cours.",
+            ]);
+        }
+
+        $validated['annee_id'] = $idAnneeEnCours;
+
+        Contribution::create($validated);
+
+        return redirect()->route('contribution.index')
+            ->with('success', 'Montant de la contribution défini avec succès.');
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Formulaire de modification du montant de la contribution.
      */
     public function edit(Contribution $contribution)
     {
-        $paie = Paie::where('contribution_id', $contribution->id)
-            ->with('user')
-            ->first();
-
         return Inertia::render('Contribution/Edit', [
             'contribution' => $contribution,
-            'paie'        => $paie,
-            'user'        => $paie?->user,
         ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateContributionRequest $request, Contribution $contribution)
+    public function update(Request $request, Contribution $contribution)
     {
-        $validated = $request->validated(); 
-        
-        DB::transaction(function () use ($validated, $contribution) {
-            $contribution->update([
-                'montant' => $validated['montant'], 
-            ]);
-        });
+        $validated = $request->validate([
+            'montantMembre' => 'required|numeric|min:0',
+            'montantMembreBureau' => 'required|numeric|min:0|gte:montantMembre',
+        ]);
+
+        $contribution->update($validated);
 
         return redirect()->route('contributions.index')
-            ->with('success', 'Contribution modifiée avec succès.');
+            ->with('success', 'Contribution mise à jour avec succès.');
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Supprime la configuration de contribution d'une année (uniquement si aucun
+     * paiement n'y est déjà rattaché, pour ne pas perdre l'historique financier).
      */
     public function destroy(Contribution $contribution)
     {
-        DB::transaction(function () use ($contribution) {
-            $contribution->delete();
-        });
-        
-        return redirect()->route('contributions.index')
+        if ($contribution->paies()->exists()) {
+            return back()->withErrors([
+                'contribution' => 'Impossible de supprimer : des paiements existent déjà pour cette contribution.',
+            ]);
+        }
+
+        $contribution->delete();
+
+        return redirect()->route('contribution.index')
             ->with('success', 'Contribution supprimée avec succès.');
+    }
+
+    // ------------------------------------------------------------------
+    // Gestion des paiements (Paie) rattachés à une contribution
+    // ------------------------------------------------------------------
+
+    public function createPaiement(Contribution $contribution, Request $request)
+    {
+        $user = User::findOrFail($request->query('user_id'));
+
+        return Inertia::render('Paiement/Create', [
+            'contribution' => $contribution,
+            'user' => $user->only('id', 'nom', 'email'),
+        ]);
+    }
+
+    public function editPaiement(Paie $paie)
+    {
+        $paie->load('user:id,nom,email');
+
+        return Inertia::render('Paiement/Edit', [
+            'paie' => $paie,
+        ]);
+    }
+
+    public function updatePaiement(Request $request, Paie $paie)
+    {
+        $validated = $request->validate([
+            'montantPaye' => 'required|numeric|min:0.01',
+        ]);
+
+        $paie->update($validated);
+
+        return redirect()->route('contributions.index')
+            ->with('success', 'Paiement mis à jour avec succès.');
+    }
+    /**
+     * Enregistre un paiement d'un membre pour la contribution courante.
+     */
+    public function storePaiement(Request $request, Contribution $contribution)
+    {
+        $validated = $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'montantPaye' => 'required|numeric|min:0.01',
+        ]);
+
+        Paie::create([
+            'user_id' => $validated['user_id'],
+            'contribution_id' => $contribution->id,
+            'montantPaye' => $validated['montantPaye'],
+        ]);
+
+        // Redirect to index instead of back()
+        return redirect()->route('contributions.index')
+            ->with('success', 'Paiement enregistré avec succès.');
+    }
+
+    /**
+     * Supprime un paiement (corrige "impossibilité de supprimer une contribution").
+     */
+    public function destroyPaiement(Paie $paie)
+    {
+        $paie->delete();
+
+        return back()->with('success', 'Paiement supprimé avec succès.');
     }
 }

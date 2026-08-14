@@ -18,9 +18,9 @@ class ContributionFactory extends Factory
     public function definition(): array
     {
         return [
-            "montant" => $this->faker->numberBetween(10000, 30000),
+            "montantMembre" => $this->faker->numberBetween(10000, 30000),
+            "montantMembreBureau" => $this->faker->numberBetween(10000, 50000),
             "annee_id" => $this->faker->randomElement([1, 2, 3]),
-            "dateContribution" => $this->faker->dateTimeBetween('-3 year', '+1 year')->format('Y-m-d'),
         ];
     }
 }

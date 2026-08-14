@@ -13,9 +13,10 @@ return new class extends Migration
     {
         Schema::create('contributions', function (Blueprint $table) {
             $table->id();
-            $table->double("montant");
-            $table->date("dateContribution");
+            $table->double("montantMembre");
+            $table->double("montantMembreBureau");
             $table->foreignId("annee_id")->constrained();
+            $table->timestamps();
         });
     }
 
