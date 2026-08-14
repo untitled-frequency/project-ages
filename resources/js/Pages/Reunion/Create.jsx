@@ -1,7 +1,8 @@
 import React from "react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import {Head, useForm, Link} from "@inertiajs/react";
-import { CalendarPlus2, Calendar, MapPin, NotepadText } from "lucide-react";
+import { CalendarPlus2, Calendar, MapPin, NotepadText, Save } from "lucide-react";
+import PrimaryButton from "@/Components/PrimaryButton";
 
 export default function Create({users}){
     const {data, setData, post, errors, processing} = useForm({
@@ -95,14 +96,14 @@ export default function Create({users}){
                                 >
                                     Annuler 
                                 </Link>
-                                <button
+                                <PrimaryButton
                                     type="submit"
                                     onClick={handleSubmit}
                                     disabled={processing}
-                                    className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md text-sm font-medium shadow-sm disabled:opacity-50"
-                                >
-                                    {processing ? 'Enregistrement...' : 'Enregistrer'}
-                                </button>
+                                >   
+                                    <Save className="w-4 h-4" />
+                                    Créer la réunion
+                                </PrimaryButton>
                             </div>
                         </form>
                     </div>

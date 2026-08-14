@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->date("dateDebut");
             $table->date("dateFin");
+            $table->foreignId('contribution_id')->constrained()->cascadeOnDelete();
         });
     }
 
@@ -23,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('annees_academique');
+        Schema::dropIfExists('annees');
     }
 };

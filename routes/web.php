@@ -45,8 +45,22 @@ Route::middleware(['auth'])->group(function () {
 });
 
 Route::middleware(['auth'])->group(function () {
-    Route::resource('contributions', ContributionController::class);
+    Route::resource('contributions', ContributionController::class)->except(['show']);
+
+    Route::get('/paiements/{paie}/edit', [ContributionController::class, 'editPaiement'])
+        ->name('paiement.edit');
+    Route::put('/paiements/{paie}', [ContributionController::class, 'updatePaiement'])
+        ->name('paiement.update');
+    Route::delete('/paiements/{paie}', [ContributionController::class, 'destroyPaiement'])
+        ->name('paiement.destroy');
+
+    Route::get('/contributions/{contribution}/paiement/create', [ContributionController::class, 'createPaiement'])
+        ->name('contributions.paiement.create');
+
+    Route::post('/contributions/{contribution}/paiement', [ContributionController::class, 'storePaiement'])
+        ->name('contributions.paiement.store');
 });
+
 
 Route::middleware(['auth'])->group(function () {
     Route::resource('operationFinanciere', OperationFinanciereController::class);

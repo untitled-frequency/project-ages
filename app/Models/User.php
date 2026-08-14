@@ -63,10 +63,11 @@ class User extends Authenticatable
         return $this->hasMany(OperationFinanciere::class);
     }
 
-    public function paie()
+    public function paies()
     {
         return $this->hasMany(Paie::class);
     }
+
 
     public function contribution()
     {
