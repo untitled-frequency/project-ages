@@ -73,4 +73,18 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('election', ElectionController::class);
 });
 
+Route::middleware(['auth'])->group(function () {
+    Route::get('/roles', [RoleController::class, 'index'])->name('roles.index');
+    Route::get('/roles/create', [RoleController::class, 'create'])->name('roles.create'); // ← celle-ci manquait
+    Route::post('/roles', [RoleController::class, 'store'])->name('roles.store');
+    Route::delete('/roles', [RoleController::class, 'destroy'])->name('roles.destroy');
+    Route::get('/roles/{role}/edit', [RoleController::class, 'edit'])->name('roles.edit');
+    Route::put('/roles/{role}', [RoleController::class, 'update'])->name('roles.update');
+});
+use App\Http\Controllers\MandatController;
+
+Route::middleware(['auth'])->group(function () {
+    Route::resource('mandats', MandatController::class);
+});
+
 require __DIR__.'/auth.php';

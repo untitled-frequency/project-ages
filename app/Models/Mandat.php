@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Mandat extends Model
 {
@@ -24,6 +25,11 @@ class Mandat extends Model
     public function getLabelAttribute(): string
     {
         return "Mandat ({$this->dateDebut} - {$this->dateFin})";
+    }
+
+    public function annee(): BelongsTo
+    {
+        return $this->belongsTo(Annee::class);
     }
 
     public function roles()
