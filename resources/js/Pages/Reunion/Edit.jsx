@@ -2,6 +2,7 @@ import React from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, useForm, Link } from '@inertiajs/react';
 import { NotepadText, ArrowLeft, Save } from 'lucide-react';
+import PrimaryButton from '@/Components/PrimaryButton';
 
 export default function Edit({ reunion, users, participantIds }) {
     const { data, setData, put, processing, errors } = useForm({
@@ -118,22 +119,26 @@ export default function Edit({ reunion, users, participantIds }) {
                         <label className="block text-sm font-medium text-gray-700 mb-2">
                             Membres présents ({data.participants.length} sélectionné{data.participants.length > 1 ? 's' : ''})
                         </label>
-                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 border border-gray-200 rounded-lg p-3 max-h-48 overflow-y-auto bg-gray-50">
-                            {users && users.map((user) => {
+                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 border border-gray-200/80 rounded-xl p-2.5 max-h-52 overflow-y-auto bg-gray-50/50 shadow-inner scrollbar-thin scrollbar-thumb-gray-200 hover:scrollbar-thumb-gray-300">
+                            {users?.map((user) => {
                                 const isSelected = data.participants.includes(user.id);
                                 return (
                                     <button
                                         type="button"
                                         key={user.id}
                                         onClick={() => handleParticipantToggle(user.id)}
-                                        className={`flex items-center justify-between px-3 py-2 rounded-md text-xs font-medium transition-colors border text-left ${
+                                        className={`group relative flex items-center justify-between gap-2 px-3 py-2 rounded-lg text-xs font-medium transition-all duration-150 border text-left outline-none focus:ring-2 focus:ring-indigo-500/20 ${
                                             isSelected
-                                                ? 'bg-indigo-50 border-indigo-200 text-indigo-700 font-semibold'
-                                                : 'bg-white border-gray-200 text-gray-600 hover:bg-gray-100'
+                                                ? 'bg-indigo-50/80 border-indigo-300 text-indigo-900 font-semibold shadow-xs'
+                                                : 'bg-white border-gray-200 text-gray-700 hover:bg-gray-100/80 hover:border-gray-300 active:scale-[0.98]'
                                         }`}
                                     >
                                         <span className="truncate">{user.nom}</span>
-                                        {isSelected && <span className="text-indigo-600">✓</span>}
+                                        {isSelected && (
+                                            <span className="flex items-center justify-center w-4 h-4 rounded-full bg-indigo-600 text-white text-[10px] shrink-0 font-bold">
+                                                ✓
+                                            </span>
+                                        )}
                                     </button>
                                 );
                             })}
@@ -143,14 +148,13 @@ export default function Edit({ reunion, users, participantIds }) {
 
                     {/* Submit Button */}
                     <div className="flex justify-end pt-2">
-                        <button
+                        <PrimaryButton
                             type="submit"
                             disabled={processing}
-                            className="inline-flex items-center gap-2 px-5 py-2.5 bg-gray-900 hover:bg-gray-800 text-white rounded-lg text-sm font-medium transition-colors shadow-sm disabled:opacity-50"
-                        >
+                            >
                             <Save className="w-4 h-4" />
                             Mettre à jour
-                        </button>
+                        </PrimaryButton>
                     </div>
                 </form>
             </div>
