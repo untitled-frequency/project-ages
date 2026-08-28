@@ -17,6 +17,8 @@ class MandatController extends Controller
      */
     public function index(Request $request): Response
     {
+        Mandat::checkAndUpdateExpiredMandats();
+
         $query = Mandat::with('annee')->withCount('roles');
 
         if ($status = $request->input('status')) {

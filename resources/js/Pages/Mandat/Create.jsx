@@ -87,7 +87,15 @@ export default function Create({ annees }) {
                                     id="dateFin"
                                     type="date"
                                     value={data.dateFin}
-                                    onChange={(e) => setData('dateFin', e.target.value)}
+                                    onChange={(e) => {
+                                        const newDateFin = e.target.value;
+                                        const today = new Date().toISOString().split('T')[0];
+                                        if (newDateFin && newDateFin < today) {
+                                            setData((prev) => ({ ...prev, dateFin: newDateFin, status: 'inactif' }));
+                                        } else {
+                                            setData('dateFin', newDateFin);
+                                        }
+                                    }}
                                     className="mt-1 block w-full"
                                 />
                                 <p className="text-xs text-slate-500 mt-1">Laissez vide si le mandat est en cours.</p>
@@ -107,6 +115,11 @@ export default function Create({ annees }) {
                                     <option value="cloture">Clôturé</option>
                                     <option value="inactif">Inactif</option>
                                 </select>
+                                {data.dateFin && data.dateFin < new Date().toISOString().split('T')[0] && (
+                                    <p className="text-xs text-amber-600 font-semibold mt-1">
+                                        ℹ️ La date de fin est antérieure à aujourd'hui : le statut sera automatiquement réglé sur Inactif.
+                                    </p>
+                                )}
                                 <InputError message={errors.status} className="mt-1" />
                             </div>
 
