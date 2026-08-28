@@ -8,12 +8,6 @@ import { Head } from '@inertiajs/react';
 import { LayoutDashboard } from 'lucide-react';
 
 export default function Dashboard({ auth, annonces, reunions, activites, contributions, anneeEnCour, election }) {
-    console.log('--- DASHBOARD DEBUG ---');
-    console.log('annonces:', annonces);
-    console.log('reunions:', reunions);
-    console.log('activites:', activites);
-    console.log('contributions:', contributions);
-    console.log('election:', election);
 
     return (
         <AuthenticatedLayout 
