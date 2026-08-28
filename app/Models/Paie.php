@@ -13,16 +13,17 @@ class Paie extends Model
 
     protected $fillable = [
         'user_id',
-        'contribution_id'
+        'contribution_id',
+        'montantPaye'
     ];
-
-    public function contribution()
-    {
-        return $this->belongsTo(Contribution::class);
-    }
 
     public function user()
     {
         return $this->belongsTo(User::class);
     }
+
+    public function contribution()
+    {
+        return $this->belongsTo(Contribution::class);
+        }
 }

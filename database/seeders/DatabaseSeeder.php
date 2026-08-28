@@ -69,8 +69,23 @@ class DatabaseSeeder extends Seeder
             "dateFin" => "2027-05-31",
         ]);
         
+        Contribution::factory()->create([
+            "montantMembre" => 10000,
+            "montantMembreBureau" => 20000,
+            "annee_id" => 1,
+        ]);
 
-        Contribution::factory(70)->create();
+        Contribution::factory()->create([
+            "montantMembre" => 10000,
+            "montantMembreBureau" => 20000,
+            "annee_id" => 2,
+        ]);
+
+        Contribution::factory()->create([
+            "montantMembre" => 15000,
+            "montantMembreBureau" => 25000,
+            "annee_id" => 3,
+        ]);
         
         Election::factory()->create([
             "dateDebutDepot" => "2024-10-01",

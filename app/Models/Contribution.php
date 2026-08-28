@@ -13,8 +13,8 @@ class Contribution extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        "montant",
-        "dateContribution",
+        "montantMembre",
+        "montantMembreBureau",
         "annee_id",
     ];
 
