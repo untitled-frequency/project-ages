@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { router, useForm, usePage, Head, Link } from '@inertiajs/react';
 import { UserPlus, Users, SquarePen, Trash2, UserRoundSearch } from 'lucide-react';
+import DefaultButton from '@/Components/DefaultButton';
 import DangerButton from '@/Components/DangerButton';
 import Paginate from '@/Components/Paginate';
 import PrimaryButton from '@/Components/PrimaryButton';
@@ -85,6 +86,7 @@ export default function Index({ users, filters }) {
                                 <th className="p-4 text-sm font-semibold text-gray-600">Nom</th>
                                 <th className="p-4 text-sm font-semibold text-gray-600">Email</th>
                                 <th className="p-4 text-sm font-semibold text-gray-600">Téléphone</th>
+                                <th className="p-4 text-sm font-semibold text-gray-600">Status</th>
                                 <th className="p-4 text-sm font-semibold text-gray-600 text-right">Actions</th>
                             </tr>
                         </thead>
@@ -95,10 +97,21 @@ export default function Index({ users, filters }) {
                                     <td className="p-4">{user.nom}</td>
                                     <td className="p-4">{user.email}</td>
                                     <td className="p-4">{user.tel}</td>
+                                    <td className="p-4">
+                                        <span className={`px-2 py-1 rounded-full text-xs font-semibold border ${
+                                            user.status == 'actif'
+                                            ? 'bg-emerald-100'
+                                            : user.status == 'inactif'
+                                            ? 'bg-gray-50 text-gray-700'
+                                            : 'bg-gray-50 text-amber'
+                                        }`}>
+                                            {user.status}
+                                        </span>
+                                    </td>
                                     <td className="p-4 text-right space-x-2">
-                                        <Link href={route('users.edit', user.id)} className="inline-flex items-center px-3 py-1.5 bg-gray-100 text-gray-700 rounded-lg">
+                                        <DefaultButton href={route('users.edit', user.id)}>
                                             <SquarePen className="w-4 h-4 mr-1" /> Éditer
-                                        </Link>
+                                        </DefaultButton>
                                         <DangerButton onClick={() => handleDelete(user.id)}>
                                             <Trash2 className="w-4 h-4 mr-1" /> Supprimer
                                         </DangerButton>

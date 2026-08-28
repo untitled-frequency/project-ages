@@ -21,10 +21,8 @@ class ContributionController extends Controller
      */
     public function index(Request $request): Response
     {
-        $idAnneeEnCours = Annee::max('id');
-        $annee = Annee::find($idAnneeEnCours);
-
-        $contribution = Contribution::where('annee_id', $idAnneeEnCours)->first();
+        $annee = Annee::with('contribution')->latest('id')->first();
+        $contribution = $annee?->contribution;
 
         $montantMembre = $contribution?->montantMembre ?? 0;
         $montantMembreBureau = $contribution?->montantMembreBureau ?? 0;
@@ -34,8 +32,8 @@ class ContributionController extends Controller
 
         $usersQuery = User::with([
             'roles',
-            'paies' => function ($query) use ($idAnneeEnCours) {
-                $query->whereHas('contribution', fn ($q) => $q->where('annee_id', $idAnneeEnCours))
+            'paies' => function ($query) use ($annee) {
+                $query->whereHas('contribution.annees', fn ($q) => $q->where('id', $annee?->id))
                     ->orderBy('id', 'desc');
             },
         ]);
@@ -92,8 +90,8 @@ class ContributionController extends Controller
         );
 
         $totalContributionsPercues = Paie::whereHas(
-            'contribution',
-            fn ($q) => $q->where('annee_id', $idAnneeEnCours)
+            'contribution.annees',
+            fn ($q) => $q->where('id', $annee?->id)
         )->sum('montantPaye');
 
         $operationsQuery = OperationFinanciere::query();
@@ -125,10 +123,10 @@ class ContributionController extends Controller
      */
     public function create()
     {
-        $idAnneeEnCours = Annee::max('id');
+        $annee = Annee::latest('id')->first();
 
-        if (Contribution::where('annee_id', $idAnneeEnCours)->exists()) {
-            return redirect()->route('contribution.index')
+        if ($annee?->contribution_id) {
+            return redirect()->route('contributions.index')
                 ->with('error', "Une contribution est déjà définie pour l'année en cours.");
         }
 
@@ -137,24 +135,24 @@ class ContributionController extends Controller
 
     public function store(Request $request)
     {
-        $idAnneeEnCours = Annee::max('id');
+        $annee = Annee::latest('id')->first();
 
         $validated = $request->validate([
             'montantMembre' => 'required|numeric|min:0',
             'montantMembreBureau' => 'required|numeric|min:0|gte:montantMembre',
         ]);
 
-        if (Contribution::where('annee_id', $idAnneeEnCours)->exists()) {
+        if ($annee?->contribution_id) {
             return back()->withErrors([
                 'annee_id' => "Une contribution est déjà définie pour l'année en cours.",
             ]);
         }
 
-        $validated['annee_id'] = $idAnneeEnCours;
+        $contribution = Contribution::create($validated);
 
-        Contribution::create($validated);
+        $annee->update(['contribution_id' => $contribution->id]);
 
-        return redirect()->route('contribution.index')
+        return redirect()->route('contributions.index')
             ->with('success', 'Montant de la contribution défini avec succès.');
     }
 
@@ -195,7 +193,7 @@ class ContributionController extends Controller
 
         $contribution->delete();
 
-        return redirect()->route('contribution.index')
+        return redirect()->route('contributions.index')
             ->with('success', 'Contribution supprimée avec succès.');
     }
 

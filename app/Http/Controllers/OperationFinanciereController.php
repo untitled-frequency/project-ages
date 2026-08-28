@@ -7,6 +7,7 @@ use Inertia\Inertia;
 use Inertia\Response;
 use App\Models\OperationFinanciere;
 use App\Models\Annee;
+use App\Models\Paie;
 use Illuminate\Support\Facades\DB;
 
 class OperationFinanciereController extends Controller
@@ -30,10 +31,30 @@ class OperationFinanciereController extends Controller
             ->paginate(10)
             ->withQueryString();
 
+        $totalContributionsPercues = Paie::whereHas(
+            'contribution.annees',
+            fn ($q) => $q->where('id', $annee?->id)
+        )->sum('montantPaye');
+
+        $operationsQuery = OperationFinanciere::query();
+        if ($annee?->dateDebut && $annee?->dateFin) {
+            $operationsQuery->whereBetween('date', [$annee->dateDebut, $annee->dateFin]);
+        }
+
+        $totalDepenses = (clone $operationsQuery)->where('type', 'depense')->sum('montant');
+        $totalRecettes = (clone $operationsQuery)->where('type', 'recette')->sum('montant');
+
+        $solde = ($totalContributionsPercues + $totalRecettes) - $totalDepenses;
             
         return Inertia::render('OperationFinanciere/Index', [
             'operations' => $operations,
             'selectedOption' => $selectedOption,
+            'recap' => [
+                'totalContributions' => $totalContributionsPercues,
+                'totalRecettes' => $totalRecettes,
+                'totalDepenses' => $totalDepenses,
+                'solde' => $solde,
+            ],
         ]);
     }
 

@@ -25,8 +25,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-        
         
         User::factory()->create([
             'nom' => 'teufack',
@@ -52,40 +50,40 @@ class DatabaseSeeder extends Seeder
         
         Activite::factory(10)->create();
         
+        Contribution::factory()->create([
+            "montantMembre" => 10000,
+            "montantMembreBureau" => 20000,
+        ]);
+
+        Contribution::factory()->create([
+            "montantMembre" => 10000,
+            "montantMembreBureau" => 20000,
+        ]);
+
+        Contribution::factory()->create([
+            "montantMembre" => 15000,
+            "montantMembreBureau" => 25000,
+        ]);
         
         Annee::factory()->create([
             "dateDebut" => "2024-10-01",
             "dateFin" => "2025-05-31",
+            "contribution_id" => 1,
         ]);
         
         
         Annee::factory()->create([
             "dateDebut" => "2025-10-01",
             "dateFin" => "2026-05-31",
+            "contribution_id" => 2,
         ]);
 
         Annee::factory()->create([
             "dateDebut" => "2026-10-01",
             "dateFin" => "2027-05-31",
+            "contribution_id" => 3,
         ]);
         
-        Contribution::factory()->create([
-            "montantMembre" => 10000,
-            "montantMembreBureau" => 20000,
-            "annee_id" => 1,
-        ]);
-
-        Contribution::factory()->create([
-            "montantMembre" => 10000,
-            "montantMembreBureau" => 20000,
-            "annee_id" => 2,
-        ]);
-
-        Contribution::factory()->create([
-            "montantMembre" => 15000,
-            "montantMembreBureau" => 25000,
-            "annee_id" => 3,
-        ]);
         
         Election::factory()->create([
             "dateDebutDepot" => "2024-10-01",

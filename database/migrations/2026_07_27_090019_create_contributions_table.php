@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->double("montantMembre");
             $table->double("montantMembreBureau");
-            $table->foreignId("annee_id")->constrained();
             $table->timestamps();
         });
     }

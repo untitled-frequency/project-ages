@@ -6,8 +6,9 @@ import Paginate from '@/Components/Paginate';
 import PrimaryButton from '@/Components/PrimaryButton';
 import DefaultButton from '@/Components/DefaultButton';
 import DangerButton from '@/Components/DangerButton';
+import FinanceStats from '@/Components/FinanceStats';
 
-export default function OperationFinanciereIndex({ operations, selectedOption }) {
+export default function OperationFinanciereIndex({ operations, selectedOption, recap }) {
 
     const handleFilterChange = (e) => {
         const option = e.target.value;
@@ -43,6 +44,7 @@ export default function OperationFinanciereIndex({ operations, selectedOption })
 
             <div className="p-4 sm:p-6 max-w-7xl mx-auto space-y-6">
 
+                <FinanceStats recap={recap} />
                 {/* Filter + Action Button - Mobile Stacked / Desktop Flex */}
                 <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 bg-white p-4 rounded-xl shadow-sm border border-gray-100">
                     

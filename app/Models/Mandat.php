@@ -22,23 +22,6 @@ class Mandat extends Model
     // Helper attribute for display in selects: "2025-09-01 au 2026-06-30"
     protected $appends = ['label'];
 
-    public static function checkAndUpdateExpiredMandats(): void
-    {
-        static::where('status', '!=', 'inactif')
-            ->whereNotNull('dateFin')
-            ->where('dateFin', '<', now()->toDateString())
-            ->update(['status' => 'inactif']);
-    }
-
-    protected static function booted(): void
-    {
-        static::saving(function (Mandat $mandat) {
-            if ($mandat->dateFin && $mandat->dateFin < now()->toDateString()) {
-                $mandat->status = 'inactif';
-            }
-        });
-    }
-
     public function getLabelAttribute(): string
     {
         return "Mandat ({$this->dateDebut} - {$this->dateFin})";

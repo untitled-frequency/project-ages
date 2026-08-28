@@ -24,7 +24,7 @@ export default function MyContributionsCard({
         : 0;
 
     // Get the last 3 transactions (contributions array is already sorted desc in controller)
-    
+    const recentTransactions = contributions[2];
 
     return (
         <div className="p-6 bg-white border border-gray-200 rounded-2xl shadow-sm space-y-3">
@@ -57,7 +57,7 @@ export default function MyContributionsCard({
             {/* History Section */}
             <div className="pt-3 border-t border-gray-100">
                 <h2 className="text-sm font-bold text-gray-700 mb-2">Historique</h2>
-                {recentTransactions.length > 0 ? (
+                {recentTransactions?.length > 0 ? (
                     <ul className="space-y-2 text-xs">
                         {recentTransactions.map((tx, index) => {
                             const amount = Number(tx.contribution?.montant || tx.montant) || 0;

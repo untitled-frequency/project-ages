@@ -4,7 +4,6 @@ namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class StoreRoleRequest extends FormRequest
 {
@@ -24,25 +23,23 @@ class StoreRoleRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => [
+            'user_id' => 'required|exists:users,id',
+            'mandat_id' => 'required|exists:mandats,id',
+            'role' => [
                 'required',
-                'exists:users,id',
+                'string',
                 Rule::unique('roles')->where(function ($query) {
-                    return $query->where('mandat_id', $this->mandat_id);
-                }),
-            ],
-            'mandat_id' => ['required', 'exists:mandats,id'],
-            'role' => ['required', 'string'],
+                    return $query->where('user_id', $this->user_id)
+                                 ->where('mandat_id', $this->mandat_id);
+                })
+            ]
         ];
     }
 
     public function messages(): array
     {
         return [
-            'user_id.unique' => 'Cet utilisateur possède déjà un rôle pour ce mandat.',
-            'user_id.required' => 'L\'utilisateur est obligatoire.',
-            'mandat_id.required' => 'Le mandat est obligatoire.',
-            'role.required' => 'Le rôle est obligatoire.',
+            'role.unique' => 'Ce membre possède déjà ce rôle pour ce mandat.',
         ];
     }
 }
