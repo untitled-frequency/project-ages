@@ -9,6 +9,7 @@ import { LayoutDashboard } from 'lucide-react';
 
 export default function Dashboard({ auth, annonces, reunions, activites, contributions, anneeEnCour, election }) {
 
+
     return (
         <AuthenticatedLayout 
             user={auth.user}
