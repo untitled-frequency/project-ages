@@ -2,6 +2,15 @@ import React from 'react';
 import { Link, router } from '@inertiajs/react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
+import PrimaryButton from '@/Components/PrimaryButton';
+import DefaultButton from '@/Components/DefaultButton';
+import DangerButton from '@/Components/DangerButton';
+import {
+    BriefcaseBusiness,
+    Plus,
+    SquarePen,
+    Trash2
+} from 'lucide-react';
 
 export default function RoleIndex({ roles, users, mandats, selectedMandatId, availableRoleTypes }) {
 
@@ -23,38 +32,47 @@ export default function RoleIndex({ roles, users, mandats, selectedMandatId, ava
     };
 
     return (
-        <AuthenticatedLayout>
+        <AuthenticatedLayout
+            header={
+                <div className="flex items-center gap-3">
+                    <BriefcaseBusiness className="w-6 h-6" />
+                    <h1 className="text-xl sm:text-2xl font-bold text-gray-800">
+                        Gestion des Rôles
+                    </h1>
+                </div>
+            }
+        >
             <Head title="Rôles & Mandats" />
             <div className="p-6 max-w-7xl mx-auto space-y-6">
-                <div className="flex justify-between items-center mb-6">
-                    <div>
-                        <h1 className="text-2xl font-bold text-gray-800">Gestion des Rôles & Mandats</h1>
-                        <p className="text-sm text-gray-600">Attribution des rôles et fonctions par mandat</p>
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+                    
+                    {/* Filter Select */}
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-2">
+                        <label className="text-sm font-medium text-gray-700 whitespace-nowrap">
+                            Filtrer par mandat :
+                        </label>
+                        <select
+                            value={selectedMandatId || ''}
+                            onChange={handleMandatFilter}
+                            className="w-full sm:w-auto rounded-lg border-gray-300 text-sm focus:border-indigo-500 focus:ring-indigo-500"
+                        >
+                            <option value="">Tous les mandats</option>
+                            {mandats.map((mandat) => (
+                                <option key={mandat.id} value={mandat.id}>
+                                    {mandat.status === 'actif' ? 'Mandat Actif' : 'Mandat ' + mandat.id}
+                                </option>
+                            ))}
+                        </select>
                     </div>
-                    <Link
-                        href={route('roles.create')}
-                        className="inline-flex items-center gap-2 px-4 py-2 bg-ages-blue-600 text-white rounded-lg hover:bg-ages-blue-700 transition font-medium"
-                    >
-                        + Attribuer un Rôle
-                    </Link>
+
+                    <PrimaryButton className="w-full sm:w-auto">
+                        <Link href={route('roles.create')} className="flex items-center justify-center gap-2">
+                            <Plus className="w-4 h-4" />
+                            <span className="whitespace-nowrap">Ajouter un rôle</span>
+                        </Link>
+                    </PrimaryButton>
                 </div>
 
-                {/* Mandat Filter Dropdown */}
-                <div className="mb-4 max-w-sm">
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Filtrer par Mandat</label>
-                    <select
-                        value={selectedMandatId || ''}
-                        onChange={handleMandatFilter}
-                        className="w-full border-gray-300 rounded-md shadow-sm focus:ring-ages-blue-500 focus:border-ages-blue-500"
-                    >
-                        <option value="">Tous les mandats</option>
-                        {mandats.map((mandat) => (
-                            <option key={mandat.id} value={mandat.id}>
-                                {mandat.status === 'actif' ? 'Mandat Actif' : 'Mandat ' + mandat.id}
-                            </option>
-                        ))}
-                    </select>
-                </div>
 
                 {/* Table */}
                 <div className="bg-white shadow rounded-lg overflow-hidden border border-gray-200">
@@ -78,20 +96,26 @@ export default function RoleIndex({ roles, users, mandats, selectedMandatId, ava
                                         </td>
                                         <td className="px-6 py-4 text-sm text-gray-500">{item.user?.tel}</td>
                                         <td className="px-6 py-4 text-sm font-semibold">
-                                            <span className="px-1 py-1 bg-ages-blue-50 text-ages-blue-700 rounded-full text-xs border border-ages-blue-200">
+                                            <span className="px-2 py-1 bg-ages-blue-50 text-ages-blue-700 rounded-full text-xs border border-ages-blue-200">
                                                 {availableRoleTypes[item.role] || item.role}
                                             </span>
                                         </td>
                                         <td className="px-6 py-4 text-sm text-gray-500">
                                             {item.mandat?.dateDebut} → {item.mandat?.dateFin}
                                         </td>
-                                        <td className="px-6 py-4 text-right text-sm">
-                                            <button
-                                                onClick={() => handleDelete(item)}
-                                                className="text-ages-red-600 hover:text-ages-red-800 font-medium"
+                                        <td className="p-4 text-right space-x-2">
+                                            <DefaultButton 
+                                                href={route('roles.edit', { 
+                                                    user_id: item.user_id, 
+                                                    mandat_id: item.mandat_id, 
+                                                    role: item.role 
+                                                })}
                                             >
-                                                Retirer
-                                            </button>
+                                                <SquarePen className="w-4 h-4 mr-1" /> Éditer
+                                            </DefaultButton>
+                                            <DangerButton onClick={() => handleDelete(item)}>
+                                                <Trash2 className="w-4 h-4 mr-1" /> Supprimer
+                                            </DangerButton>
                                         </td>
                                     </tr>
                                 ))

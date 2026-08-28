@@ -92,12 +92,11 @@ export default function Welcome({ auth }) {
                         {/* Logo & Brand Name */}
                         <Link href="/" className="flex items-center gap-3 group">
                             <div className="p-2 rounded-xl bg-white">
-                                <ApplicationLogo className="h-12 w-auto" />
+                                <ApplicationLogo className="h-auto w-20" />
                             </div>
                             <div className="flex flex-col">
                                 <span className="font-bold text-lg sm:text-xl tracking-tight text-slate-900 flex items-center gap-1.5">
-                                    AGES
-                                    <span className="text-xs px-2 py-0.5 rounded-full bg-ages-blue-50 text-ages-blue-700 font-semibold border border-ages-blue-200">
+                                    <span className="text-lg mt-2 mb-1 px-2 py-0.5 rounded-full bg-ages-blue-50 text-ages-blue-700 font-semibold border border-ages-blue-200">
                                         ESSFAR
                                     </span>
                                 </span>
@@ -112,7 +111,7 @@ export default function Welcome({ auth }) {
                             {auth.user ? (
                                 <Link
                                     href={route('dashboard')}
-                                    className="inline-flex items-center gap-2 rounded-xl bg-[#09B7E3] hover:bg-ages-blue-700 px-5 py-2.5 text-sm font-semibold text-white shadow-md shadow-ages-cyan-500 hover:shadow-lg hover:-translate-y-0.5 transition-all focus:outline-none focus:ring-2 focus:ring-[#09B7E3]"
+                                    className="inline-flex items-center gap-2 rounded-xl bg-ages-red-500 hover:bg-ages-red-600 px-5 py-2.5 text-sm font-semibold text-white shadow-md shadow-ages-cyan-500 hover:shadow-lg hover:-translate-y-0.5 transition-all focus:outline-none focus:ring-2 focus:ring-[#09B7E3]"
                                 >
                                     <LayoutDashboard className="w-4 h-4" />
                                     <span>Tableau de bord</span>

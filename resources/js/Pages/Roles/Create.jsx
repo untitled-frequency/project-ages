@@ -1,11 +1,12 @@
 import { Head, Link, useForm } from '@inertiajs/react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { ArrowLeft } from 'lucide-react';
+import PrimaryButton from '@/Components/PrimaryButton';
 
-export default function Create({ users, mandats, availableRoleTypes }) {
+export default function Create({ users, mandats, activeMandatId, availableRoleTypes }) {
     const { data, setData, post, processing, errors } = useForm({
         user_id: '',
-        mandat_id: '',
+        mandat_id: activeMandatId || '',
         role: '',
     });
 
@@ -56,7 +57,7 @@ export default function Create({ users, mandats, availableRoleTypes }) {
                                     ))}
                                 </select>
                                 {errors.user_id && (
-                                    <p className="text-ages-red-600 text-sm mt-1">{errors.user_id}</p>
+                                    <p className="text-red-600 text-sm mt-1">{errors.user_id}</p>
                                 )}
                             </div>
 
@@ -73,12 +74,12 @@ export default function Create({ users, mandats, availableRoleTypes }) {
                                     <option value="">Sélectionner un mandat</option>
                                     {mandats.map((m) => (
                                         <option key={m.id} value={m.id}>
-                                            {m.dateDebut} → {m.dateFin ?? 'en cours'}
+                                            {m.status === 'actif' ? `[Actif] ${m.dateDebut} → ${m.dateFin ?? 'en cours'}` : `${m.dateDebut} → ${m.dateFin ?? 'en cours'}`}
                                         </option>
                                     ))}
                                 </select>
                                 {errors.mandat_id && (
-                                    <p className="text-ages-red-600 text-sm mt-1">{errors.mandat_id}</p>
+                                    <p className="text-red-600 text-sm mt-1">{errors.mandat_id}</p>
                                 )}
                             </div>
 
@@ -100,18 +101,18 @@ export default function Create({ users, mandats, availableRoleTypes }) {
                                     ))}
                                 </select>
                                 {errors.role && (
-                                    <p className="text-ages-red-600 text-sm mt-1">{errors.role}</p>
+                                    <p className="text-red-600 text-sm mt-1">{errors.role}</p>
                                 )}
                             </div>
 
                             <div className="flex items-center gap-3 pt-2">
-                                <button
+                                <PrimaryButton
                                     type="submit"
                                     disabled={processing}
-                                    className="bg-ages-blue-600 hover:bg-ages-blue-700 disabled:opacity-50 text-white px-5 py-2.5 rounded-lg text-sm font-semibold transition-colors"
+                                    className="bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white px-5 py-2.5 rounded-lg text-sm font-semibold transition-colors"
                                 >
                                     Attribuer le rôle
-                                </button>
+                                </PrimaryButton>
                                 <Link
                                     href={route('roles.index')}
                                     className="px-5 py-2.5 rounded-lg text-sm font-semibold text-slate-600 hover:bg-slate-100 transition-colors"

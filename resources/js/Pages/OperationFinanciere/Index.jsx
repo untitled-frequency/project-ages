@@ -56,7 +56,7 @@ export default function OperationFinanciereIndex({ operations, selectedOption, r
                         <select
                             value={selectedOption || ''}
                             onChange={handleFilterChange}
-                            className="w-full sm:w-auto rounded-lg border-gray-300 text-sm focus:border-indigo-500 focus:ring-indigo-500"
+                            className="w-full sm:w-auto rounded-lg border-gray-300 text-sm focus:border-indigo-500 focus:ring-violet-500"
                         >
                             <option value="">Toutes les opérations</option>
                             <option value="recette">Recettes</option>
