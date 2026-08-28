@@ -40,7 +40,7 @@ export default function Dashboard({ auth, annonces, reunions, activites, contrib
                     <MyContributionsCard contributions={contributions} anneeEnCour={anneeEnCour} />
                 </div>
                 <div>
-                    <ElectionEnCour election={election} />
+                    {/* <ElectionEnCour election={election} /> */}
                 </div>
             </div>
         </AuthenticatedLayout>

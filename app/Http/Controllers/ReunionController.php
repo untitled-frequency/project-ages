@@ -13,7 +13,6 @@ use App\Models\Assiste;
 
 class ReunionController extends Controller
 {
-    // dsfsdf
     public function index()
     {
         $reunions = Reunion::query()
