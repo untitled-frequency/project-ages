@@ -7,9 +7,7 @@ use App\Models\User;
 use App\Models\Mandat;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
-
 use App\Http\Requests\StoreRoleRequest;
-
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -22,6 +20,7 @@ class RoleController extends Controller
             'president' => 'Président du bureau',
             'vice_president' => 'Vice-Président',
             'secretaire_general' => 'Secrétaire Général',
+            'commissaire_aux_comptes' => 'Commissaire aux comptes',
             'tresorier' => 'Trésorier',
             'commission_electorale' => 'Membre Commission Électorale',
             'president_liste' => 'Président de liste',
@@ -32,7 +31,6 @@ class RoleController extends Controller
     {
         $mandatId = $request->input('mandat_id');
 
-        // Find active mandate based on your 'status' column
         $activeMandat = Mandat::where('status', 'actif')->first();
         $selectedMandatId = $mandatId ?? $activeMandat?->id;
 
@@ -54,44 +52,34 @@ class RoleController extends Controller
     }
 
     public function create(): Response
-{
-    $users = User::select('id', 'nom', 'email', 'tel')->get();
-    $mandats = Mandat::all();
+    {
+        $users = User::select('id', 'nom', 'email', 'tel')->get();
+        $mandats = Mandat::all();
+        $activeMandat = Mandat::where('status', 'actif')->first();
 
-    return Inertia::render('Roles/Create', [
-        'users' => $users,
-        'mandats' => $mandats,
-        'availableRoleTypes' => $this->availableRoleTypes(),
-    ]);
-}
-    
+        return Inertia::render('Roles/Create', [
+            'users' => $users,
+            'mandats' => $mandats,
+            'activeMandatId' => $activeMandat?->id ?? '',
+            'availableRoleTypes' => $this->availableRoleTypes(),
+        ]);
+    }
 
     public function store(StoreRoleRequest $request)
-    {
-        $validated = $request->validated();
-        $validated = $request->validate([
-            'user_id' => ['required', 'exists:users,id'],
-            'mandat_id' => ['required', 'exists:mandats,id'],
-            'role' => [
-                'required',
-                'string',
-                Rule::unique('roles')->where(function ($query) use ($request) {
-                    return $query->where('user_id', $request->user_id)
-                                 ->where('mandat_id', $request->mandat_id);
-                }),
-            ],
-        ], [
-            'role.unique' => 'Cet utilisateur possède déjà ce rôle pour ce mandat.',
-        ]);
-
-        Role::create($validated);
+    {   
+        Role::create($request->validated());
 
         return redirect()->route('roles.index')->with('success', 'Rôle attribué avec succès.');
     }
 
-    public function edit(Role $role): Response
+    // Lookup using composite primary keys
+    public function edit($user_id, $mandat_id, $role_type): Response
     {
-        $role->load('user:id,nom,email,tel', 'mandat');
+        $role = Role::where('user_id', $user_id)
+            ->where('mandat_id', $mandat_id)
+            ->where('role', $role_type)
+            ->with(['user:id,nom,email,tel', 'mandat'])
+            ->firstOrFail();
 
         $users = User::select('id', 'nom', 'email', 'tel')->get();
         $mandats = Mandat::all();
@@ -104,31 +92,39 @@ class RoleController extends Controller
         ]);
     }
 
-    public function update(Request $request, Role $role)
+    public function update(Request $request, $user_id, $mandat_id, $role_type)
     {
+        $roleRecord = Role::where('user_id', $user_id)
+            ->where('mandat_id', $mandat_id)
+            ->where('role', $role_type)
+            ->firstOrFail();
+
+        // 2. Validate that the NEW role is unique for this mandate
         $validated = $request->validate([
-            'user_id' => ['required', 'exists:users,id'],
-            'mandat_id' => ['required', 'exists:mandats,id'],
             'role' => [
                 'required',
                 'string',
-                Rule::unique('roles')
-                    ->where(fn ($query) => $query->where('user_id', $request->user_id)
-                                                  ->where('mandat_id', $request->mandat_id))
-                    ->ignore($role->id),
+                Rule::unique('roles', 'role')
+                    ->where(fn ($q) => $q->where('mandat_id', $mandat_id))
+                    ->ignoreModel($roleRecord),
             ],
         ], [
-            'role.unique' => 'Cet utilisateur possède déjà ce rôle pour ce mandat.',
+            'role.unique' => 'Ce rôle a déjà été attribué à un autre membre pour ce mandat.',
         ]);
 
-        $role->update($validated);
+        // 3. Perform query-based update (prevents Eloquent from using 'where id = null')
+        Role::where('user_id', $user_id)
+            ->where('mandat_id', $mandat_id)
+            ->where('role', $role_type)
+            ->update([
+                'role' => $validated['role'],
+            ]);
 
         return redirect()->route('roles.index')->with('success', 'Rôle modifié avec succès.');
     }
 
     public function destroy(Request $request)
     {
-        // Supports deletion both by ID or by composite attributes
         if ($request->has('id')) {
             Role::where('id', $request->input('id'))->delete();
         } else {

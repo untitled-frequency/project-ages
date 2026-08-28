@@ -7,7 +7,6 @@ import {
     Users,
     BriefcaseBusiness,
     CircleDollarSign,
-    HandCoins,
     ChevronDown,
     PiggyBank,
     Megaphone,
@@ -15,7 +14,7 @@ import {
     X,
     Vote,
     CalendarDays,
-    Wallet
+    TrendingUpDown
 } from 'lucide-react';
 
 function CollapseLinks() {
@@ -46,8 +45,8 @@ function CollapseLinks() {
                         : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
                         }`}
                 >
-                    <Wallet className="h-4 w-4" />
-                    <span>Transactions</span>
+                    <TrendingUpDown className="h-4 w-4" />
+                    <span>Dépenses & Recettes</span>
                 </Link>
                 <Link
                     href={route('contributions.index')}
@@ -102,13 +101,13 @@ export default function AuthenticatedLayout({ header, children }) {
             )}
 
             {/* Sidebar — fixed at all breakpoints */}
-            <aside className={`fixed inset-y-0 left-0 z-50 flex w-67 flex-col border-r border-gray-200 bg-white p-4 transition-transform duration-200 ease-in-out lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'
+            <aside className={`fixed inset-y-0 left-0 z-50 flex w-4/5 sm:w-72 lg:w-64 flex-col border-r border-gray-200 bg-white p-4 transition-transform duration-200 ease-in-out lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'
                 }`}>
                 <div className="flex flex-1 flex-col overflow-y-auto space-y-6 pr-1">
                     {/* Brand Header */}
                     <div className="flex items-center justify-between px-2">
                         <Link href="/" className="flex items-center gap-2">
-                            <ApplicationLogo className="h-12 w-auto fill-current text-black" />
+                            <ApplicationLogo className="h-15 w-auto fill-current text-black" />
                             <span className="font-semibold text-gray-900 text-sm">All Generations of ESSFAR Students</span>
                         </Link>
 

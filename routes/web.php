@@ -9,6 +9,7 @@ use App\Http\Controllers\OperationFinanciereController;
 use App\Http\Controllers\AnnonceController;
 use App\Http\Controllers\ReunionController;
 use App\Http\Controllers\CommuniqueController;
+use App\Http\Controllers\MandatController;
 use App\Http\Controllers\ActiviteController;
 use App\Http\Controllers\ElectionController;
 use Illuminate\Foundation\Application;
@@ -89,13 +90,13 @@ Route::middleware(['auth'])->group(function () {
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/roles', [RoleController::class, 'index'])->name('roles.index');
-    Route::get('/roles/create', [RoleController::class, 'create'])->name('roles.create'); // ← celle-ci manquait
+    Route::get('/roles/create', [RoleController::class, 'create'])->name('roles.create');
     Route::post('/roles', [RoleController::class, 'store'])->name('roles.store');
+    Route::get('/roles/{user_id}/{mandat_id}/{role}/edit', [RoleController::class, 'edit'])->name('roles.edit');
+    Route::put('/roles/{user_id}/{mandat_id}/{role}', [RoleController::class, 'update'])->name('roles.update');
     Route::delete('/roles', [RoleController::class, 'destroy'])->name('roles.destroy');
-    Route::get('/roles/{role}/edit', [RoleController::class, 'edit'])->name('roles.edit');
-    Route::put('/roles/{role}', [RoleController::class, 'update'])->name('roles.update');
 });
-use App\Http\Controllers\MandatController;
+
 
 Route::middleware(['auth'])->group(function () {
     Route::resource('mandats', MandatController::class);

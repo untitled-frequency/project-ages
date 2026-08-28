@@ -59,17 +59,22 @@ export default function Index({ mandats, filters }) {
                     </div>
                 )}
 
-                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                    <select
-                        value={filters?.status || ''}
-                        onChange={handleStatusFilter}
-                        className="w-full sm:max-w-xs px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-ages-blue-500"
-                    >
-                        <option value="">Tous les statuts</option>
-                        <option value="actif">Actif</option>
-                        <option value="cloture">Clôturé</option>
-                        <option value="inactif">Inactif</option>
-                    </select>
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+                    <div className='flex flex-col sm:flex-row sm:items-center gap-2'>
+                        <label className="text-sm font-medium text-gray-700 whitespace-nowrap">
+                            Filtrer par mandat :
+                        </label>
+                        <select
+                            value={filters?.status || ''}
+                            onChange={handleStatusFilter}
+                            className="w-full sm:w-auto rounded-lg border-gray-300 text-sm focus:border-indigo-500 focus:ring-violet-500"
+                        >
+                            <option value="">Tous les statuts</option>
+                            <option value="actif">Actif</option>
+                            <option value="cloture">Clôturé</option>
+                            <option value="inactif">Inactif</option>
+                        </select>
+                    </div>
 
                     <PrimaryButton className="w-full sm:w-auto">
                         <Link href={route('mandats.create')} className="flex items-center justify-center gap-2">
