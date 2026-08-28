@@ -15,7 +15,6 @@ class Contribution extends Model
     protected $fillable = [
         "montantMembre",
         "montantMembreBureau",
-        "annee_id",
     ];
 
     public function paie()
@@ -26,5 +25,10 @@ class Contribution extends Model
     public function users()
     {
         return $this->belongsToMany(User::class, 'paies', 'contribution_id', 'user_id');
+    }
+
+    public function annees()
+    {
+        return $this->hasMany(Annee::class, 'contribution_id');
     }
 }

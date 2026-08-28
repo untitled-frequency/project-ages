@@ -1,12 +1,38 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/forms";
 
-@layer base {
+@theme {
+  --color-ages-blue-50: #eef8ff;
+  --color-ages-blue-100: #d8eeef;
+  --color-ages-blue-200: #b9e0f7;
+  --color-ages-blue-300: #86cdfa;
+  --color-ages-blue-400: #4cb2f6;
+  --color-ages-blue-500: #2392ed;
+  --color-ages-blue-600: #1272cb;
+  --color-ages-blue-700: #105ba5;
 
-    *,
-    ::after,
-    ::before,
-    ::backdrop {
-        border-color: var(--color-gray-300, currentColor);
-    }
+  --color-ages-cyan-50: #ecfeff;
+  --color-ages-cyan-100: #cffafe;
+  --color-ages-cyan-200: #a5f3fc;
+  --color-ages-cyan-300: #67e8f9;
+  --color-ages-cyan-400: #22d3ee;
+  --color-ages-cyan-500: #09b7e3;
+  --color-ages-cyan-600: #0891b2;
+
+  --color-ages-red-50: #fff1f2;
+  --color-ages-red-100: #ffe4e6;
+  --color-ages-red-200: #fecdd3;
+  --color-ages-red-300: #fda4af;
+  --color-ages-red-400: #fb7185;
+  --color-ages-red-500: #f43f5e;
+  --color-ages-red-600: #e11d48;
+}
+
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop {
+    border-color: var(--color-gray-300, currentColor);
+  }
 }

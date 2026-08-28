@@ -91,8 +91,8 @@ export default function Welcome({ auth }) {
                     <div className="max-w-7xl mx-auto flex items-center justify-between">
                         {/* Logo & Brand Name */}
                         <Link href="/" className="flex items-center gap-3 group">
-                            <div className="p-2 rounded-xl bg-white group-hover:scale-105 transition-transform shadow-sm">
-                                <ApplicationLogo className="h-10 w-auto" />
+                            <div className="p-2 rounded-xl bg-white">
+                                <ApplicationLogo className="h-12 w-auto" />
                             </div>
                             <div className="flex flex-col">
                                 <span className="font-bold text-lg sm:text-xl tracking-tight text-slate-900 flex items-center gap-1.5">
@@ -102,7 +102,7 @@ export default function Welcome({ auth }) {
                                     </span>
                                 </span>
                                 <span className="text-xs text-slate-500 font-medium hidden sm:inline">
-                                    All Generations of ESSFAR
+                                    All Generations of ESSFAR Students
                                 </span>
                             </div>
                         </Link>

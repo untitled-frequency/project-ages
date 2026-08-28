@@ -1,7 +1,9 @@
 import React from 'react'
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout'
 import { Head, useForm, Link } from '@inertiajs/react'
-import { ArrowLeft, Save, PhoneIncoming, MailPlus, UserPlus, UserCog } from 'lucide-react';
+import { ArrowLeft, Save, PhoneIncoming, MailPlus, UserPlus, UserCog, Activity } from 'lucide-react';
+import InputLabel from '@/Components/InputLabel';
+import InputError from '@/Components/InputError';
 import PrimaryButton from '@/Components/PrimaryButton';
 import DefaultButton from '@/Components/DefaultButton';
 
@@ -11,6 +13,7 @@ export default function Edit({user}) {
         email: user.email,
         tel: user.tel,
         password: user.password,
+        status: user.status
     });
 
     const handleSubmit = (e) => {
@@ -82,6 +85,20 @@ export default function Edit({user}) {
                         {errors.tel && <span className="text-red-500 text-xs mt-1">{errors.tel}</span>}
                     </div>
 
+                    <div>
+                        <InputLabel htmlFor="status" value="Statut" />
+                            <select
+                                id="status"
+                                value={data.status}
+                                onChange={(e) => setData('status', e.target.value)}
+                                className="mt-1 block w-full rounded-lg border-slate-300 focus:border-ages-blue-500 focus:ring-ages-blue-500"
+                            >
+                                <option value="actif">Actif</option>
+                                <option value="inactif">Inactif</option>
+                            </select>
+                            <InputError message={errors.status} className="mt-1" />
+                    </div>
+                    
 
                     <div className="flex flex-col-reverse sm:flex-row justify-end items-end sm:items-center gap-2">
                         <Link href={route('users.index')} className="w-full sm:w-auto">

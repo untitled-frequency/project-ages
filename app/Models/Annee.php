@@ -15,5 +15,11 @@ class Annee extends Model
     protected $fillable = [
         "dateDebut",
         "dateFin",
+        "contribution_id",
     ];
+
+    public function contribution()
+    {
+        return $this->belongsTo(Contribution::class);
+    }
 }
