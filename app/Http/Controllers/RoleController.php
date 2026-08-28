@@ -30,6 +30,8 @@ class RoleController extends Controller
 
     public function index(Request $request): Response
     {
+        Mandat::checkAndUpdateExpiredMandats();
+
         $mandatId = $request->input('mandat_id');
 
         // Find active mandate based on your 'status' column
@@ -69,20 +71,6 @@ class RoleController extends Controller
     public function store(StoreRoleRequest $request)
     {
         $validated = $request->validated();
-        $validated = $request->validate([
-            'user_id' => ['required', 'exists:users,id'],
-            'mandat_id' => ['required', 'exists:mandats,id'],
-            'role' => [
-                'required',
-                'string',
-                Rule::unique('roles')->where(function ($query) use ($request) {
-                    return $query->where('user_id', $request->user_id)
-                                 ->where('mandat_id', $request->mandat_id);
-                }),
-            ],
-        ], [
-            'role.unique' => 'Cet utilisateur possède déjà ce rôle pour ce mandat.',
-        ]);
 
         Role::create($validated);
 
@@ -107,18 +95,17 @@ class RoleController extends Controller
     public function update(Request $request, Role $role)
     {
         $validated = $request->validate([
-            'user_id' => ['required', 'exists:users,id'],
-            'mandat_id' => ['required', 'exists:mandats,id'],
-            'role' => [
+            'user_id' => [
                 'required',
-                'string',
+                'exists:users,id',
                 Rule::unique('roles')
-                    ->where(fn ($query) => $query->where('user_id', $request->user_id)
-                                                  ->where('mandat_id', $request->mandat_id))
+                    ->where(fn ($query) => $query->where('mandat_id', $request->mandat_id))
                     ->ignore($role->id),
             ],
+            'mandat_id' => ['required', 'exists:mandats,id'],
+            'role' => ['required', 'string'],
         ], [
-            'role.unique' => 'Cet utilisateur possède déjà ce rôle pour ce mandat.',
+            'user_id.unique' => 'Cet utilisateur possède déjà un rôle pour ce mandat.',
         ]);
 
         $role->update($validated);

@@ -57,7 +57,15 @@ export default function Edit({ mandat }) {
                             type="date"
                             id="dateFin"
                             value={data.dateFin}
-                            onChange={(e) => setData('dateFin', e.target.value)}
+                            onChange={(e) => {
+                                const newDateFin = e.target.value;
+                                const today = new Date().toISOString().split('T')[0];
+                                if (newDateFin && newDateFin < today) {
+                                    setData((prev) => ({ ...prev, dateFin: newDateFin, status: 'inactif' }));
+                                } else {
+                                    setData('dateFin', newDateFin);
+                                }
+                            }}
                             className="mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-ages-blue-500 focus:ring-ages-blue-500 text-sm"
                         />
                         {errors.dateFin && <span className="text-red-500 text-xs mt-1">{errors.dateFin}</span>}
@@ -76,7 +84,13 @@ export default function Edit({ mandat }) {
                         >
                             <option value="actif">Actif</option>
                             <option value="cloture">Clôturé</option>
+                            <option value="inactif">Inactif</option>
                         </select>
+                        {data.dateFin && data.dateFin < new Date().toISOString().split('T')[0] && (
+                            <p className="text-xs text-amber-600 font-semibold mt-1">
+                                ℹ️ La date de fin est antérieure à aujourd'hui : le statut sera automatiquement réglé sur Inactif.
+                            </p>
+                        )}
                         {errors.status && <span className="text-red-500 text-xs mt-1">{errors.status}</span>}
                         <p className="text-xs text-gray-500 mt-1">
                             Attention : passer ce mandat en "Actif" ne clôture pas automatiquement un autre mandat déjà actif. Vérifie qu'un seul mandat reste actif à la fois.
