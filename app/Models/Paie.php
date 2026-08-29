@@ -9,12 +9,16 @@ class Paie extends Model
 {
     use HasFactory;
 
-    public $timestamps = false;
+    public $timestamps = true;
 
     protected $fillable = [
         'user_id',
         'contribution_id',
         'montantPaye'
+    ];
+
+    protected $casts = [
+        'updated_at' => 'datetime:Y-m-d H:i:s',
     ];
 
     public function user()

@@ -18,7 +18,7 @@ export default function Show({ reunion }) {
 
             <div className="py-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
                 <DefaultButton
-                    href={route('communique.index', { tab: 'reunions' })}
+                    href={route('communique.index', {tab: 'reunions'})}
                 >
                     <ArrowLeft className="w-4 h-4" />
                     Retour aux communiqués
