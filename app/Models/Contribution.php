@@ -10,7 +10,7 @@ class Contribution extends Model
     /** @use HasFactory<\Database\Factories\ContributionFactory> */
     use HasFactory;
 
-    public $timestamps = false;
+    public $timestamps = true;
 
     protected $fillable = [
         "montantMembre",

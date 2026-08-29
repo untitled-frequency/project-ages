@@ -7,7 +7,7 @@ import ElectionEnCour from '@/Components/ElectionEnCour';
 import { Head } from '@inertiajs/react';
 import { LayoutDashboard } from 'lucide-react';
 
-export default function Dashboard({ auth, annonces, reunions, activites, contributions, anneeEnCour, election }) {
+export default function Dashboard({ auth, annonces, reunions, activites, contributions, anneeEnCour, election, targetAmount }) {
 
 
     return (
@@ -32,7 +32,7 @@ export default function Dashboard({ auth, annonces, reunions, activites, contrib
                 {/* Row 2: Activités & Contributions */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <ActivitesFutureCard activites={activites} />
-                    <MyContributionsCard contributions={contributions} anneeEnCour={anneeEnCour} />
+                    <MyContributionsCard contributions={contributions} anneeEnCour={anneeEnCour} targetAmount={targetAmount} />
                 </div>
                 <div>
                     {/* <ElectionEnCour election={election} /> */}
