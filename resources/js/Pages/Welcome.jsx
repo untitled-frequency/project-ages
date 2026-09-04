@@ -108,25 +108,13 @@ export default function Welcome({ auth }) {
 
                         {/* Navigation CTA Buttons */}
                         <nav className="flex items-center gap-3">
-                            {auth.user ? (
                                 <Link
                                     href={route('dashboard')}
                                     className="inline-flex items-center gap-2 rounded-xl bg-ages-red-500 hover:bg-ages-red-600 px-5 py-2.5 text-sm font-semibold text-white shadow-md shadow-ages-cyan-500 hover:shadow-lg hover:-translate-y-0.5 transition-all focus:outline-none focus:ring-2 focus:ring-[#09B7E3]"
                                 >
                                     <LayoutDashboard className="w-4 h-4" />
-                                    <span>Tableau de bord</span>
+                                    <span>{auth.user ? 'Tableau de bord' : 'Se connecter'}</span>
                                 </Link>
-                            ) : (
-                                <>
-                                    <Link
-                                        href={route('login')}
-                                        className="inline-flex items-center gap-2 rounded-xl border border-ages-blue-200 bg-[#09B7E3] px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-ages-red-500 hover:border-ages-blue-300 transition-all focus:outline-none focus:ring-2 focus:ring-ages-blue-400"
-                                    >
-                                        <LogIn className="w-4 h-4 text-white" />
-                                        <span>Se connecter</span>
-                                    </Link>
-                                </>
-                            )}
                         </nav>
                     </div>
                 </header>
@@ -164,25 +152,13 @@ export default function Welcome({ auth }) {
 
                         {/* Hero CTA Buttons */}
                         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
-                            {auth.user ? (
                                 <Link
                                     href={route('dashboard')}
                                     className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl bg-[#09B7E3] hover:bg-ages-blue-700 text-white px-8 py-3.5 text-base font-semibold shadow-lg shadow-ages-red-500 hover:shadow-xl hover:-translate-y-0.5 transition-all"
                                 >
-                                    <span>Accéder à mon espace</span>
+                                    <span>{auth.user ? 'Accéder à mon espace' : 'Accéder à l\'espace AGES'}</span>
                                     <ArrowRight className="w-5 h-5" />
                                 </Link>
-                            ) : (
-                                <>
-                                    <Link
-                                        href={route('login')}
-                                        className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl border border-ages-red-200 bg-ages-red-500 hover:bg-ages-cyan-500 px-8 py-3.5 text-base font-semibold text-white shadow-sm transition-all"
-                                    >
-                                        <LogIn className="w-5 h-5 text-white" />
-                                        <span>Se connecter</span>
-                                    </Link>
-                                </>
-                            )}
                         </div>
 
                         {/* Key Pillars / Modules Grid */}
