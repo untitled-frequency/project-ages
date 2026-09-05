@@ -13,7 +13,7 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+                sans: ['"Ubuntu Sans"', ...defaultTheme.fontFamily.sans],
             },
             colors: {
                 // Bleu principal du logo AGES (#0097B2)

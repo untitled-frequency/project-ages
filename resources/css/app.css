@@ -1,7 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu+Sans:ital,wght@0,100..800;1,100..800&display=swap');
 @import "tailwindcss";
 @plugin "@tailwindcss/forms";
 
 @theme {
+  /* Ubuntu Sans Global Font */
+  --font-sans: 'Ubuntu Sans', ui-sans-serif, system-ui, sans-serif;
+
+  /* Custom Brand Theme Palette */
   --color-ages-blue-50: #eef8ff;
   --color-ages-blue-100: #d8eeef;
   --color-ages-blue-200: #b9e0f7;
@@ -34,5 +39,9 @@
   ::before,
   ::backdrop {
     border-color: var(--color-gray-300, currentColor);
+  }
+
+  body {
+    font-family: var(--font-sans);
   }
 }
