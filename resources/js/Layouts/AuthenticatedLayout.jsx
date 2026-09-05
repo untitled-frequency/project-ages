@@ -28,7 +28,7 @@ function CollapseLinks() {
             className="group [&_summary::-webkit-details-marker]:hidden"
             open={isFinanceActive}
         >
-            <summary className={`flex cursor-pointer items-center justify-between rounded-lg px-3 py-2 text-sm font-medium transition-colors list-none ${isFinanceActive ? 'text-gray-900 font-semibold bg-gray-50' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+            <summary className={`flex cursor-pointer items-center justify-between rounded-lg px-3 py-2 text-sm font-semibold transition-colors list-none ${isFinanceActive ? 'text-gray-900 font-semibold bg-gray-50' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
                 }`}>
                 <div className="flex items-center gap-3">
                     <CircleDollarSign className="h-4 w-4" />
@@ -40,7 +40,7 @@ function CollapseLinks() {
             <div className="mt-1 space-y-1 pl-6">
                 <Link
                     href={route('operationFinanciere.index')}
-                    className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${route().current('operationFinanciere.*')
+                    className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-semibold transition-colors ${route().current('operationFinanciere.*')
                         ? 'bg-gray-100 text-gray-900'
                         : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
                         }`}
@@ -50,7 +50,7 @@ function CollapseLinks() {
                 </Link>
                 <Link
                     href={route('contributions.index')}
-                    className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${route().current('contributions.*')
+                    className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-semibold transition-colors ${route().current('contributions.*')
                         ? 'bg-gray-100 text-gray-900'
                         : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
                         }`}
@@ -122,16 +122,13 @@ export default function AuthenticatedLayout({ header, children }) {
 
                     {/* Navigation Group */}
                     <div className="flex-1">
-                        <span className="px-2 text-xs font-medium text-gray-400 uppercase tracking-wider">
-                            Platform
-                        </span>
                         <nav className="mt-2 space-y-1">
                             {navItems.map((item) => (
                                 <Link
                                     key={item.name}
                                     href={item.href}
                                     onClick={() => setSidebarOpen(false)}
-                                    className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${item.active
+                                    className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-semibold transition-colors ${item.active
                                         ? 'bg-gray-100 text-gray-900'
                                         : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
                                         }`}
@@ -143,7 +140,7 @@ export default function AuthenticatedLayout({ header, children }) {
                             <CollapseLinks />
                             <Link
                                 href={route('election.index')}
-                                className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${route().current('election.*')
+                                className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-semibold transition-colors ${route().current('election.*')
                                     ? 'bg-gray-100 text-gray-900'
                                     : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
                                     }`}
