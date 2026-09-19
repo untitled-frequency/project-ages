@@ -1,7 +1,7 @@
 import React from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, router, Link } from '@inertiajs/react';
-import { PiggyBank, Plus, Trash2, Edit, Calendar, User, Tag } from 'lucide-react';
+import { PiggyBank, Plus, Trash2, Edit, Calendar, User, Tag, TrendingUpDown } from 'lucide-react';
 import Paginate from '@/Components/Paginate';
 import PrimaryButton from '@/Components/PrimaryButton';
 import DefaultButton from '@/Components/DefaultButton';
@@ -32,8 +32,8 @@ export default function OperationFinanciereIndex({ operations, selectedOption, r
     return (
         <AuthenticatedLayout
             header={
-                <div className="flex items-center gap-3">
-                    <PiggyBank className="w-6 h-6 text-indigo-600" />
+                <div className="flex items-center">
+                    <TrendingUpDown className="mr-2" />
                     <h1 className="text-xl sm:text-2xl font-bold text-gray-800">
                         Gestion des Opérations Financières
                     </h1>

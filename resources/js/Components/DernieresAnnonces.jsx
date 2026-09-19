@@ -7,7 +7,7 @@ export default function DernieresAnnoncesCard({ annonces = [] }) {
         <div className="flex flex-col justify-between p-6 bg-white border border-slate-200/80 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
             <div>
                 <div className="flex items-center space-x-2 mb-4">
-                    <div className="p-2 bg-amber-50 text-amber-600 rounded-xl">
+                    <div className="p-2 bg-blue-100 text-blue-700 rounded-xl">
                         <Bell className="w-5 h-5" />
                     </div>
                     <h2 className="text-base font-bold text-slate-800">Dernières annonces</h2>

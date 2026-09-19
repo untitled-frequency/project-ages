@@ -7,7 +7,7 @@ export default function ReunionsFutureCard({ reunions = [] }) {
         <div className="flex flex-col justify-between p-6 bg-white border border-slate-200/80 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
             <div>
                 <div className="flex items-center space-x-2 mb-4">
-                    <div className="p-2 bg-blue-50 text-blue-600 rounded-xl">
+                    <div className="p-2 bg-violet-200 text-violet-700 rounded-xl">
                         <Users className="w-5 h-5" />
                     </div>
                     <h2 className="text-base font-bold text-slate-800">Réunions à venir</h2>
@@ -28,7 +28,7 @@ export default function ReunionsFutureCard({ reunions = [] }) {
 
                                     <div className="flex flex-wrap gap-2 mb-2 text-[11px] text-slate-600 font-medium">
                                         <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-white border border-slate-200">
-                                            <Clock className="w-3 h-3 text-blue-500 mr-1" />
+                                            <Clock className="w-3 h-3 text-violet-600 mr-1" />
                                             {new Date(reunion.dateHeure).toLocaleString('fr-FR', {
                                                 day: 'numeric',
                                                 month: 'short',
@@ -38,7 +38,7 @@ export default function ReunionsFutureCard({ reunions = [] }) {
                                         </span>
                                         {reunion.lieu && (
                                             <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-white border border-slate-200">
-                                                <MapPin className="w-3 h-3 text-blue-500 mr-1" />
+                                                <MapPin className="w-3 h-3 text-violet-600 mr-1" />
                                                 {reunion.lieu}
                                             </span>
                                         )}

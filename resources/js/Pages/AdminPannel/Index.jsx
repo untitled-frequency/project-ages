@@ -138,7 +138,7 @@ export default function AdminDashboard({ annees, mandats, elections, activeAnnee
                                         {annees.data.map((annee) => (
                                             <tr key={annee.id} className='hover:bg-gray-50'>
                                                 <td className='p-4'>{annee.id}</td>
-                                                <td className='p-4'>{annee.dateDebut}</td>
+                                                <td className='p-4'>{new annee.dateDebut}</td>
                                                 <td className='p-4'>{annee.dateFin}</td>
                                                 <td className="p-4">
                                                     <span className={`px-2 py-1 rounded-full text-xs font-semibold border ${

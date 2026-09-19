@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Annee extends Model
 {
-    /** @use HasFactory<\Database\Factories\AnneeFactory> */
     use HasFactory;
 
     public $timestamps = false;
@@ -17,6 +16,11 @@ class Annee extends Model
         "dateFin",
         "contribution_id",
         "status",
+    ];
+
+    protected $casts = [
+        'dateDebut' => 'date',
+        'dateFin' => 'date',
     ];
 
     public function contribution()

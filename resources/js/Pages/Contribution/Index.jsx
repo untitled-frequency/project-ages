@@ -13,7 +13,8 @@ import {
     TrendingUp,
     Scale,
     BanknoteArrowUp,
-    Search
+    Search,
+    PiggyBank
 } from 'lucide-react';
 import Paginate from '@/Components/Paginate';
 import PrimaryButton from '@/Components/PrimaryButton';
@@ -115,11 +116,9 @@ export default function ContributionIndex({ users, selectedStatut, contribution,
     return (
         <AuthenticatedLayout
             header={
-                <div className="flex items-center gap-3">
-                    <Wallet className="w-6 h-6" />
-                    <h1 className="text-xl sm:text-2xl font-bold text-gray-800">
-                        Gestion des Contributions
-                    </h1>
+                <div className="flex items-center">
+                    <PiggyBank className="mr-2" />
+                    <h2 className="text-xl sm:text-2xl font-bold text-gray-800">Gestion des Contributions</h2>
                 </div>
             }
         >

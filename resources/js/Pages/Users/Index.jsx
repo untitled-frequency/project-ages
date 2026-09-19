@@ -154,9 +154,13 @@ export default function Index({ users, filters }) {
                                         <DefaultButton href={route('users.edit', user.id)}>
                                             <SquarePen className="w-4 h-4 mr-1" /> Éditer
                                         </DefaultButton>
-                                        <DangerButton onClick={() => handleDelete(user.id)}>
-                                            <Trash2 className="w-4 h-4 mr-1" /> Supprimer
-                                        </DangerButton>
+                                        <button
+                                            onClick={() => handleDelete(user.id)}
+                                            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-red-600 hover:bg-red-50 rounded-md transition-colors"
+                                        >
+                                            <Trash2 className="w-3.5 h-3.5" />
+                                            Supprimer
+                                        </button>
                                     </td>
                                 </tr>
                             ))}
@@ -177,12 +181,12 @@ export default function Index({ users, filters }) {
                                 <p><strong>Téléphone:</strong> {user.tel}</p>
                             </div>
                             <div className="flex justify-end gap-2 pt-2 border-t">
-                                <Link href={route('users.edit', user.id)} className="px-3 py-1.5 bg-gray-100 text-xs text-gray-700 rounded-md inline-flex items-center">
+                                <Link href={route('users.edit', user.id)} className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-gray-600 hover:bg-gray-100 rounded-md transition-colors">
                                     <SquarePen className="w-3.5 h-3.5 mr-1" /> Éditer
                                 </Link>
-                                <DangerButton onClick={() => handleDelete(user.id)} className="text-xs px-3 py-1.5">
+                                <button onClick={() => handleDelete(user.id)} className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-red-600 hover:bg-red-50 rounded-md transition-colors">
                                     <Trash2 className="w-3.5 h-3.5 mr-1" /> Supprimer
-                                </DangerButton>
+                                </button>
                             </div>
                         </div>
                     ))}

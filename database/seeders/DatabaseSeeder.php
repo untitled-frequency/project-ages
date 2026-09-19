@@ -36,15 +36,25 @@ class DatabaseSeeder extends Seeder
         Contribution::factory()->create([
             "montantMembre" => 10000,
             "montantMembreBureau" => 20000,
-        ]);*/
-
+        ]);
+        
         Annee::factory()->create([
             "dateDebut" => "2026-10-01",
             "dateFin" => "2027-05-31",
             "contribution_id" => 1,
             "status" => "en cours",
         ]);
-        
+        */
+
+        Election::factory()->create([
+            "dateDebutDepot" => "2026-10-01",
+            "dateFinDepot" => "2026-10-01",
+            "dateDebutCampagne" => "2026-10-20",
+            "dateFinCampagne" => "2026-10-25",
+            "dateOuvertureVote" => "2026-10-26",
+            "dateClotureVote" => "2026-10-26",
+            "annee_id" => 1,
+        ]);
         
         /*
         User::factory()->create([
@@ -108,16 +118,6 @@ class DatabaseSeeder extends Seeder
             "dateOuvertureVote" => "2025-10-26",
             "dateClotureVote" => "2025-10-26",
             "annee_id" => 2,
-        ]);
-        
-        Election::factory()->create([
-            "dateDebutDepot" => "2026-10-01",
-            "dateFinDepot" => "2026-10-01",
-            "dateDebutCampagne" => "2026-10-20",
-            "dateFinCampagne" => "2026-10-25",
-            "dateOuvertureVote" => "2026-10-26",
-            "dateClotureVote" => "2026-10-26",
-            "annee_id" => 3,
         ]);
 
         ListeCandidat::factory(25)->create();

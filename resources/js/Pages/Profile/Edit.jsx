@@ -2,14 +2,16 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link } from '@inertiajs/react';
 import UpdatePasswordForm from './Partials/UpdatePasswordForm';
 import UpdateProfileInformationForm from './Partials/UpdateProfileInformationForm';
+import { UserPen } from 'lucide-react';
 
 export default function Edit({ mustVerifyEmail, status }) {
     return (
         <AuthenticatedLayout
             header={
-                <h2 className="text-xl font-semibold leading-tight text-gray-800">
-                    Profil
-                </h2>
+                <div className='flex items-center'>
+                    <UserPen className='mr-2' />
+                    <h2 className="text-2xl font-bold text-gray-800">Profil</h2>
+                </div>
             }
         >
             <Head title="Profil" />

@@ -33,7 +33,7 @@ export default function MyContributionsCard({
                 {/* Header */}
                 <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center space-x-2">
-                        <div className="p-2 bg-emerald-50 text-emerald-600 rounded-xl">
+                        <div className="p-2 bg-emerald-200 text-emerald-700 rounded-xl">
                             <Wallet className="w-5 h-5" />
                         </div>
                         <div>
