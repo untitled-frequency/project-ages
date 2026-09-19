@@ -14,7 +14,8 @@ import {
     X,
     Vote,
     CalendarDays,
-    TrendingUpDown
+    TrendingUpDown,
+    UserShield
 } from 'lucide-react';
 
 function CollapseLinks() {
@@ -68,9 +69,10 @@ export default function AuthenticatedLayout({ header, children }) {
     const [sidebarOpen, setSidebarOpen] = useState(false);
 
     const navItems = [
+        { name: 'Admin', href: route('admin.index'), active: route().current('admin.*'), icon: UserShield },
         { name: 'Dashboard', href: route('dashboard'), active: route().current('dashboard'), icon: LayoutDashboard },
         { name: 'Utilisateurs', href: route('users.index'), active: route().current('users.*'), icon: Users },
-        { name: 'Rôles', href: route('roles.index'), active: route().current('roles.*'), icon: BriefcaseBusiness },
+        { name: 'Bureau', href: route('roles.index'), active: route().current('roles.*'), icon: BriefcaseBusiness },
         {
             name: 'Communiqués', href: route('communique.index'), active:
                 route().current('communique.*') ||

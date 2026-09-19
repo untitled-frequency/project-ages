@@ -6,12 +6,14 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\ContributionController;
 use App\Http\Controllers\OperationFinanciereController;
+use App\Http\Controllers\AnneeController;
 use App\Http\Controllers\AnnonceController;
 use App\Http\Controllers\ReunionController;
 use App\Http\Controllers\CommuniqueController;
 use App\Http\Controllers\MandatController;
 use App\Http\Controllers\ActiviteController;
 use App\Http\Controllers\ElectionController;
+use App\Http\Controllers\AdminController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -100,6 +102,13 @@ Route::middleware(['auth'])->group(function () {
 
 Route::middleware(['auth'])->group(function () {
     Route::resource('mandats', MandatController::class);
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
+    Route::get('/admin/annee/{annee}/edit', [AnneeController::class, 'edit'])->name('admin.annee.edit');
+    Route::get('/admin/annee/create', [AnneeController::class, 'create'])->name('admin.annee.create');
+    Route::put('/admin/edit/{annee_id}/', [AnneeController::class, 'update'])->name('admin.annee.update');
 });
 
 require __DIR__.'/auth.php';

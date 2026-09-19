@@ -30,26 +30,26 @@ export default function Show({ activite }) {
                             {activite.titre}
                         </h1>
 
-                        <div className="flex flex-wrap items-center grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 text-xs sm:text-sm text-gray-900 border-b border-gray-100 pb-4">
-                            <span className="flex items-center gap-1.5">
-                                <Calendar className="w-4 h-4" />
+                        <div className="flex flex-wrap items-center grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 text-xs sm:text-sm text-gray-900 border-b border-gray-100 pb-4 font-semibold">
+                            <span className="flex items-center gap-1.5 bg-blue-100 px-2 py-1 rounded-lg">
+                                <Calendar className="w-4 h-4 text-blue-700" />
                                 Date : {new Date(activite.date).toLocaleDateString('fr-FR', {
                                     day: 'numeric',
                                     month: 'long',
                                     year: 'numeric',
                                 })}
                             </span>
-                            <span className="flex items-center gap-1.5">
-                                <User className="w-4 h-4" />
+                            <span className="flex items-center gap-1.5 bg-violet-200 px-2 py-1 rounded-lg">
+                                <User className="w-4 h-4 text-violet-700" />
                                 Responsable : {activite.responsable?.nom || 'Administration'}
                             </span>
-                            <span className="flex items-center gap-1.5">
-                                <MapPin className="w-4 h-4" />
+                            <span className="flex items-center gap-1.5 bg-orange-200 px-2 py-1 rounded-lg">
+                                <MapPin className="w-4 h-4 text-orange-600" />
                                 Lieu : {activite.lieu}
                             </span>
-                            <span className="flex items-center gap-1.5">
-                                <DollarSign className="w-4 h-4" />
-                                Budget : {activite.budget}
+                            <span className="flex items-center gap-1.5 bg-emerald-200 px-2 py-1 rounded-lg">
+                                <DollarSign className="w-4 h-4 text-emerald-700" />
+                                Budget : {new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'XOF' }).format(activite.budget)}
                             </span>
                         </div>
                     </div>

@@ -7,9 +7,14 @@ import DefaultButton from '@/Components/DefaultButton';
 import DangerButton from '@/Components/DangerButton';
 import {
     BriefcaseBusiness,
+    Calendar,
+    Phone,
     Plus,
+    Settings,
     SquarePen,
-    Trash2
+    Trash2,
+    User,
+    UserPlus,
 } from 'lucide-react';
 
 export default function RoleIndex({ roles, users, mandats, selectedMandatId, availableRoleTypes }) {
@@ -67,7 +72,7 @@ export default function RoleIndex({ roles, users, mandats, selectedMandatId, ava
 
                     <PrimaryButton className="w-full sm:w-auto">
                         <Link href={route('roles.create')} className="flex items-center justify-center gap-2">
-                            <Plus className="w-4 h-4" />
+                            <UserPlus className="w-4 h-4" />
                             <span className="whitespace-nowrap">Ajouter un rôle</span>
                         </Link>
                     </PrimaryButton>
@@ -75,15 +80,40 @@ export default function RoleIndex({ roles, users, mandats, selectedMandatId, ava
 
 
                 {/* Table */}
-                <div className="bg-white shadow rounded-lg overflow-hidden border border-gray-200">
-                    <table className="min-w-full divide-y divide-gray-200">
-                        <thead className="bg-gray-100">
+                <div className="hidden md:block bg-white shadow rounded-lg overflow-x-auto border">
+                    <table className="w-full text-left border-collapse">
+                        <thead className="bg-gray-50 border-b">
                             <tr>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Utilisateur</th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Téléphone</th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Rôle</th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Période du Mandat</th>
-                                <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Actions</th>
+                                <th className="p-4 text-sm font-semibold text-gray-600">
+                                    <div className='flex items-center gap-1'>
+                                        <User className='h-4 w-4' />
+                                        Nom/Email
+                                    </div>
+                                </th>
+                                <th className="p-4 text-sm font-semibold text-gray-600">
+                                    <div className='flex items-center gap-1'>
+                                        <Phone className='w-4 h-4' />
+                                        Contact
+                                    </div>
+                                </th>
+                                <th className="p-4 text-sm font-semibold text-gray-600">
+                                    <div className='flex items-center gap-1'>
+                                        <BriefcaseBusiness className='h-4 w-4' />
+                                        Rôle
+                                    </div>
+                                </th>
+                                <th className="p-4 text-sm font-semibold text-gray-600">
+                                    <div className='flex items-center gap-1'>
+                                        <Calendar className='h-4 w-4' />
+                                        Période du Mandat
+                                    </div>
+                                </th>
+                                <th className="p-4 text-sm font-semibold text-gray-600">
+                                    <div className='flex items-center gap-1 justify-end'>
+                                        <Settings className='h-4 w-4' />
+                                        Actions
+                                    </div>
+                                </th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-200">

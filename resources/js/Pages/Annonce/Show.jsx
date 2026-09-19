@@ -1,7 +1,7 @@
 import React from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link } from '@inertiajs/react';
-import { Megaphone, Calendar, User, ArrowLeft } from 'lucide-react';
+import { Calendar, User, ArrowLeft, TypeOutline, Bell } from 'lucide-react';
 import DefaultButton from '@/Components/DefaultButton';
 
 export default function Show({ annonce }) {
@@ -9,7 +9,7 @@ export default function Show({ annonce }) {
         <AuthenticatedLayout
             header={
                 <div className="flex items-center gap-2 text-gray-800">
-                    <Megaphone className="w-5 h-5 text-gray-600" />
+                    <Bell className="w-5 h-5 text-gray-600" />
                     <h2 className="font-semibold text-xl leading-tight">Détail de l'annonce</h2>
                 </div>
             }
@@ -32,18 +32,22 @@ export default function Show({ annonce }) {
                             {annonce.titre}
                         </h1>
 
-                        <div className="flex flex-wrap items-center gap-4 text-xs sm:text-sm text-gray-500 border-b border-gray-100 pb-4">
-                            <span className="flex items-center gap-1.5">
-                                <Calendar className="w-4 h-4" />
+                        <div className="flex flex-wrap items-center gap-4 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 text-xs sm:text-sm border-b border-gray-100 pb-4 font-semibold">
+                            <span className="flex items-center gap-1.5 px-4 py-2 bg-green-200 rounded-lg">
+                                <Calendar className="w-4 h-4 text-green-600" />
                                 Publié le : {new Date(annonce.datePublication).toLocaleDateString('fr-FR', {
                                     day: 'numeric',
                                     month: 'long',
                                     year: 'numeric',
                                 })}
                             </span>
-                            <span className="flex items-center gap-1.5">
-                                <User className="w-4 h-4" />
+                            <span className="flex items-center gap-1.5 px-4 py-2 bg-orange-200 rounded-lg">
+                                <User className="w-4 h-4 text-orange-600" />
                                 Publié par : {annonce.user?.nom || 'Administration'}
+                            </span>
+                            <span className="flex items-center px-4 py-2 gap-1.5 bg-violet-200 rounded-lg">
+                                <TypeOutline className="w-4 h-4 text-violet-600" />
+                                Type : <span className='uppercase'>{annonce.type}</span>
                             </span>
                         </div>
                     </div>

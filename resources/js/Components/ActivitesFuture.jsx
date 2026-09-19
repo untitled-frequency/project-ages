@@ -29,7 +29,7 @@ export default function ActivitesFutureCard({ activites = [] }) {
                                         <div className="flex flex-wrap gap-2 mb-2 text-[11px] text-slate-600 font-medium">
                                             <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-white border border-slate-200">
                                                 <Clock className="w-3 h-3 text-red-500 mr-1" />
-                                                {new Date(activite.datePublication).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' })} à {new Date(activite.datePublication).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}
+                                                {new Date(activite.date).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' })} à {new Date(activite.date).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}
                                             </span>
                                             {activite.lieu && (
                                                 <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-white border border-slate-200">

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useForm, router } from '@inertiajs/react';
-import { NotepadText, Plus, Calendar, MapPin, Edit3, Trash2, FileText, Users, Loader2 } from 'lucide-react';
+import { NotepadText, CalendarPlus, MapPin, Edit3, Trash2, FileText, Users, Loader2, Calendar } from 'lucide-react';
 import PrimaryButton from './PrimaryButton';
 
 export default function ReunionsComponent({ reunions }) {
@@ -67,7 +67,7 @@ export default function ReunionsComponent({ reunions }) {
                 <PrimaryButton
                     onClick={() => router.get(route('reunions.create'))}
                 >
-                    <Plus className="w-4 h-4" />
+                    <CalendarPlus className="w-4 h-4" />
                     Enregistrer une réunion
                 </PrimaryButton>
             </div>

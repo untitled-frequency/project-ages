@@ -1,7 +1,19 @@
 import React, { useState } from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { router, useForm, usePage, Head, Link } from '@inertiajs/react';
-import { UserPlus, Users, SquarePen, Trash2, UserRoundSearch } from 'lucide-react';
+import { 
+    UserPlus,
+    Users, 
+    SquarePen, 
+    Trash2, 
+    UserRoundSearch, 
+    Phone, 
+    Mail,
+    User,
+    UserKey,
+    UserCheck, 
+    Settings
+} from 'lucide-react';
 import DefaultButton from '@/Components/DefaultButton';
 import DangerButton from '@/Components/DangerButton';
 import Paginate from '@/Components/Paginate';
@@ -82,12 +94,42 @@ export default function Index({ users, filters }) {
                     <table className="w-full text-left border-collapse">
                         <thead className="bg-gray-50 border-b">
                             <tr>
-                                <th className="p-4 text-sm font-semibold text-gray-600">ID</th>
-                                <th className="p-4 text-sm font-semibold text-gray-600">Nom</th>
-                                <th className="p-4 text-sm font-semibold text-gray-600">Email</th>
-                                <th className="p-4 text-sm font-semibold text-gray-600">Téléphone</th>
-                                <th className="p-4 text-sm font-semibold text-gray-600">Status</th>
-                                <th className="p-4 text-sm font-semibold text-gray-600 text-right">Actions</th>
+                                <th className="p-4 text-sm font-semibold text-gray-600">
+                                    <div className='flex items-center gap-1'>
+                                        <UserKey className='h-4 w-4' />
+                                        ID
+                                    </div>
+                                </th>
+                                <th className="p-4 text-sm font-semibold text-gray-600">
+                                    <div className='flex items-center gap-1'>
+                                        <User className='h-4 w-4' />
+                                        Nom
+                                    </div>
+                                </th>
+                                <th className="p-4 text-sm font-semibold text-gray-600">
+                                    <div className='flex items-center gap-1'>
+                                        <Mail className='h-4 w-4' />
+                                        Email
+                                    </div>
+                                </th>
+                                <th className="p-4 text-sm font-semibold text-gray-600">
+                                    <div className='flex items-center gap-1'>
+                                        <Phone className='w-4 h-4' />
+                                        Téléphone
+                                    </div>
+                                </th>
+                                <th className="p-4 text-sm font-semibold text-gray-600">
+                                    <div className='flex items-center gap-1'>
+                                        <UserCheck className='h-4 w-4' />
+                                        Status
+                                    </div>
+                                </th>
+                                <th className="p-4 text-sm font-semibold text-gray-600">
+                                    <div className='flex items-center gap-1 justify-end'>
+                                        <Settings className='h-4 w-4' />
+                                        Actions
+                                    </div>
+                                </th>
                             </tr>
                         </thead>
                         <tbody className="divide-y">

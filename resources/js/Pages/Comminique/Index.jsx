@@ -1,7 +1,7 @@
 import React from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, router } from '@inertiajs/react';
-import { Calendar, Layers, Megaphone } from 'lucide-react';
+import { BellRing, Calendar, Layers, Megaphone } from 'lucide-react';
 
 import ReunionsComponent from '@/Components/ReunionsComponent';
 import ActiviteComponent from '@/Components/ActiviteComponent';
@@ -19,7 +19,7 @@ export default function Index({ reunions, activites, annonces, activeTab = 'anno
     };
 
     const tabs = [
-        { id: 'annonces', label: 'Annonces', icon: Megaphone, count: annonces?.total || 0 },
+        { id: 'annonces', label: 'Annonces', icon: BellRing, count: annonces?.total || 0 },
         { id: 'reunions', label: 'Réunions', icon: Calendar, count: reunions?.total || 0 },
         { id: 'activites', label: 'Activités', icon: Layers, count: activites?.total || 0 },
     ];

@@ -83,7 +83,7 @@ function MediaCarousel({ media }) {
 export default function Welcome({ auth }) {
     return (
         <>
-            <Head title="Accueil - AGES (All Generations of ESSFAR)" />
+            <Head title="Accueil " />
             <div className="min-h-screen bg-white text-slate-800 flex flex-col selection:bg-ages-blue-400 selection:text-white transition-colors duration-300">
 
                 {/* Header Navbar */}

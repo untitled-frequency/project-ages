@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useForm, router } from '@inertiajs/react';
-import { Plus, Calendar, MapPin, NotepadText, Users, CircleDollarSign, Edit3, Trash2, Loader2 } from 'lucide-react';
+import { Plus, Calendar, MapPin, NotepadText, Users, CircleDollarSign, Edit3, Trash2, Loader2, LayersPlus } from 'lucide-react';
 import PrimaryButton from './PrimaryButton';
 
 export default function ActiviteComponent({ activites }) {
@@ -67,7 +67,7 @@ export default function ActiviteComponent({ activites }) {
                 <PrimaryButton
                     onClick={() => router.get(route('activites.create'))}
                 >
-                    <Plus className="w-4 h-4" />
+                    <LayersPlus className="w-4 h-4" />
                     Enregistrer une activité
                 </PrimaryButton>
             </div>

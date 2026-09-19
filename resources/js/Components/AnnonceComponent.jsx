@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useForm, router } from '@inertiajs/react';
-import { Plus, Calendar, Edit3, Trash2, Loader2, NotepadText, TextSearch, X } from 'lucide-react';
+import { Plus, Calendar, Edit3, Trash2, Loader2, NotepadText, TextSearch, X, BellPlus } from 'lucide-react';
 import PrimaryButton from './PrimaryButton';
 
 export default function AnnonceComponent({ annonces }) {
@@ -109,7 +109,7 @@ export default function AnnonceComponent({ annonces }) {
                     className="w-full sm:w-auto"
                 >
                     <Link href={route('annonces.create')} className='flex items-center justify-center gap-2'>
-                        <Plus className="w-4 h-4" />
+                        <BellPlus className="w-4 h-4" />
                         Publier une annonce
                     </Link>
                 </PrimaryButton>    
@@ -120,6 +120,7 @@ export default function AnnonceComponent({ annonces }) {
                     <div className="space-y-4">
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                             {annoncesList.map((annonce) => (
+                                <Link href={route('annonces.show', annonce.id)}>
                                 <div key={annonce.id} className="bg-white p-5 rounded-lg border border-gray-200 shadow-sm flex flex-col justify-between">
                                     <div>
                                         <div className="flex items-center justify-between mb-2">
@@ -131,13 +132,13 @@ export default function AnnonceComponent({ annonces }) {
                                                 {new Date(annonce.datePublication).toLocaleDateString('fr-FR', { day: '2-digit', month: 'long', year: 'numeric' })}
                                             </span>
                                         </div>
-                                        <Link
-                                            href={route('annonces.show', annonce.id)}
-                                            className="font-bold text-lg text-gray-900 group-hover:text-violet-600 transition-colors line-clamp-2"
-                                        >
+                                        <span className="font-bold text-lg text-gray-900 group-hover:text-violet-600 transition-colors line-clamp-2">
                                             {annonce.titre}
-                                        </Link>
-                                        <p className="text-gray-600 text-sm mb-4 line-clamp-3">{annonce.contenu}</p>
+                                        </span>
+                                        <p className="text-gray-600 text-sm mb-4 line-clamp-3">
+                                            <span className=''></span>
+                                            {annonce.contenu}
+                                        </p>
                                     </div>
 
                                     <div className="flex items-center justify-end gap-2 pt-4 border-t border-gray-100">
@@ -159,6 +160,7 @@ export default function AnnonceComponent({ annonces }) {
                                         </button>
                                     </div>
                                 </div>
+                                </Link>
                             ))}
                         </div>
 
