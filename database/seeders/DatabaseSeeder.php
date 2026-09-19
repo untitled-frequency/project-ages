@@ -25,14 +25,28 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        
+        /*
         User::factory()->create([
-            'nom' => 'teufack',
+            'nom' => 'Teufack',
             'email' => 'teufack@gmail.com',
             'password' => 'password',
             'tel' => '123456789',
         ]);
+        
+        Contribution::factory()->create([
+            "montantMembre" => 10000,
+            "montantMembreBureau" => 20000,
+        ]);*/
 
+        Annee::factory()->create([
+            "dateDebut" => "2026-10-01",
+            "dateFin" => "2027-05-31",
+            "contribution_id" => 1,
+            "status" => "en cours",
+        ]);
+        
+        
+        /*
         User::factory()->create([
             'nom' => 'test',
             'email' => 'test@example.com',
@@ -50,10 +64,7 @@ class DatabaseSeeder extends Seeder
         
         Activite::factory(10)->create();
         
-        Contribution::factory()->create([
-            "montantMembre" => 10000,
-            "montantMembreBureau" => 20000,
-        ]);
+        
 
         Contribution::factory()->create([
             "montantMembre" => 10000,
@@ -76,12 +87,6 @@ class DatabaseSeeder extends Seeder
             "dateDebut" => "2025-10-01",
             "dateFin" => "2026-05-31",
             "contribution_id" => 2,
-        ]);
-
-        Annee::factory()->create([
-            "dateDebut" => "2026-10-01",
-            "dateFin" => "2027-05-31",
-            "contribution_id" => 3,
         ]);
         
         
@@ -141,6 +146,6 @@ class DatabaseSeeder extends Seeder
         
 
         OperationFinanciere::factory(100)->create();
-        
+        */
     }
 }

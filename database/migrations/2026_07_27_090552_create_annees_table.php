@@ -16,6 +16,7 @@ return new class extends Migration
             $table->date("dateDebut");
             $table->date("dateFin");
             $table->foreignId('contribution_id')->constrained()->cascadeOnDelete();
+            $table->string("status")->default("en cours");
         });
     }
 

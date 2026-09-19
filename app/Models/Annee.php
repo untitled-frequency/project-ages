@@ -16,6 +16,7 @@ class Annee extends Model
         "dateDebut",
         "dateFin",
         "contribution_id",
+        "status",
     ];
 
     public function contribution()

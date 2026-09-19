@@ -79,7 +79,7 @@ export default function AuthenticatedLayout({ header, children }) {
                 route().current('reunions.*'),
             icon: Megaphone
         },
-        { name: 'Mandat', href: route('mandats.index'), active: route().current('mandats.*'), icon: CalendarDays },
+        //{ name: 'Mandat', href: route('mandats.index'), active: route().current('mandats.*'), icon: CalendarDays },
     ];
 
     const userName = user?.nom || 'User';
