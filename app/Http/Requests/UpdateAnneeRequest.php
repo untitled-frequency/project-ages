@@ -2,8 +2,10 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 use App\Models\Annee;
+use Carbon\Carbon;
+use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateAnneeRequest extends FormRequest
 {
@@ -12,41 +14,52 @@ class UpdateAnneeRequest extends FormRequest
         return true;
     }
 
+    private function currentAnnee(): ?Annee
+    {
+        $param = $this->route('annee');
+
+        if ($param instanceof Annee) {
+            return $param;
+        }
+
+        return $param ? Annee::find($param) : null;
+    }
+
     public function rules(): array
     {
-        $anneeId = $this->route('annee')?->id;
-
         return [
-            'dateDebut' => ['required', 'date'],
-            'dateFin' => ['required', 'date', 'after:dateDebut'],
-            'status' => ['required', 'string', 'in:en cours,achevée'],
-            'montantMembre' => ['required', 'numeric', 'min:0'],
-            'montantMembreBureau' => ['required', 'numeric', 'min:0'],
+            'dateDebut'           => ['required', 'date_format:Y-m-d'],
+            'dateFin'             => ['required', 'date_format:Y-m-d', 'after:dateDebut'],
+            'status'              => ['sometimes', 'required', 'in:en cours,achevée'],
         ];
     }
 
-    public function withValidator($validator)
+    public function withValidator(Validator $validator): void
     {
-        $validator->after(function ($validator) {
-            $anneeId = $this->route('annee')?->id;
-            $dateDebut = $this->input('dateDebut');
-            $dateFin = $this->input('dateFin');
+        $validator->after(function (Validator $validator) {
+            if ($validator->errors()->isNotEmpty()) {
+                return;
+            }
 
-            if ($dateDebut && $dateFin) {
-                // Integrity Test: Check overlapping dates excluding current year
-                $overlap = Annee::where('id', '!=', $anneeId)
-                    ->where(function ($query) use ($dateDebut, $dateFin) {
-                        $query->whereBetween('dateDebut', [$dateDebut, $dateFin])
-                            ->orWhereBetween('dateFin', [$dateDebut, $dateFin])
-                            ->orWhere(function ($q) use ($dateDebut, $dateFin) {
-                                $q->where('dateDebut', '<=', $dateDebut)
-                                  ->where('dateFin', '>=', $dateFin);
-                            });
-                    })->exists();
+            $current = $this->currentAnnee();
+            $newStart = $this->input('dateDebut');
+            $newEnd   = $this->input('dateFin');
 
-                if ($overlap) {
-                    $validator->errors()->add('dateDebut', 'Les dates choisies chevauchent une année académique existante.');
-                }
+            // Overlap check excluding current model ID
+            $conflict = Annee::query()
+                ->when($current, fn ($q) => $q->whereKeyNot($current->getKey()))
+                ->whereDate('dateDebut', '<=', $newEnd)
+                ->whereDate('dateFin', '>=', $newStart)
+                ->first();
+
+            if ($conflict) {
+                $range = Carbon::parse($conflict->dateDebut)->format('d/m/Y')
+                    . ' - ' . Carbon::parse($conflict->dateFin)->format('d/m/Y');
+
+                $validator->errors()->add(
+                    'dateDebut',
+                    "Chevauchement avec l'année #{$conflict->id} ({$range}) - année modifiée : #" . ($current?->id ?? 'aucune')
+                );
             }
         });
     }

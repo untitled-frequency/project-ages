@@ -25,7 +25,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        /*
+        
         User::factory()->create([
             'nom' => 'Teufack',
             'email' => 'teufack@gmail.com',
@@ -33,28 +33,6 @@ class DatabaseSeeder extends Seeder
             'tel' => '123456789',
         ]);
         
-        Contribution::factory()->create([
-            "montantMembre" => 10000,
-            "montantMembreBureau" => 20000,
-        ]);
-        
-        Annee::factory()->create([
-            "dateDebut" => "2026-10-01",
-            "dateFin" => "2027-05-31",
-            "contribution_id" => 1,
-            "status" => "en cours",
-        ]);
-        */
-
-        Election::factory()->create([
-            "dateDebutDepot" => "2026-10-01",
-            "dateFinDepot" => "2026-10-01",
-            "dateDebutCampagne" => "2026-10-20",
-            "dateFinCampagne" => "2026-10-25",
-            "dateOuvertureVote" => "2026-10-26",
-            "dateClotureVote" => "2026-10-26",
-            "annee_id" => 1,
-        ]);
         
         /*
         User::factory()->create([
@@ -66,6 +44,17 @@ class DatabaseSeeder extends Seeder
 
         User::factory(99)->create();
 
+        Contribution::factory()->create([
+            "montantMembre" => 10000,
+            "montantMembreBureau" => 20000,
+        ]);
+        
+        Annee::factory()->create([
+            "dateDebut" => "2026-10-01",
+            "dateFin" => "2027-05-31",
+            "contribution_id" => 1,
+            "status" => "en cours",
+        ]);
         
         Annonce::factory(10)->create();
         

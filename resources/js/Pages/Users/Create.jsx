@@ -7,7 +7,9 @@ import {
         MailPlus,
         PhoneIncoming,
         Save,
-        UserPlus
+        UserPlus,
+        User,
+        UserRound
     } 
     from "lucide-react";
 import PrimaryButton from "@/Components/PrimaryButton";
@@ -41,6 +43,11 @@ export default function Create() {
                     <div className="">
                         <form onSubmit={handleSubmit} className='bg-white rounded-xl border border-gray-200 p-6 shadow-sm space-y-4'>
                             <div>
+                                <h2 className="text-md font-semibold text-gray-800 flex items-center gap-2 border-b pb-2">
+                                    <UserRound className="w-5 h-5 text-violet-600" />Information Personnel
+                                </h2>
+                            </div>
+                            <div>
                                 <label htmlFor="nom" className="block text-sm font-medium text-gray-700">
                                     <div className="flex items-center gap-2">
                                         <UserPlus className="w-4 h-4" />
@@ -57,7 +64,7 @@ export default function Create() {
                                 />
                                 {errors.nom && <span className="text-red-500 text-xs">Le nom est requis</span>}
                             </div>
-
+                            
                             <div>
                                 <label htmlFor="type" className="block text-sm font-medium text-gray-700">
                                     <div className="flex items-center gap-2">

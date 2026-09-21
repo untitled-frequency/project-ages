@@ -9,16 +9,15 @@ import PrimaryButton from '@/Components/PrimaryButton';
 export default function MandatComponent({ mandats, filters }) {
     const { flash } = usePage().props;
 
-    // Handle Status Filter
     const handleStatusFilter = (e) => {
-        const status = e.target.value;
-        router.get('/mandats', { status }, { preserveState: true, replace: true, preserveScroll: true });
+    const status = e.target.value;
+    router.get(route('admin.index'), { status }, { preserveState: true, replace: true, preserveScroll: true });
     };
 
-    // Handle Page Change (keeps the current filter in the query string)
+    // Handle Page Change
     const handlePageChange = (page) => {
         router.get(
-            '/mandats',
+            route('admin.index'),
             { status: filters?.status, page },
             { preserveState: true, preserveScroll: true, replace: true }
         );
@@ -36,15 +35,8 @@ export default function MandatComponent({ mandats, filters }) {
     };
 
     return (
-        <AuthenticatedLayout
-            header={
-                <div className='flex items-center'>
-                    <CalendarDays className='mr-2 w-6 h-6' />
-                    <h2 className="text-2xl font-bold text-gray-800">Gestion des Mandats</h2>
-                </div>
-            }
-        >
-            <Head title="Mandats" />
+        <>
+            {/* <Head title="Mandats" /> */}
             <div className="p-6 max-w-7xl mx-auto space-y-6">
 
                 {/* Flash Messages */}
@@ -103,7 +95,7 @@ export default function MandatComponent({ mandats, filters }) {
                                 <tr key={mandat.id} className="hover:bg-gray-50">
                                     <td className="p-4 font-medium">{mandat.id}</td>
                                     <td className="p-4 text-sm text-gray-600">
-                                        {mandat.annee ? `${mandat.annee.dateDebut} → ${mandat.annee.dateFin}` : '-'}
+                                        {mandat.annee ? `${new Date(mandat.annee.dateDebut).getFullYear()} → ${new Date(mandat.annee.dateFin).getFullYear()}` : '-'}
                                     </td>
                                     <td className="p-4">{mandat.dateDebut}</td>
                                     <td className="p-4">{mandat.dateFin ?? 'En cours'}</td>
@@ -199,6 +191,6 @@ export default function MandatComponent({ mandats, filters }) {
                 />
 
             </div>
-        </AuthenticatedLayout>
+        </>
     );
 }

@@ -33,7 +33,7 @@ function CollapseLinks() {
                 }`}>
                 <div className="flex items-center gap-3">
                     <CircleDollarSign className="h-4 w-4" />
-                    <span>Finance</span>
+                    <span>Finances</span>
                 </div>
                 <ChevronDown className="h-4 w-4 transition-transform duration-200 group-open:-rotate-180 text-gray-400" />
             </summary>
@@ -80,7 +80,7 @@ export default function AuthenticatedLayout({ header, children }) {
                 route().current('activites.*') ||
                 route().current('reunions.*'),
             icon: Megaphone
-        },
+        },    
         //{ name: 'Mandat', href: route('mandats.index'), active: route().current('mandats.*'), icon: CalendarDays },
     ];
 
@@ -141,7 +141,7 @@ export default function AuthenticatedLayout({ header, children }) {
                             ))}
                             <CollapseLinks />
                             <Link
-                                href={route('election.index')}
+                                href={route('elections.index')}
                                 className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-semibold transition-colors ${route().current('election.*')
                                     ? 'bg-gray-100 text-gray-900'
                                     : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'

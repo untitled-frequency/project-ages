@@ -7,16 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class ListeCandidat extends Model
 {
-    /** @use HasFactory<\Database\Factories\ListeCandidatFactory> */
     use HasFactory;
 
-    public $timestamps = false;
-
     protected $fillable = [
-        "nom",
-        "programme",
-        "slogan",
-        "election_id",
+        'nom',
+        'programme',
+        'slogan',
+        'election_id',
+        'status',
     ];
 
     public function election()
@@ -24,8 +22,13 @@ class ListeCandidat extends Model
         return $this->belongsTo(Election::class, 'election_id');
     }
 
+    public function membres()
+    {
+        return $this->hasMany(MembreListeCandidat::class, 'liste_candidat_id');
+    }
+
     public function votes()
     {
-        return $this->hasMany(Vote::class);
+        return $this->hasMany(Vote::class, 'liste_candidat_id');
     }
 }

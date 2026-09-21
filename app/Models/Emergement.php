@@ -9,6 +9,7 @@ class Emergement extends Model
     protected $fillable = [
         'election_id',
         'user_id',
+        'dateHeureVote',
     ];
 
     public function election()

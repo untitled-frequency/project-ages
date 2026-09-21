@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string('nom');
             $table->text('programme')->nullable();
             $table->string('slogan')->nullable();
+            $table->unique(['election_id', 'nom']);
+            $table->string('status'); //brouillon, soumise, validee, rejetee
             $table->timestamps();
         });
     }

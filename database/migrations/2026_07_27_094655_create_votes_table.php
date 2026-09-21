@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('votes', function (Blueprint $table) {
             $table->id();
             $table->foreignId('election_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('liste_candidat_id')->constrained()->cascadeOnDelete();
-            $table->timestamps();
+            $table->foreignId('liste_candidat_id')->constrained()->restrictOnDelete();
+            $table->index(['election_id', 'liste_candidat_id']);
         });
     }
 

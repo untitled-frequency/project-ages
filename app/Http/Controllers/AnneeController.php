@@ -4,55 +4,49 @@ namespace App\Http\Controllers;
 
 use App\Models\Annee;
 use App\Models\Contribution;
-use App\Http\Requests\StoreAnneeRequest;
-use App\Http\Requests\UpdateAnneeRequest;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
+use Carbon\Carbon;
 
 class AnneeController extends Controller
 {
     public function create() 
     {
-        // Fetch latest contribution defaults if present
-        $latestContribution = Contribution::latest('id')->first();
-
-        return Inertia::render('AdminPannel/Annee/Create', [
-            'defaultContribution' => $latestContribution
-        ]);
+        return Inertia::render('AdminPannel/Annee/Create');
     }
 
-    public function store(StoreAnneeRequest $request)
+    public function store(Request $request)
     {
-        $validated = $request->validated();
+        $validated = $request->validate([
+            'dateDebut'           => 'required|date',
+            'dateFin'             => 'required|date|after:dateDebut',
+            'montantMembre'       => 'required|numeric|min:0',
+            'montantMembreBureau' => 'required|numeric|min:0',
+        ]);
+
+        // Overlap check for CREATION: check against ALL existing years
+        $overlapExists = Annee::where('dateDebut', '<=', $validated['dateFin'])
+            ->where('dateFin', '>=', $validated['dateDebut'])
+            ->exists();
+
+        if ($overlapExists) {
+            return back()->withErrors([
+                'dateDebut' => 'Les dates choisies chevauchent une année académique existante.'
+            ])->withInput();
+        }
 
         DB::transaction(function () use ($validated) {
-            // Check if latest contribution exists and is NOT attached to any academic year
-            $latestContribution = Contribution::latest('id')->first();
-            $isAttached = $latestContribution 
-                ? Annee::where('contribution_id', $latestContribution->id)->exists()
-                : true;
+            $contribution = Contribution::create([
+                'montantMembre'       => $validated['montantMembre'],
+                'montantMembreBureau' => $validated['montantMembreBureau'],
+            ]);
 
-            if (!$latestContribution || $isAttached) {
-                // Automatically create new contribution record
-                $contribution = Contribution::create([
-                    'montantMembre' => $validated['montantMembre'],
-                    'montantMembreBureau' => $validated['montantMembreBureau'],
-                ]);
-            } else {
-                // Use the unattached latest contribution and update amounts
-                $latestContribution->update([
-                    'montantMembre' => $validated['montantMembre'],
-                    'montantMembreBureau' => $validated['montantMembreBureau'],
-                ]);
-                $contribution = $latestContribution;
-            }
-
-            // Create Academic Year linked to the contribution
             Annee::create([
-                'dateDebut' => $validated['dateDebut'],
-                'dateFin' => $validated['dateFin'],
+                'dateDebut'       => $validated['dateDebut'],
+                'dateFin'         => $validated['dateFin'],
                 'contribution_id' => $contribution->id,
-                'status' => 'en cours',
+                'status'          => 'en cours',
             ]);
         });
 
@@ -61,39 +55,56 @@ class AnneeController extends Controller
 
     public function edit(Annee $annee)
     {
-        // Load contribution relationship
-        $annee->load('contribution');
-
         return Inertia::render('AdminPannel/Annee/Edit', [
-            'annee' => $annee
+            'annee' => array_merge($annee->load('contribution')->toArray(), [
+                'dateDebut' => Carbon::parse($annee->dateDebut)->toDateString(),
+                'dateFin'   => Carbon::parse($annee->dateFin)->toDateString(),
+            ]),
         ]);
     }
 
-    public function update(UpdateAnneeRequest $request, Annee $annee) 
+    public function update(Request $request, Annee $annee) 
     {
-        $validated = $request->validated();
+        $validated = $request->validate([
+            'dateDebut'           => 'required|date',
+            'dateFin'             => 'required|date|after:dateDebut',
+            'status'              => 'required|in:en cours,achevée',
+            'montantMembre'       => 'required|numeric|min:0',
+            'montantMembreBureau' => 'required|numeric|min:0',
+        ]);
 
-        DB::transaction(function () use ($validated, $annee) {
-            // Update linked contribution amounts
-            if ($annee->contribution) {
-                $annee->contribution->update([
-                    'montantMembre' => $validated['montantMembre'],
+        // Overlap check for UPDATE: EXCLUDE the current academic year ($annee)
+        $overlapExists = Annee::whereKeyNot($annee->getKey())
+            ->where('dateDebut', '<=', $validated['dateFin'])
+            ->where('dateFin', '>=', $validated['dateDebut'])
+            ->exists();
+
+        if ($overlapExists) {
+            return back()->withErrors([
+                'dateDebut' => 'Les dates choisies chevauchent une autre année académique existante.'
+            ])->withInput();
+        }
+
+        DB::transaction(function () use ($annee, $validated) {
+            // Update or attach linked contribution
+            if ($annee->contribution_id) {
+                Contribution::where('id', $annee->contribution_id)->update([
+                    'montantMembre'       => $validated['montantMembre'],
                     'montantMembreBureau' => $validated['montantMembreBureau'],
                 ]);
             } else {
-                // If missing, attach a new one dynamically
                 $contribution = Contribution::create([
-                    'montantMembre' => $validated['montantMembre'],
+                    'montantMembre'       => $validated['montantMembre'],
                     'montantMembreBureau' => $validated['montantMembreBureau'],
                 ]);
                 $annee->contribution_id = $contribution->id;
             }
 
-            // Update academic year properties
+            // Update academic year record
             $annee->update([
                 'dateDebut' => $validated['dateDebut'],
-                'dateFin' => $validated['dateFin'],
-                'status' => $validated['status'],
+                'dateFin'   => $validated['dateFin'],
+                'status'    => $validated['status'],
             ]);
         });
 
