@@ -62,52 +62,28 @@ class AnneeController extends Controller
             ]),
         ]);
     }
+public function update(Request $request, Annee $annee)
+{
+    $validated = $request->validate([
+        'dateDebut'           => 'required|date',
+        'dateFin'             => 'required|date|after:dateDebut',
+        'status'              => 'required|in:en cours,achevée',
+        'montantMembre'       => 'required|numeric|min:0',
+        'montantMembreBureau' => 'required|numeric|min:0',
+    ]);
 
-    public function update(Request $request, Annee $annee) 
-    {
-        $validated = $request->validate([
-            'dateDebut'           => 'required|date',
-            'dateFin'             => 'required|date|after:dateDebut',
-            'status'              => 'required|in:en cours,achevée',
-            'montantMembre'       => 'required|numeric|min:0',
-            'montantMembreBureau' => 'required|numeric|min:0',
-        ]);
+    $contribution = Contribution::find($annee->contribution_id);
+    $contribution->update([
+        'montantMembre'       => $validated['montantMembre'],
+        'montantMembreBureau' => $validated['montantMembreBureau'],
+    ]);
 
-        // Overlap check for UPDATE: EXCLUDE the current academic year ($annee)
-        $overlapExists = Annee::whereKeyNot($annee->getKey())
-            ->where('dateDebut', '<=', $validated['dateFin'])
-            ->where('dateFin', '>=', $validated['dateDebut'])
-            ->exists();
+    $annee->update([
+        'dateDebut'           => $validated['dateDebut'],
+        'dateFin'             => $validated['dateFin'],
+        'status'              => $validated['status'],
+    ]);
 
-        if ($overlapExists) {
-            return back()->withErrors([
-                'dateDebut' => 'Les dates choisies chevauchent une autre année académique existante.'
-            ])->withInput();
-        }
-
-        DB::transaction(function () use ($annee, $validated) {
-            // Update or attach linked contribution
-            if ($annee->contribution_id) {
-                Contribution::where('id', $annee->contribution_id)->update([
-                    'montantMembre'       => $validated['montantMembre'],
-                    'montantMembreBureau' => $validated['montantMembreBureau'],
-                ]);
-            } else {
-                $contribution = Contribution::create([
-                    'montantMembre'       => $validated['montantMembre'],
-                    'montantMembreBureau' => $validated['montantMembreBureau'],
-                ]);
-                $annee->contribution_id = $contribution->id;
-            }
-
-            // Update academic year record
-            $annee->update([
-                'dateDebut' => $validated['dateDebut'],
-                'dateFin'   => $validated['dateFin'],
-                'status'    => $validated['status'],
-            ]);
-        });
-
-        return redirect()->route('admin.index')->with('success', 'Année académique mise à jour avec succès.');
-    }
+    return redirect()->route('admin.index')->with('success', 'Année académique mise à jour avec succès.');
+}
 }

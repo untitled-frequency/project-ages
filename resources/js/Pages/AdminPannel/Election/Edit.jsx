@@ -25,11 +25,9 @@ export default function Edit({ election }) {
     return (
         <AuthenticatedLayout
             header={
-                <div className="flex items-center gap-2 text-gray-800">
-                    <Cog className="w-5 h-5 text-gray-600" />
-                    <h2 className="font-semibold text-xl leading-tight">
-                        Modifier les infos de l'élection
-                    </h2>
+                <div className="flex items-center">
+                    <Cog className="mr-2" />
+                    <h2 className="text-2xl font-bold text-gray-800">Modifier les infos de l'élection</h2>
                 </div>
             }
         >

@@ -152,14 +152,13 @@ export default function Index({ users, filters }) {
                                     </td>
                                     <td className="p-4 text-right space-x-2">
                                         <DefaultButton href={route('users.edit', user.id)}>
-                                            <SquarePen className="w-4 h-4 mr-1" /> Éditer
+                                            <SquarePen className="w-4 h-4 mr-1" />
                                         </DefaultButton>
                                         <button
                                             onClick={() => handleDelete(user.id)}
                                             className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-red-600 hover:bg-red-50 rounded-md transition-colors"
                                         >
                                             <Trash2 className="w-3.5 h-3.5" />
-                                            Supprimer
                                         </button>
                                     </td>
                                 </tr>

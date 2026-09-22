@@ -69,7 +69,7 @@ class UserController extends Controller
 
     public function destroy(User $user)
     {
-        $user->delete();
+        $user->delete()->cascade();
 
         return redirect()->route('users.index')->with('success', 'Utilisateur supprimé avec succès.');
     }

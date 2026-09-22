@@ -34,9 +34,13 @@ export default function Dashboard({ auth, annonces, reunions, activites, contrib
                     <ActivitesFutureCard activites={activites} />
                     <MyContributionsCard contributions={contributions} anneeEnCour={anneeEnCour} targetAmount={targetAmount} />
                 </div>
+                
+                {/*
                 <div>
-                    {/* <ElectionEnCour election={election} /> */}
+                    <ElectionEnCour election={election} />
                 </div>
+                */}
+
             </div>
         </AuthenticatedLayout>
     );

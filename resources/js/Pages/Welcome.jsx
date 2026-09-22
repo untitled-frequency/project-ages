@@ -147,7 +147,7 @@ export default function Welcome({ auth }) {
 
                         {/* Subtitle */}
                         <p className="max-w-2xl mx-auto text-lg sm:text-xl text-slate-600 font-normal leading-relaxed mb-8">
-                            <strong>All Generations of ESSFAR</strong> — La plateforme de l'association pour suivre les annonces, participer aux élections, gérer les contributions et connecter les étudiants et diplômés.
+                            <strong>All Generations of ESSFAR of Students</strong> — La plateforme de l'association pour suivre les annonces, participer aux élections, gérer les contributions et connecter les étudiants et diplômés.
                         </p>
 
                         {/* Hero CTA Buttons */}

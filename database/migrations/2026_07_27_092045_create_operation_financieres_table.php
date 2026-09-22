@@ -14,10 +14,11 @@ return new class extends Migration
         Schema::create('operation_financieres', function (Blueprint $table) {
             $table->id();
             $table->string("motif");
-            $table->string("montant");
+            $table->decimal("montant", 12, 2);
             $table->date("date");
             $table->string("type");
             $table->foreignId("user_id")->constrained()->cascadeOnDelete();
+            $table->foreignId("annee_id")->constrained()->cascadeOnDelete();            
         });
     }
 

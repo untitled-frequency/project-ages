@@ -1,7 +1,7 @@
 import React from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, useForm, Link } from '@inertiajs/react';
-import { ArrowLeft, Save, CalendarDays, Coins, Users, UserCheck, Cog } from 'lucide-react';
+import { ArrowLeft, Save, CalendarDays, Coins, Users, UserCheck, Cog, BriefcaseBusiness } from 'lucide-react';
 import InputLabel from '@/Components/InputLabel';
 import InputError from '@/Components/InputError';
 import PrimaryButton from '@/Components/PrimaryButton';
@@ -11,8 +11,8 @@ export default function Edit({ annee }) {
         dateDebut: annee.dateDebut || '',
         dateFin: annee.dateFin || '',
         status: annee.status || 'en cours',
-        montantMembre: annee.contribution ? annee.contribution.montantMembre : '',
-        montantMembreBureau: annee.contribution ? annee.contribution.montantMembreBureau : '',
+        montantMembre: annee.contribution?.montantMembre || '',
+        montantMembreBureau: annee.contribution?.montantMembreBureau || '',
     });
 
     const handleSubmit = (e) => {
@@ -23,11 +23,9 @@ export default function Edit({ annee }) {
     return (
         <AuthenticatedLayout
             header={
-                <div className="flex items-center gap-2 text-gray-800">
-                    <Cog className="w-5 h-5 text-gray-600" />
-                    <h2 className="font-semibold text-xl leading-tight">
-                        Modifier l'année académique
-                    </h2>
+                <div className="flex items-center">
+                    <Cog className="mr-2" />
+                    <h2 className="text-2xl font-bold text-gray-800">Modifier l'année académique</h2>
                 </div>
             }
         >
@@ -87,15 +85,13 @@ export default function Edit({ annee }) {
                             <InputError message={errors.status} className="mt-1" />
                         </div>
                     </div>
-
-                    {/* Contributions Section 
-                    <div className="space-y-4 pt-2">
+                    
+                    <div className='space-y-2'>
                         <h3 className="text-sm font-bold text-gray-700 uppercase tracking-wider border-b pb-2 flex items-center gap-2">
-                            <Coins className="w-4 h-4 text-emerald-600" />
-                            Configuration des Cotisations
+                            <Coins className="w-4 h-4 text-green-600" />
+                            Cotisations
                         </h3>
-
-                        <div>
+                        <div className='py-2'>
                             <label htmlFor="montantMembre" className="block text-sm font-medium text-gray-700">
                                 <div className="flex items-center gap-1.5">
                                     <Users className="w-4 h-4 text-gray-500" />
@@ -116,7 +112,7 @@ export default function Edit({ annee }) {
                         <div>
                             <label htmlFor="montantMembreBureau" className="block text-sm font-medium text-gray-700">
                                 <div className="flex items-center gap-1.5">
-                                    <UserCheck className="w-4 h-4 text-gray-500" />
+                                    <BriefcaseBusiness className="w-4 h-4 text-gray-500" />
                                     Montant Cotisation Membre du Bureau (FCFA)
                                 </div>
                             </label>
@@ -131,8 +127,6 @@ export default function Edit({ annee }) {
                             {errors.montantMembreBureau && <span className="text-red-500 text-xs mt-1 block">{errors.montantMembreBureau}</span>}
                         </div>
                     </div>
-                    */}
-
                     {/* Actions */}
                     <div className="flex flex-col-reverse sm:flex-row justify-end items-center gap-2 pt-4">
                         <Link href={route('admin.index')} className="w-full sm:w-auto">

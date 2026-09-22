@@ -1,89 +1,127 @@
 import React from 'react';
+import { Vote, Users, Clock, CheckCircle2, AlertCircle, Sparkles, Quote, ArrowRight } from 'lucide-react';
 
 export default function ElectionEnCour({ election }) {
     if (!election) {
         return (
-            <div className="bg-white p-6 rounded-lg shadow border text-gray-500">
-                No elections scheduled for this academic year.
+            <div className="flex items-center gap-3 p-5 bg-white border border-slate-200/80 rounded-2xl shadow-sm text-slate-500">
+                <div className="p-2.5 bg-slate-100 text-slate-400 rounded-xl">
+                    <AlertCircle className="w-5 h-5" />
+                </div>
+                <div>
+                    <h3 className="text-sm font-semibold text-slate-800">Aucune élection</h3>
+                    <p className="text-xs text-slate-400">Aucune élection n'est programmée pour cette année académique.</p>
+                </div>
             </div>
         );
     }
 
-    // Dynamic status badge styling and messaging
-    const getStatusBadge = (status) => {
+    // Dynamic status badge styling
+    const renderStatusBadge = (status) => {
         switch (status) {
             case 'En cours':
                 return (
-                    <span className="bg-green-100 text-green-800 text-xs font-semibold px-2.5 py-0.5 rounded-full animate-pulse">
-                        ● En cours
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200/60">
+                        <span className="relative flex h-2 w-2">
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                            <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                        </span>
+                        En cours
                     </span>
                 );
             case 'À venir':
                 return (
-                    <span className="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-blue-50 text-blue-700 border border-blue-200/60">
+                        <Clock className="w-3.5 h-3.5" />
                         À venir
                     </span>
                 );
             case 'Terminé':
                 return (
-                    <span className="bg-yellow-100 text-yellow-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-amber-50 text-amber-700 border border-amber-200/60">
+                        <CheckCircle2 className="w-3.5 h-3.5" />
                         Terminé
                     </span>
                 );
             default:
                 return (
-                    <span className="bg-gray-100 text-gray-600 text-xs font-semibold px-2.5 py-0.5 rounded-full">
-                        À venir
+                    <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-slate-100 text-slate-600">
+                        {status || 'À venir'}
                     </span>
                 );
         }
     };
 
-    // Reference listesCandidats directly
-    const candidateLists = election?.listes_candidats || [];
+    const candidateLists = election?.listes_candidats || election?.listesCandidats || [];
 
     return (
-        <div className="bg-white p-6 rounded-xl shadow-md border border-gray-100">
+        <div className="p-6 bg-white border border-slate-200/80 rounded-2xl shadow-sm hover:shadow-md transition-all duration-200">
             {/* Header */}
-            <div className="flex items-center justify-between pb-4 mb-4 border-b">
-                <h2 className="text-xl font-bold text-gray-800">Elections</h2>
-                {getStatusBadge(election.status)}
+            <div className="flex items-center justify-between pb-4 mb-5 border-b border-slate-100">
+                <div className="flex items-center space-x-3">
+                    <div className="p-2.5 bg-indigo-50 text-indigo-600 rounded-xl">
+                        <Vote className="w-5 h-5" />
+                    </div>
+                    <div>
+                        <h2 className="text-base font-bold text-slate-800">Élections</h2>
+                        <p className="text-xs text-slate-400 font-medium">Session de vote étudiant</p>
+                    </div>
+                </div>
+                {renderStatusBadge(election.status)}
             </div>
 
-            {/* Candidates List */}
+            {/* Candidates Section */}
             <div className="space-y-4">
-                <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider">
-                    Candidate Lists ({candidateLists.length})
-                </h3>
+                <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-1.5 text-xs font-bold uppercase tracking-wider text-slate-400">
+                        <Users className="w-3.5 h-3.5" />
+                        <span>Listes Candidates ({candidateLists.length})</span>
+                    </div>
+                </div>
 
                 {candidateLists.length > 0 ? (
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         {candidateLists.map((listeCandidat) => (
                             <div
                                 key={listeCandidat.id}
-                                className="p-4 rounded-lg border border-gray-200 hover:border-blue-300 transition-all bg-gray-50 hover:bg-white"
+                                className="group flex flex-col justify-between p-4 rounded-xl border border-slate-200/70 bg-slate-50/50 hover:bg-white hover:border-indigo-200 hover:shadow-sm transition-all duration-200"
                             >
-                                <div className="flex justify-between items-start mb-2">
-                                    <h4 className="text-lg font-bold text-gray-900">{listeCandidat.nom}</h4>
-                                    {election.status === 'En cours' && (
-                                        <button className="bg-blue-600 hover:bg-blue-700 text-white text-xs px-3 py-1.5 rounded-md font-medium transition">
-                                            Vote
-                                        </button>
+                                <div>
+                                    <div className="flex items-start justify-between gap-2 mb-2">
+                                        <h4 className="text-base font-bold text-slate-900 group-hover:text-indigo-600 transition-colors">
+                                            {listeCandidat.nom}
+                                        </h4>
+                                        {election.status === 'En cours' && (
+                                            <button className="inline-flex items-center gap-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold px-3 py-1.5 rounded-lg shadow-sm hover:shadow transition-all shrink-0">
+                                                <span>Voter</span>
+                                                <ArrowRight className="w-3.5 h-3.5" />
+                                            </button>
+                                        )}
+                                    </div>
+
+                                    {listeCandidat.slogan && (
+                                        <div className="flex items-start gap-1.5 text-xs text-indigo-600 font-medium italic mb-2.5 bg-indigo-50/60 p-2 rounded-lg">
+                                            <Quote className="w-3.5 h-3.5 shrink-0 text-indigo-400 mt-0.5" />
+                                            <span>"{listeCandidat.slogan}"</span>
+                                        </div>
+                                    )}
+
+                                    {listeCandidat.programme && (
+                                        <p className="text-xs text-slate-500 leading-relaxed line-clamp-3">
+                                            {listeCandidat.programme}
+                                        </p>
                                     )}
                                 </div>
-                                {listeCandidat.slogan && (
-                                    <p className="text-xs italic text-blue-600 mb-2">"{listeCandidat.slogan}"</p>
-                                )}
-                                {listeCandidat.programme && (
-                                    <p className="text-sm text-gray-600 line-clamp-3 mb-2">
-                                        {listeCandidat.programme}
-                                    </p>
-                                )}
                             </div>
                         ))}
                     </div>
                 ) : (
-                    <p className="text-sm text-gray-500 italic">Aucun candidat enregistré pour le moment.</p>
+                    <div className="py-8 text-center bg-slate-50/50 rounded-xl border border-dashed border-slate-200">
+                        <Sparkles className="w-6 h-6 text-slate-300 mx-auto mb-2" />
+                        <p className="text-xs text-slate-400 italic">
+                            Aucune liste de candidats enregistrée pour le moment.
+                        </p>
+                    </div>
                 )}
             </div>
         </div>

@@ -12,15 +12,10 @@ class Annee extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        "dateDebut",
-        "dateFin",
-        "contribution_id",
-        "status",
-    ];
-
-    protected $casts = [
-        'dateDebut' => 'date',
-        'dateFin' => 'date',
+        'dateDebut',
+        'dateFin',
+        'status',
+        'contribution_id',
     ];
 
     public function contribution()

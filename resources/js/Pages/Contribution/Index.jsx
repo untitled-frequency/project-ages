@@ -14,7 +14,11 @@ import {
     Scale,
     BanknoteArrowUp,
     Search,
-    PiggyBank
+    PiggyBank,
+    UserCheck,
+    BanknoteArrowDown,
+    Clock,
+    Settings
 } from 'lucide-react';
 import Paginate from '@/Components/Paginate';
 import PrimaryButton from '@/Components/PrimaryButton';
@@ -192,15 +196,50 @@ export default function ContributionIndex({ users, selectedStatut, contribution,
                 {/* Layout desktop */}
                 <div className="hidden md:block bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
                     <table className="w-full text-left text-sm text-gray-600">
-                        <thead className="bg-gray-50 border-b border-gray-200 text-xs text-gray-500 uppercase tracking-wider font-semibold">
+                        <thead className="bg-gray-50 border-b border-gray-200 text-xs text-gray-500 capitalize tracking-wider font-semibold">
                             <tr>
-                                <th className="px-6 py-4">Membre</th>
-                                <th className="px-6 py-4">Statut</th>
-                                <th className="px-6 py-4">Total payé</th>
-                                <th className="px-6 py-4">Reste à payer</th>
-                                <th className="px-6 py-4">Total à payer</th>
-                                <th className="px-6 py-4">Paiements récents</th>
-                                <th className="px-6 py-4 text-right">Actions</th>
+                                <th className="px-6 py-4">
+                                    <div className='flex items-center gap-1'>
+                                        <User className="w-4 h-4" />
+                                        Membre
+                                    </div>
+                                </th>
+                                <th className="px-6 py-4">
+                                    <div className='flex items-center gap-1'>
+                                        <UserCheck className="w-4 h-4" />
+                                        Statut
+                                    </div>
+                                </th>
+                                <th className="px-6 py-4">
+                                    <div className='flex items-center gap-1'>
+                                        <BanknoteArrowUp className="w-4 h-4" />
+                                        Total payé
+                                    </div>
+                                </th>
+                                <th className="px-6 py-4">
+                                    <div className='flex items-center gap-1'>
+                                        <BanknoteArrowDown className="w-4 h-4" />
+                                        Reste à payer
+                                    </div>
+                                </th>
+                                <th className="px-6 py-4">
+                                    <div className='flex items-center gap-1'>
+                                        <Scale className="w-4 h-4" />
+                                        Total à payer
+                                    </div>
+                                </th>
+                                <th className="px-6 py-4">
+                                    <div className='flex items-center gap-1'>
+                                        <Clock className="w-4 h-4" />
+                                        Paiements récents
+                                    </div>
+                                </th>
+                                <th className="px-6 py-4 text-right">
+                                    <div className='flex items-center gap-1'>
+                                        <Settings className="w-4 h-4" />
+                                        Actions
+                                    </div>
+                                </th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-100">

@@ -157,7 +157,7 @@ class ElectionController extends Controller
 
         Election::create($validated);
 
-        return redirect()->route('admin.index')
+        return redirect()->route('admin.index', ['tab' => 'election'])
             ->with('message', 'Élection créée avec succès.');
     }
 

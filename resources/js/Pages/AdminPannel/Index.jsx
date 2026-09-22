@@ -46,9 +46,9 @@ export default function AdminDashboard({ annees, mandats, elections, activeAnnee
 
     return (
         <AuthenticatedLayout header={
-            <div className='flex items-center gap-2 text-gray-800'>
-                <ShieldAlert className='w-5 h-5 text-gray-600' />
-                <h2 className="text-xl font-semibold leading-tight">Panneau d'Administration</h2>
+            <div className='flex items-center'>
+                <ShieldAlert className='mr-2' />
+                <h2 className="text-2xl font-bold text-gray-800">Panneau d'Administration</h2>
             </div>
         }>
             <Head title="Administration" />
@@ -143,7 +143,7 @@ export default function AdminDashboard({ annees, mandats, elections, activeAnnee
                                                     <td className='p-4'>{new Date(annee.dateDebut).toLocaleDateString('fr-FR')}</td>
                                                     <td className='p-4'>{new Date(annee.dateFin).toLocaleDateString('fr-FR')}</td>
                                                     <td className="p-4">
-                                                        <span className={`px-2 py-1 rounded-full text-xs font-semibold border ${
+                                                        <span className={`px-2 py-1 rounded-full text-xs font-semibold capitalize border ${
                                                             annee.status === 'en cours'
                                                             ? 'bg-emerald-100 text-emerald-800 border-emerald-200'
                                                             : annee.status === 'achevée'

@@ -8,23 +8,17 @@ use Inertia\Response;
 use App\Models\OperationFinanciere;
 use App\Models\Annee;
 use App\Models\Paie;
-use Illuminate\Support\Facades\DB;
 
 class OperationFinanciereController extends Controller
 {
     public function index(Request $request): Response
     {
-        $idAnneeEnCours = Annee::max('id');
-        $annee = Annee::find($idAnneeEnCours);
-        $dateDebut = $annee->dateDebut;
-        $dateFin = $annee->dateFin;
+        $annee = Annee::latest('id')->first();
 
-       
-        
         $selectedOption = $request->input('option');
 
-        
         $operations = OperationFinanciere::query()
+            ->where('annee_id', $annee?->id) // scope the table itself, fixes list/recap mismatch
             ->when($selectedOption, fn ($query) => $query->where('type', $selectedOption))
             ->with('user:id,nom')
             ->orderBy('date', 'desc')
@@ -36,16 +30,17 @@ class OperationFinanciereController extends Controller
             fn ($q) => $q->where('id', $annee?->id)
         )->sum('montantPaye');
 
-        $operationsQuery = OperationFinanciere::query();
-        if ($annee?->dateDebut && $annee?->dateFin) {
-            $operationsQuery->whereBetween('date', [$annee->dateDebut, $annee->dateFin]);
-        }
+        // Same relationship-based scoping as contributions, no more date range
+        $totalDepenses = OperationFinanciere::where('annee_id', $annee?->id)
+            ->where('type', 'depense')
+            ->sum('montant');
 
-        $totalDepenses = (clone $operationsQuery)->where('type', 'depense')->sum('montant');
-        $totalRecettes = (clone $operationsQuery)->where('type', 'recette')->sum('montant');
+        $totalRecettes = OperationFinanciere::where('annee_id', $annee?->id)
+            ->where('type', 'recette')
+            ->sum('montant');
 
         $solde = ($totalContributionsPercues + $totalRecettes) - $totalDepenses;
-            
+
         return Inertia::render('OperationFinanciere/Index', [
             'operations' => $operations,
             'selectedOption' => $selectedOption,
@@ -59,7 +54,7 @@ class OperationFinanciereController extends Controller
     }
 
     public function create()
-    {   
+    {
         return Inertia::render('OperationFinanciere/Create');
     }
 
@@ -71,9 +66,11 @@ class OperationFinanciereController extends Controller
             'type' => 'required|in:depense,recette',
         ]);
 
-        // Injecte l'ID de l'utilisateur connecté côté serveur
+        $annee = Annee::latest('id')->first();
+
         $validated['user_id'] = $request->user()->id;
-        $validated['date'] = now()->format('Y-m-d'); 
+        $validated['annee_id'] = $annee?->id; // stamp with current année, not inferred from date
+        $validated['date'] = now()->format('Y-m-d');
 
         OperationFinanciere::create($validated);
 
@@ -81,9 +78,6 @@ class OperationFinanciereController extends Controller
             ->with('success', 'Opération enregistrée avec succès.');
     }
 
-    /**
-     * Supprime une opération financière.
-     */
     public function destroy(OperationFinanciere $operationFinanciere)
     {
         $operationFinanciere->delete();

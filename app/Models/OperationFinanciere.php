@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class OperationFinanciere extends Model
 {
-    /** @use HasFactory<\Database\Factories\OperationFinanciereFactory> */
     use HasFactory;
 
     public $timestamps = false;
@@ -18,10 +17,22 @@ class OperationFinanciere extends Model
         'date',
         'type',
         'user_id',
+        'annee_id',
+    ];
+
+    
+    protected $casts = [
+        'montant' => 'float',
+        'date' => 'date',
     ];
 
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function annee()
+    {
+        return $this->belongsTo(Annee::class);
     }
 }

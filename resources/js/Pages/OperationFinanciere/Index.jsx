@@ -105,15 +105,13 @@ export default function OperationFinanciereIndex({ operations, selectedOption, r
                                         <td className="px-6 py-4 font-semibold text-gray-900">
                                             {Number(op.montant).toLocaleString()} FCFA
                                         </td>
-                                        <td className="px-6 py-4 text-gray-500">{op.date}</td>
+                                        <td className="px-6 py-4 text-gray-500">{new Date(op.date).toLocaleDateString('fr-FR', {day: '2-digit', month: 'short', year: 'numeric'})}</td>
                                         <td className="px-6 py-4 text-right space-x-2">
                                             <DefaultButton href={route('operationFinanciere.edit', op.id)} className=''>
                                                 <Edit className="w-4 h-4" />
-                                                Modifier
                                             </DefaultButton>
                                             <DangerButton onClick={() => handleDelete(op.id)} className=''>
                                                 <Trash2 className="w-4 h-4" />
-                                                Supprimer
                                             </DangerButton>
                                         </td>
                                     </tr>

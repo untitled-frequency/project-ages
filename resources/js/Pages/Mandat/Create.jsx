@@ -32,7 +32,7 @@ export default function Create({ annees }) {
             }
         >
             <Head title="Créer un Mandat" />
-
+                        
             <div className="py-8">
                 <div className="max-w-2xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 sm:p-8">
@@ -59,7 +59,7 @@ export default function Create({ annees }) {
                                     <option value="">Sélectionner une année</option>
                                     {annees?.map((annee) => (
                                         <option key={annee.id} value={annee.id}>
-                                            Année {annee.dateDebut} → {annee.dateFin}
+                                            Année {new Date(annee.dateDebut).getFullYear()} - {new Date(annee.dateFin).getFullYear()}
                                         </option>
                                     ))}
                                 </select>

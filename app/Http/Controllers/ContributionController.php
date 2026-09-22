@@ -12,6 +12,7 @@ use App\Models\Annee;
 use App\Models\Contribution;
 use App\Models\OperationFinanciere;
 use App\Models\User;
+use Carbon\Carbon;
 
 class ContributionController extends Controller
 {
@@ -94,20 +95,20 @@ class ContributionController extends Controller
             fn ($q) => $q->where('id', $annee?->id)
         )->sum('montantPaye');
 
-        $operationsQuery = OperationFinanciere::query();
-        if ($annee?->dateDebut && $annee?->dateFin) {
-            $operationsQuery->whereBetween('date', [$annee->dateDebut, $annee->dateFin]);
-        }
+        $totalDepenses = OperationFinanciere::where('annee_id', $annee?->id)
+        ->where('type', 'depense')
+        ->sum('montant');
 
-        $totalDepenses = (clone $operationsQuery)->where('type', 'depense')->sum('montant');
-        $totalRecettes = (clone $operationsQuery)->where('type', 'recette')->sum('montant');
+        $totalRecettes = OperationFinanciere::where('annee_id', $annee?->id)
+            ->where('type', 'recette')
+            ->sum('montant');
 
         $solde = ($totalContributionsPercues + $totalRecettes) - $totalDepenses;
 
         return Inertia::render('Contribution/Index', [
             'users' => $usersPaginated,
             'selectedStatut' => $selectedStatut,
-            'search' => $search, // 3. Pass search query back to frontend
+            'search' => $search, 
             'contribution' => $contribution,
             'recap' => [
                 'totalContributions' => $totalContributionsPercues,

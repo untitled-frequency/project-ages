@@ -81,7 +81,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('communique', CommuniqueController::class);
 
     //Election
-    Route::get('/elections', [ElectionController::class, 'indexVotant'])->name('elections.index'); 
+    Route::get('/elections', [ElectionController::class, 'indexVotant'])->name('elections.index');
+    Route::post('/elections', [ElectionController::class, 'store'])->name('elections.store'); 
     Route::get('/elections/{election}', [ElectionController::class, 'showVotant'])->name('election.show');
 
     //Mandats
@@ -94,7 +95,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/admin/annee/create', [AnneeController::class, 'create'])->name('admin.annee.create');
     Route::post('/admin/annee', [AnneeController::class, 'store'])->name('admin.annee.store');
     Route::get('/admin/annee/{annee}/edit', [AnneeController::class, 'edit'])->name('admin.annee.edit');
-    Route::put('/admin/edit/{annee_id}/', [AnneeController::class, 'update'])->name('admin.annee.update');
+    Route::put('/admin/annee/{annee}', [AnneeController::class, 'update'])->name('admin.annee.update');
 
     // Election Admin routes
     Route::get('/admin/elections/create', [ElectionController::class, 'create'])->name('admin.election.create');

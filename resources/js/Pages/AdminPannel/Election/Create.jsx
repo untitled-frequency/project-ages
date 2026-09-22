@@ -1,7 +1,7 @@
 import React from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, useForm, Link } from '@inertiajs/react';
-import { ArrowLeft, Save, Calendar, Vote } from 'lucide-react';
+import { ArrowLeft, Save, Calendar, Vote, CalendarPlus } from 'lucide-react';
 import PrimaryButton from '@/Components/PrimaryButton';
 import DefaultButton from '@/Components/DefaultButton';
 
@@ -25,11 +25,9 @@ export default function Create({ annees }) {
     return (
         <AuthenticatedLayout
             header={
-                <div className="flex items-center gap-3">
-                    <Link href={route('elections.index')} className="text-gray-500 hover:text-gray-700">
-                        <ArrowLeft className="w-5 h-5" />
-                    </Link>
-                    <h1 className="text-xl font-bold text-gray-800">Créer une Nouvelle Élection</h1>
+                <div className="flex items-center">
+                    <CalendarPlus className="mr-2" />
+                    <h2 className="text-2xl font-bold text-gray-800">Créer une Nouvelle Élection</h2>
                 </div>
             }
         >
@@ -133,8 +131,8 @@ export default function Create({ annees }) {
                             </div>
 
                             {/* Période de Vote */}
-                            <div className="bg-indigo-50/50 p-4 rounded-lg border border-indigo-100 space-y-3 md:col-span-2">
-                                <h3 className="text-xs font-bold text-indigo-700 uppercase tracking-wider">3. Scrutin (Période de Vote)</h3>
+                            <div className="bg-violet-100 p-4 rounded-lg border border-violet-100 space-y-3 md:col-span-2">
+                                <h3 className="text-xs font-bold text-violet-700 uppercase tracking-wider">3. Scrutin (Période de Vote)</h3>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div>
                                         <label className="block text-xs font-medium text-gray-600">Ouverture des votes</label>
